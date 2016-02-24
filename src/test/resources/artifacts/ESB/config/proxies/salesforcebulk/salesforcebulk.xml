@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~  Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ ~
+ ~  WSO2 Inc. licenses this file to you under the Apache License,
+ ~  Version 2.0 (the "License"); you may not use this file except
+ ~  in compliance with the License.
+ ~  You may obtain a copy of the License at
+ ~
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~  Unless required by applicable law or agreed to in writing,
+ ~  software distributed under the License is distributed on an
+ ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~  KIND, either express or implied.  See the License for the
+ ~  specific language governing permissions and limitations
+ ~  under the License.
+-->
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="salesforcebulk" transports="https,http" statistics="disable"
+       trace="disable" startOnLoad="true">
+    <target>
+        <inSequence>
+            <property name="apiUrl" expression="//apiUrl/text()"/>
+            <property name="apiVersion" expression="//apiVersion/text()"/>
+            <property name="accessToken" expression="//accessToken/text()"/>
+            <property name="operation" expression="//operation/text()"/>
+            <property name="contentType" expression="//contentType/text()"/>
+            <property name="object" expression="//object/text()"/>
+            <property name="objects" expression="//objects"/>
+            <property name="jobId" expression="//jobId/text()"/>
+            <property name="state" expression="//state/text()"/>
+            <property name="batchId" expression="//batchId/text()"/>
+
+            <filter xpath="(get-property('transport','Action')='urn:createJobToUploadBatchFile') or (get-property('transport','Action')='urn:uploadBatchFile')">
+                <then>
+                    <salesforcebulk.init>
+                        <apiVersion>{$url:apiVersion}</apiVersion>
+                        <accessToken>{$url:accessToken}</accessToken>
+                        <apiUrl>{$url:apiUrl}</apiUrl>
+                    </salesforcebulk.init>
+                </then>
+                <else>
+                    <salesforcebulk.init>
+                        <apiVersion>{$ctx:apiVersion}</apiVersion>
+                        <accessToken>{$ctx:accessToken}</accessToken>
+                        <apiUrl>{$ctx:apiUrl}</apiUrl>
+                    </salesforcebulk.init>
+                </else>
+            </filter>
+            <switch source="get-property('transport','Action')">
+                <case regex="urn:createJob">
+                    <salesforcebulk.createJob>
+                        <operation>{$ctx:operation}</operation>
+                        <contentType>{$ctx:contentType}</contentType>
+                        <object>{$ctx:object}</object>
+                    </salesforcebulk.createJob>
+                </case>
+                <case regex="urn:getJob">
+                    <salesforcebulk.getJob>
+                        <jobId>{$ctx:jobId}</jobId>
+                    </salesforcebulk.getJob>
+                </case>
+                <case regex="urn:updateJob">
+                    <salesforcebulk.updateJob>
+                        <jobId>{$ctx:jobId}</jobId>
+                        <state>{$ctx:state}</state>
+                    </salesforcebulk.updateJob>
+                </case>
+                <case regex="urn:addBatch">
+                    <salesforcebulk.addBatch>
+                        <jobId>{$ctx:jobId}</jobId>
+                        <objects>{$ctx:objects}</objects>
+                    </salesforcebulk.addBatch>
+                </case>
+                <case regex="urn:getBatchStatus">
+                    <salesforcebulk.getBatchStatus>
+                        <jobId>{$ctx:jobId}</jobId>
+                        <batchId>{$ctx:batchId}</batchId>
+                    </salesforcebulk.getBatchStatus>
+                </case>
+                <case regex="urn:getBatchResults">
+                    <salesforcebulk.getBatchResults>
+                        <jobId>{$ctx:jobId}</jobId>
+                        <batchId>{$ctx:batchId}</batchId>
+                    </salesforcebulk.getBatchResults>
+                </case>
+                <case regex="urn:getBatchRequest">
+                    <salesforcebulk.getBatchRequest>
+                        <jobId>{$ctx:jobId}</jobId>
+                        <batchId>{$ctx:batchId}</batchId>
+                    </salesforcebulk.getBatchRequest>
+                </case>
+                <case regex="urn:listBatches">
+                    <salesforcebulk.listBatches>
+                        <jobId>{$ctx:jobId}</jobId>
+                    </salesforcebulk.listBatches>
+                </case>
+                <case regex="urn:createJobToUploadBatchFile">
+                    <salesforcebulk.createJobToUploadBatchFile>
+                    </salesforcebulk.createJobToUploadBatchFile>
+                </case>
+                <case regex="urn:uploadBatchFile">
+                    <salesforcebulk.uploadBatchFile>
+                        <jobId>{$url:jobId}</jobId>
+                    </salesforcebulk.uploadBatchFile>
+                </case>
+            </switch>
+            <respond/>
+        </inSequence>
+        <outSequence>
+            <log/>
+            <send/>
+        </outSequence>
+    </target>
+    <description/>
+</proxy>
