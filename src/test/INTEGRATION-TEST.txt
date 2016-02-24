@@ -20,7 +20,7 @@ Steps to follow in setting integration test.
  1. Download ESB 4.9.0 from official website.
 
  2. If required add the X.509 certificate from https://{instance_name}.salesforce.com to the client-truststore.jks of the ESB located in <ESB_HOME>/repository/resources/security folder
-    and wso2carbon.jks located in <SALESFORCEBULK_CONNECTOR_HOME>/salesforcebulk-connector/salesforcebulk-connector-1.0.0/org.wso2.carbon.connector/src/test/resources/keystores/products.
+    and wso2carbon.jks located in <SALESFORCEBULK_CONNECTOR_HOME>/src/test/resources/keystores/products.
  
  3. Navigate to location "<ESB_HOME>/repository/conf/axis2" and add/uncomment following lines in "axis2.xml". 
 	
@@ -51,7 +51,7 @@ Steps to follow in setting integration test.
    iv)   Create a .txt file by referring the URL "https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/binary_create_job.htm". 
    v)    Create a .csv file by referring the URL "https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/datafiles_csv_sample_file.htm". 
    
- 6. Update the salesforcebulk properties file at location "<SALESFORCEBULK_CONNECTOR_HOME>/salesforcebulk-connector/salesforcebulk-connector-1.0.0/org.wso2.carbon.connector/src/test/resources/artifacts/ESB/connector/config" as below.
+ 6. Update the salesforcebulk properties file at location "<SALESFORCEBULK_CONNECTOR_HOME>/src/test/resources/artifacts/ESB/connector/config" as below.
    
    i)       apiUrl                -  Use following value 'https://{instance_name}.salesforce.com'
    ii)      accessToken           -  Use the API Key obtained in step 6 ii).
@@ -82,7 +82,7 @@ Steps to follow in setting integration test.
       
       2)  Add files created in step 7 v) and 7 vii) to following location.
 
-            <SALESFORCEBULK_CONNECTOR_HOME>/salesforcebulk-connector/salesforcebulk-connector-1.0.0/org.wso2.carbon.connector/src/test/resources/artifacts/ESB/config/resources/salesforcebulk.
+            <SALESFORCEBULK_CONNECTOR_HOME>/src/test/resources/artifacts/ESB/config/resources/salesforcebulk.
    
  7. Navigate to "<SALESFORCEBULK_CONNECTOR_HOME>/" and run the following command.
          $ mvn clean install
