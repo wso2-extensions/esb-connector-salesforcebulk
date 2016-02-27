@@ -51,7 +51,7 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
 
-        init("salesforcebulk-connector-1.0.0");
+        init("salesforcebulk-connector-1.0.1-SNAPSHOT");
         String apiVersion = connectorProperties.getProperty("apiVersion");
         apiUrl = connectorProperties.getProperty("apiUrl") + "/services/async/" + apiVersion;
 
