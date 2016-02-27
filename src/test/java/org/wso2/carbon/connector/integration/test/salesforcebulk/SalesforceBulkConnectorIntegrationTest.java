@@ -19,14 +19,6 @@
  */
 package org.wso2.carbon.connector.integration.test.salesforcebulk;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.xpath.XPathExpressionException;
-
 import org.apache.axiom.om.OMElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -34,6 +26,13 @@ import org.testng.annotations.Test;
 import org.wso2.connector.integration.test.base.ConnectorIntegrationTestBase;
 import org.wso2.connector.integration.test.base.RestResponse;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.xpath.XPathExpressionException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegrationTestBase {
 
@@ -51,7 +50,7 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
 
-        init("salesforcebulk-connector-1.0.0");
+        init("salesforcebulk-connector-1.0.1-SNAPSHOT");
         String apiVersion = connectorProperties.getProperty("apiVersion");
         apiUrl = connectorProperties.getProperty("apiUrl") + "/services/async/" + apiVersion;
 
