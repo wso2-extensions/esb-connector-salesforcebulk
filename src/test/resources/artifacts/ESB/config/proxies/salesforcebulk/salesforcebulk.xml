@@ -23,6 +23,9 @@
             <property name="apiUrl" expression="//apiUrl/text()"/>
             <property name="apiVersion" expression="//apiVersion/text()"/>
             <property name="accessToken" expression="//accessToken/text()"/>
+            <property name="refreshToken" expression="//refreshToken/text()"/>
+            <property name="clientId" expression="//clientId/text()"/>
+            <property name="clientSecret" expression="//clientSecret/text()"/>
             <property name="operation" expression="//operation/text()"/>
             <property name="contentType" expression="//contentType/text()"/>
             <property name="object" expression="//object/text()"/>
@@ -30,13 +33,19 @@
             <property name="jobId" expression="//jobId/text()"/>
             <property name="state" expression="//state/text()"/>
             <property name="batchId" expression="//batchId/text()"/>
+            <property name="transportAction" expression="$trp:Action"/>
 
-            <filter xpath="(get-property('transport','Action')='urn:createJobToUploadBatchFile') or (get-property('transport','Action')='urn:uploadBatchFile')">
+            <filter xpath="(get-property('transportAction')='urn:createJobToUploadBatchFile') or (get-property('transportAction')='urn:uploadBatchFile')">
                 <then>
                     <salesforcebulk.init>
                         <apiVersion>{$url:apiVersion}</apiVersion>
                         <accessToken>{$url:accessToken}</accessToken>
                         <apiUrl>{$url:apiUrl}</apiUrl>
+                        <refreshToken>{$url:refreshToken}</refreshToken>
+                        <clientId>{$url:clientId}</clientId>
+                        <clientSecret>{$url:clientSecret}</clientSecret>
+                        <intervalTime>{$url:intervalTime}</intervalTime>
+                        <registryPath>{$url:registryPath}</registryPath>
                     </salesforcebulk.init>
                 </then>
                 <else>
@@ -44,10 +53,15 @@
                         <apiVersion>{$ctx:apiVersion}</apiVersion>
                         <accessToken>{$ctx:accessToken}</accessToken>
                         <apiUrl>{$ctx:apiUrl}</apiUrl>
+                        <refreshToken>{$ctx:refreshToken}</refreshToken>
+                        <clientId>{$ctx:clientId}</clientId>
+                        <clientSecret>{$ctx:clientSecret}</clientSecret>
+                        <intervalTime>{$ctx:intervalTime}</intervalTime>
+                        <registryPath>{$ctx:registryPath}</registryPath>
                     </salesforcebulk.init>
                 </else>
             </filter>
-            <switch source="get-property('transport','Action')">
+            <switch source="get-property('transportAction')">
                 <case regex="urn:createJob">
                     <salesforcebulk.createJob>
                         <operation>{$ctx:operation}</operation>

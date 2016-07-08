@@ -92,7 +92,6 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
                 apiRestResponse.getBody()), operation);
         Assert.assertEquals(getValueByExpression("//*[local-name()='jobInfo']/*[local-name()='object']/text()",
                 apiRestResponse.getBody()), object);
-
     }
 
     /**
@@ -128,7 +127,6 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
                 apiRestResponse.getBody()), object);
         Assert.assertEquals(getValueByExpression("//*[local-name()='jobInfo']/*[local-name()='contentType']/text()",
                 apiRestResponse.getBody()), contentType);
-
     }
 
     /**
@@ -161,7 +159,6 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
         Assert.assertEquals(getValueByExpression("//*[local-name()='error']/*[local-name()='exceptionMessage']/text()",
                 esbRestResponse.getBody()), getValueByExpression(
                 "//*[local-name()='error']/*[local-name()='exceptionMessage']/text()", apiRestResponse.getBody()));
-
     }
 
     /**
@@ -173,7 +170,8 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
      * @throws SAXException
      * @throws ParserConfigurationException
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateJobWithOptionalParameters"}, description = "SalesforceBulk {getJob} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateJobWithOptionalParameters"},
+            description = "SalesforceBulk {getJob} integration test with mandatory parameters.")
     public void testGetJobWithMandatoryParameters() throws IOException, XMLStreamException, XPathExpressionException,
             SAXException, ParserConfigurationException {
 
@@ -198,7 +196,6 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
         Assert.assertEquals(getValueByExpression("//*[local-name()='jobInfo']/*[local-name()='state']/text()",
                 esbRestResponse.getBody()), getValueByExpression(
                 "//*[local-name()='jobInfo']/*[local-name()='state']/text()", apiRestResponse.getBody()));
-
     }
 
     /**
@@ -225,7 +222,6 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
                 sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_getJob_negative.xml");
         final String apiEndPoint = apiUrl + "/job/" + invalidId;
         RestResponse<OMElement> apiRestResponse = sendXmlRestRequest(apiEndPoint, "GET", apiRequestHeadersMap);
-
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 400);
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 400);
         Assert.assertEquals(getValueByExpression("//*[local-name()='error']/*[local-name()='exceptionCode']/text()",
@@ -234,7 +230,6 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
         Assert.assertEquals(getValueByExpression("//*[local-name()='error']/*[local-name()='exceptionMessage']/text()",
                 esbRestResponse.getBody()), getValueByExpression(
                 "//*[local-name()='error']/*[local-name()='exceptionMessage']/text()", apiRestResponse.getBody()));
-
     }
 
     /**
@@ -251,7 +246,8 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
      * @throws SAXException
      * @throws ParserConfigurationException
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateJobWithOptionalParameters"}, description = "SalesforceBulk {updateJob} integration test with optional parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateJobWithOptionalParameters"},
+            description = "SalesforceBulk {updateJob} integration test with optional parameters.")
     public void testUpdateJobWithOptionalParameters() throws IOException, XMLStreamException, XPathExpressionException,
             SAXException, ParserConfigurationException {
 
@@ -320,7 +316,8 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
      * @throws SAXException
      * @throws ParserConfigurationException
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testAddBatchWithMandatoryParameters"}, description = "SalesforceBulk {getBatchStatus} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testAddBatchWithMandatoryParameters"},
+            description = "SalesforceBulk {getBatchStatus} integration test with mandatory parameters.")
     public void testGetBatchStatusWithMandatoryParameters() throws IOException, XMLStreamException,
             XPathExpressionException, SAXException, ParserConfigurationException {
 
@@ -340,10 +337,15 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
         Assert.assertEquals(getValueByExpression("//*[local-name()='batchInfo']/*[local-name()='state']/text()",
                 esbRestResponse.getBody()), completed);
 
-        String esbsystemModstamp = getValueByExpression("//*[local-name()='batchInfo']/*[local-name()='systemModstamp']/text()", esbRestResponse.getBody());
-        String apisystemModstamp = getValueByExpression("//*[local-name()='batchInfo']/*[local-name()='systemModstamp']/text()", apiRestResponse.getBody());
+        String esbsystemModstamp =
+                getValueByExpression("//*[local-name()='batchInfo']/*[local-name()='systemModstamp']/text()",
+                        esbRestResponse.getBody());
+        String apisystemModstamp =
+                getValueByExpression("//*[local-name()='batchInfo']/*[local-name()='systemModstamp']/text()",
+                        apiRestResponse.getBody());
 
-        Assert.assertEquals(esbsystemModstamp.substring(0, esbsystemModstamp.lastIndexOf(":")), apisystemModstamp.substring(0, apisystemModstamp.lastIndexOf(":")));
+        Assert.assertEquals(esbsystemModstamp.substring(0, esbsystemModstamp.lastIndexOf(":")),
+                apisystemModstamp.substring(0, apisystemModstamp.lastIndexOf(":")));
     }
 
     /**
@@ -360,7 +362,8 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
      * @throws SAXException
      * @throws ParserConfigurationException
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateJobWithMandatoryParameters"}, description = "SalesforceBulk {getBatchStatus} integration test with negative case.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateJobWithMandatoryParameters"},
+            description = "SalesforceBulk {getBatchStatus} integration test with negative case.")
     public void testGetBatchStatusWithNegativeCase() throws IOException, XMLStreamException, XPathExpressionException,
             SAXException, ParserConfigurationException {
 
@@ -381,7 +384,6 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
         Assert.assertEquals(getValueByExpression("//*[local-name()='error']/*[local-name()='exceptionMessage']/text()",
                 esbRestResponse.getBody()), getValueByExpression(
                 "//*[local-name()='error']/*[local-name()='exceptionMessage']/text()", apiRestResponse.getBody()));
-
     }
 
     /**
@@ -393,7 +395,8 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
      * @throws SAXException
      * @throws ParserConfigurationException
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testAddBatchWithMandatoryParameters"}, description = "SalesforceBulk {getBatchResults} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testAddBatchWithMandatoryParameters"},
+            description = "SalesforceBulk {getBatchResults} integration test with mandatory parameters.")
     public void testGetBatchResultsWithMandatoryParameters() throws IOException, XMLStreamException,
             XPathExpressionException, SAXException, ParserConfigurationException {
 
@@ -427,7 +430,6 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
                     + resultsCount + "]", esbRestResponse.getBody()), getValueByExpression(
                     "//*[local-name()='results']/*[local-name()='result'][" + resultsCount + "]", apiRestResponse
                             .getBody()));
-
         }
     }
 
@@ -445,7 +447,8 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
      * @throws SAXException
      * @throws ParserConfigurationException
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateJobWithMandatoryParameters"}, description = "SalesforceBulk {getBatchResults} integration test with negative case.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateJobWithMandatoryParameters"},
+            description = "SalesforceBulk {getBatchResults} integration test with negative case.")
     public void testGetBatchResultsWithNegativeCase() throws IOException, XMLStreamException, XPathExpressionException,
             SAXException, ParserConfigurationException {
 
@@ -466,7 +469,6 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
         Assert.assertEquals(getValueByExpression("//*[local-name()='error']/*[local-name()='exceptionMessage']/text()",
                 esbRestResponse.getBody()), getValueByExpression(
                 "//*[local-name()='error']/*[local-name()='exceptionMessage']/text()", apiRestResponse.getBody()));
-
     }
 
     /**
@@ -478,7 +480,8 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
      * @throws SAXException
      * @throws ParserConfigurationException
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testAddBatchWithMandatoryParameters"}, description = "SalesforceBulk {getBatchRequest} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testAddBatchWithMandatoryParameters"},
+            description = "SalesforceBulk {getBatchRequest} integration test with mandatory parameters.")
     public void testGetBatchRequestWithMandatoryParameters() throws IOException, XMLStreamException,
             XPathExpressionException, SAXException, ParserConfigurationException {
 
@@ -519,7 +522,6 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
                     + sObjectCount + "]/*[local-name()='name']", esbRestResponse.getBody()), getValueByExpression(
                     "//*[local-name()='sObjects']/*[local-name()='sObject'][" + sObjectCount
                             + "]/*[local-name()='name']", apiRestResponse.getBody()));
-
         }
     }
 
@@ -537,7 +539,8 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
      * @throws SAXException
      * @throws ParserConfigurationException
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateJobWithMandatoryParameters"}, description = "SalesforceBulk {getBatchRequest} integration test with negative case.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateJobWithMandatoryParameters"},
+            description = "SalesforceBulk {getBatchRequest} integration test with negative case.")
     public void testGetBatchRequestWithNegativeCase() throws IOException, XMLStreamException, XPathExpressionException,
             SAXException, ParserConfigurationException {
 
@@ -558,7 +561,6 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
         Assert.assertEquals(getValueByExpression("//*[local-name()='error']/*[local-name()='exceptionMessage']/text()",
                 esbRestResponse.getBody()), getValueByExpression(
                 "//*[local-name()='error']/*[local-name()='exceptionMessage']/text()", apiRestResponse.getBody()));
-
     }
 
     /**
@@ -570,7 +572,8 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
      * @throws SAXException
      * @throws ParserConfigurationException
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateJobWithMandatoryParameters"}, description = "SalesforceBulk {listBatches} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateJobWithMandatoryParameters"},
+            description = "SalesforceBulk {listBatches} integration test with mandatory parameters.")
     public void testListBatchesWithMandatoryParameters() throws IOException, XMLStreamException,
             XPathExpressionException, SAXException, ParserConfigurationException {
 
@@ -585,12 +588,13 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
 
         int batchCount =
                 Integer.parseInt(getValueByExpression(
-                        "count(//*[local-name()='batchInfoList']/*[local-name()='batchInfo'])", esbRestResponse
-                                .getBody()));
+                        "count(//*[local-name()='batchInfoList']/*[local-name()='batchInfo'])",
+                        esbRestResponse.getBody()));
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 200);
         Assert.assertEquals(getValueByExpression(
-                "count(//*[local-name()='batchInfoList']/*[local-name()='batchInfo'])", esbRestResponse.getBody()),
+                        "count(//*[local-name()='batchInfoList']/*[local-name()='batchInfo'])",
+                        esbRestResponse.getBody()),
                 getValueByExpression("count(//*[local-name()='batchInfoList']/*[local-name()='batchInfo'])",
                         apiRestResponse.getBody()));
         Assert.assertEquals(getValueByExpression(
@@ -604,9 +608,7 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
                     + batchCount + "]/*[local-name()='jobId']", esbRestResponse.getBody()), getValueByExpression(
                     "//*[local-name()='batchInfoList']/*[local-name()='batchInfo'][" + batchCount
                             + "]/*[local-name()='jobId']", apiRestResponse.getBody()));
-
         }
-
     }
 
     /**
@@ -642,7 +644,6 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
         Assert.assertEquals(getValueByExpression("//*[local-name()='error']/*[local-name()='exceptionMessage']/text()",
                 esbRestResponse.getBody()), getValueByExpression(
                 "//*[local-name()='error']/*[local-name()='exceptionMessage']/text()", apiRestResponse.getBody()));
-
     }
 
     /**
@@ -654,21 +655,27 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
      * @throws SAXException
      * @throws XPathExpressionException
      */
-    @Test(groups = {"wso2.esb"}, description = "SalesforceBulk {createJobToUploadBatchFile} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"},
+            description = "SalesforceBulk {createJobToUploadBatchFile} integration test with mandatory parameters.")
     public void testCreateJobToUploadBatchFileWithMandatoryParameters() throws IOException, XMLStreamException,
             XPathExpressionException, SAXException, ParserConfigurationException {
 
         esbRequestHeadersMap.put("Action", "urn:createJobToUploadBatchFile");
 
         final String jobFileName = connectorProperties.getProperty("jobFileName");
-        final String jobContentType = connectorProperties.getProperty("jobContentType");
+        final String jobContentType = "text/csv";
 
         esbRequestHeadersMap.put("Content-Type", jobContentType);
 
         final String responseString =
                 proxyUrl + "?apiUrl=" + connectorProperties.getProperty("apiUrl") + "&accessToken="
                         + connectorProperties.getProperty("accessToken") + "&apiVersion="
-                        + connectorProperties.getProperty("apiVersion");
+                        + connectorProperties.getProperty("apiVersion") + "&refreshToken="
+                        + connectorProperties.getProperty("refreshToken") + "&clientId="
+                        + connectorProperties.getProperty("clientId") + "&clientSecret="
+                        + connectorProperties.getProperty("clientSecret") + "&intervalTime="
+                        + connectorProperties.getProperty("intervalTime") + "&registryPath="
+                        + connectorProperties.getProperty("registryPath");
 
         RestResponse<OMElement> esbRestResponse =
                 sendBinaryContentForXmlResponse(responseString, "POST", esbRequestHeadersMap, jobFileName);
@@ -709,7 +716,8 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
      * @throws SAXException
      * @throws XPathExpressionException
      */
-    @Test(groups = {"wso2.esb"}, description = "SalesforceBulk {createJobToUploadBatchFile} integration test with negative case.")
+    @Test(groups = {"wso2.esb"},
+            description = "SalesforceBulk {createJobToUploadBatchFile} integration test with negative case.")
     public void testCreateJobToUploadBatchFileWithNegativeCase() throws IOException, XMLStreamException,
             XPathExpressionException, SAXException, ParserConfigurationException {
 
@@ -755,7 +763,8 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
      * @throws XPathExpressionException
      * @throws InterruptedException
      */
-    @Test(groups = {"wso2.esb"}, description = "SalesforceBulk {uploadBatchFile} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"},
+            description = "SalesforceBulk {uploadBatchFile} integration test with mandatory parameters.")
     public void testUploadBatchFileWithMandatoryParameters() throws IOException, XMLStreamException,
             XPathExpressionException, SAXException, ParserConfigurationException, InterruptedException {
 
@@ -765,7 +774,7 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
         String completed = "Completed";
 
         final String bathcFileName = connectorProperties.getProperty("batchFileName");
-        final String batchContentType = connectorProperties.getProperty("jobContentType");
+        final String batchContentType = "text/csv";
 
         esbRequestHeadersMap.put("Content-Type", batchContentType);
 
@@ -793,13 +802,17 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
         Assert.assertEquals(getValueByExpression("//*[local-name()='state']/text()", apiRestResponse.getBody()),
                 completed);
 
-        String esbsystemModstamp = getValueByExpression("//*[local-name()='batchInfo']/*[local-name()='systemModstamp']/text()", esbRestResponse.getBody());
-        String apisystemModstamp = getValueByExpression("//*[local-name()='batchInfo']/*[local-name()='systemModstamp']/text()", apiRestResponse.getBody());
+        String esbsystemModstamp =
+                getValueByExpression("//*[local-name()='batchInfo']/*[local-name()='systemModstamp']/text()",
+                        esbRestResponse.getBody());
+        String apisystemModstamp =
+                getValueByExpression("//*[local-name()='batchInfo']/*[local-name()='systemModstamp']/text()",
+                        apiRestResponse.getBody());
 
-        Assert.assertEquals(esbsystemModstamp.substring(0, esbsystemModstamp.lastIndexOf(":")), apisystemModstamp.substring(0, apisystemModstamp.lastIndexOf(":")));
+        Assert.assertEquals(esbsystemModstamp.substring(0, esbsystemModstamp.lastIndexOf(":")),
+                apisystemModstamp.substring(0, apisystemModstamp.lastIndexOf(":")));
 
         esbRequestHeadersMap.put("Content-Type", "application/xml");
-
     }
 
     /**
@@ -823,7 +836,7 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
         esbRequestHeadersMap.put("Action", "urn:uploadBatchFile");
 
         final String bathcFileName = connectorProperties.getProperty("batchFileName");
-        final String batchContentType = connectorProperties.getProperty("jobContentType");
+        final String batchContentType = "text/csv";
 
         esbRequestHeadersMap.put("Content-Type", batchContentType);
 
@@ -831,7 +844,12 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
                 proxyUrl + "?apiUrl=" + connectorProperties.getProperty("apiUrl") + "&jobId="
                         + invalidId + "&accessToken="
                         + connectorProperties.getProperty("accessToken") + "&apiVersion="
-                        + connectorProperties.getProperty("apiVersion");
+                        + connectorProperties.getProperty("apiVersion") + "&refreshToken="
+                        + connectorProperties.getProperty("refreshToken") + "&clientId="
+                        + connectorProperties.getProperty("clientId") + "&clientSecret="
+                        + connectorProperties.getProperty("clientSecret") + "&intervalTime="
+                        + connectorProperties.getProperty("intervalTime") + "&registryPath="
+                        + connectorProperties.getProperty("registryPath");
 
         RestResponse<OMElement> esbRestResponse =
                 sendBinaryContentForXmlResponse(responseString, "POST", esbRequestHeadersMap, bathcFileName);
@@ -847,8 +865,8 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
                 getValueByExpression("//*[local-name()='exceptionCode']/text()", esbRestResponse.getBody()),
                 getValueByExpression("//*[local-name()='exceptionCode']/text()", apiRestResponse.getBody()));
         Assert.assertEquals(getValueByExpression("//*[local-name()='exceptionMessage']/text()", esbRestResponse
-                .getBody()), getValueByExpression("//*[local-name()='exceptionMessage']/text()", apiRestResponse
-                .getBody()));
+                .getBody()), getValueByExpression("//*[local-name()='exceptionMessage']/text()",
+                apiRestResponse.getBody()));
 
         esbRequestHeadersMap.put("Content-Type", "application/xml");
     }
@@ -863,7 +881,8 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
      * @throws ParserConfigurationException
      * @throws InterruptedException
      */
-    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateJobWithMandatoryParameters"}, description = "SalesforceBulk {addBatch} integration test with mandatory parameters.")
+    @Test(groups = {"wso2.esb"}, dependsOnMethods = {"testCreateJobWithMandatoryParameters"},
+            description = "SalesforceBulk {addBatch} integration test with mandatory parameters.")
     public void testAddBatchWithMandatoryParameters() throws IOException, XMLStreamException, XPathExpressionException,
             SAXException, ParserConfigurationException, InterruptedException {
 
@@ -894,12 +913,15 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
         Assert.assertEquals(getValueByExpression("//*[local-name()='state']/text()", apiRestResponse.getBody()),
                 completed);
 
-        String esbsystemModstamp = getValueByExpression("//*[local-name()='batchInfo']/*[local-name()='systemModstamp']/text()", esbRestResponse.getBody());
-        String apisystemModstamp = getValueByExpression("//*[local-name()='batchInfo']/*[local-name()='systemModstamp']/text()", apiRestResponse.getBody());
+        String esbsystemModstamp =
+                getValueByExpression("//*[local-name()='batchInfo']/*[local-name()='systemModstamp']/text()",
+                        esbRestResponse.getBody());
+        String apisystemModstamp =
+                getValueByExpression("//*[local-name()='batchInfo']/*[local-name()='systemModstamp']/text()",
+                        apiRestResponse.getBody());
 
-        Assert.assertEquals(esbsystemModstamp.substring(0, esbsystemModstamp.lastIndexOf(":")), apisystemModstamp.substring(0, apisystemModstamp.lastIndexOf(":")));
-
-
+        Assert.assertEquals(esbsystemModstamp.substring(0, esbsystemModstamp.lastIndexOf(":")),
+                apisystemModstamp.substring(0, apisystemModstamp.lastIndexOf(":")));
     }
 
     /**
@@ -937,7 +959,5 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
         Assert.assertEquals(getValueByExpression("//*[local-name()='error']/*[local-name()='exceptionMessage']/text()",
                 esbRestResponse.getBody()), getValueByExpression(
                 "//*[local-name()='error']/*[local-name()='exceptionMessage']/text()", apiRestResponse.getBody()));
-
     }
-
 }
