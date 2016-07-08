@@ -19,11 +19,9 @@
 <!-- Method Documentation URL: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_understanding_refresh_token_oauth.htm -->
 <template name="getAccessTokenByRefreshToken" xmlns="http://ws.apache.org/ns/synapse">
     <sequence>
-        <property name="uri.var.refreshToken"
-                  expression="get-property('registry', 'connectors/SalesforceBulk/refreshToken')"/>
-        <property name="uri.var.clientId" expression="get-property('registry', 'connectors/SalesforceBulk/clientId')"/>
-        <property name="uri.var.clientSecret"
-                  expression="get-property('registry', 'connectors/SalesforceBulk/clientSecret')"/>
+        <property name="uri.var.refreshToken" expression="$func:refreshToken"/>
+        <property name="uri.var.clientSecret" expression="$func:clientSecret"/>
+        <property name="uri.var.clientId" expression="$func:clientId"/>
         <payloadFactory media-type="json">
             <format>
                 {
@@ -34,9 +32,9 @@
                 }
             </format>
             <args>
-                <arg expression="get-property('uri.var.refreshToken')"/>
-                <arg expression="get-property('uri.var.clientSecret')"/>
-                <arg expression="get-property('uri.var.clientId')"/>
+                <arg expression="$ctx:uri.var.refreshToken"/>
+                <arg expression="$ctx:uri.var.clientSecret"/>
+                <arg expression="$ctx:uri.var.clientId"/>
             </args>
         </payloadFactory>
         <property name="messageType" value="application/x-www-form-urlencoded" scope="axis2"/>
@@ -50,26 +48,39 @@
         </call>
         <!-- Setting the new access token to the property. -->
         <property name="uri.var.accessToken" expression="json-eval($.access_token)"/>
+        <property name="uri.var.instanceUrl" expression="json-eval($.instance_url)"/>
+        <property name="uri.var.apiUrl"
+                  expression="fn:concat(get-property('uri.var.instanceUrl'),'/services/async/',get-property('uri.var.apiVersion'))"/>
+        <property name="systemTime" expression="$ctx:SYSTEM_TIME" scope="default"/>
         <script language="js">
             <![CDATA[
              importPackage(Packages.org.apache.synapse.config);
              var newAccessToken = mc.getProperty('uri.var.accessToken');
+             var newSystemTime = mc.getProperty('systemTime');
+             var newAccessRegistryPath = mc.getProperty('uri.var.accessTokenRegistryPath');
+             var newTimeRegistryPath = mc.getProperty('uri.var.timeRegistryPath');
              if(newAccessToken != null && newAccessToken != ''){
-                var existingAccessToken = mc.getConfiguration().getRegistry().getResource("connectors/SalesforceBulk/accessToken");
+                var existingAccessToken = mc.getConfiguration().getRegistry().getResource(newAccessRegistryPath);
+                var existingTime = mc.getConfiguration().getRegistry().getResource(newTimeRegistryPath);
                 if(existingAccessToken == null){
                   // Create the registry entry if no such entry exists.
-                  mc.getConfiguration().getRegistry().newResource("connectors/SalesforceBulk/accessToken", newAccessToken);
+                      mc.getConfiguration().getRegistry().newResource(newAccessRegistryPath, false);
+                      mc.getConfiguration().getRegistry().updateResource(newAccessRegistryPath, newAccessToken);
+                      mc.getConfiguration().getRegistry().newResource(newTimeRegistryPath, false);
+                      mc.getConfiguration().getRegistry().updateResource(newTimeRegistryPath, newSystemTime);
                 } else {
                   // Update the registry entry if it already exists.
-                  mc.getConfiguration().getRegistry().updateResource("connectors/SalesforceBulk/accessToken", newAccessToken);
-                }     
-             }                     
+                      mc.getConfiguration().getRegistry().updateResource(newAccessRegistryPath, newAccessToken);
+                      mc.getConfiguration().getRegistry().updateResource(newTimeRegistryPath, newSystemTime);
+                }
+             }
          ]]>
         </script>
-        <!-- Boolean flag to keep track of whether the method to get the access token is already called or not. -->
-        <property name="uri.var.refreshTokenNegotiated" value="true"/>
         <!-- Remove custom Headers from the API Response -->
         <header name="Cache-Control" action="remove" scope="transport"/>
         <header name="Pragma" action="remove" scope="transport"/>
+        <header name="Set-Cookie" action="remove" scope="transport"/>
+        <header name="Content-Security-Policy-Report-Only" action="remove" scope="transport"/>
+        <header name="Content-Type" action="remove" scope="transport"/>
     </sequence>
 </template>
