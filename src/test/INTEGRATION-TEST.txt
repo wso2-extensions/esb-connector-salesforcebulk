@@ -57,27 +57,30 @@ Steps to follow in setting integration test.
  6. Update the salesforcebulk properties file at location "<SALESFORCEBULK_CONNECTOR_HOME>/src/test/resources/artifacts/ESB/connector/config" as below.
    
    i)       apiUrl                -  Use following value 'https://{instance_name}.salesforce.com'
-   ii)      accessToken           -  Use the API Key obtained in step 5 ii).
-   iii)     apiVersion            -  Use 34.0 or above version.
-   iv)      timeOut               -  Salesforcebulk API is take some time to proceed the uploaded file. Keep a suitable time gap between create and retrieve calls.
+   ii)      accessToken           -  Use the Access Token obtained in step 5 ii).
+   iii)     refreshToken          -  Obtain and use the Refresh Token as mentioned in step 5 ii).
+   iv)      clientId              -  Obtain and use the 'client id' as mentioned in step 5 ii).
+   v)       clientSecret          -  Obtain and use the 'client secret' as mentioned in step 5 ii).
+   vi)      apiVersion            -  Use 34.0 or above version.
+   vii)     timeOut               -  Salesforcebulk API is take some time to proceed the uploaded file. Keep a suitable time gap between create and retrieve calls.
    
-   v)       jobFileName           -  Name of the file created in step 5 iv).
-   vi)      jobContentType        -  Content type of the job which is going to create by uploading file.
+   viii)    jobFileName           -  Name of the file created in step 5 iv).
+   ix)      jobContentType        -  Content type of the job which is going to create by uploading file.
  
-   vii)     batchFileName         -  Name of the file created in step 5 v).
-   viii)    CSVJobId              -  Id of a job created in step 5 iii).
+   x)       batchFileName         -  Name of the file created in step 5 v).
+   xi)      CSVJobId              -  Id of a job created in step 5 iii).
    
-   ix)      description1          -  The description of first object of batch.
-   x)       name1                 -  The name of first object of batch.
-   xi)      description2          -  The description of second object of batch.
-   xii)     name2                 -  The name of second object of batch.
+   xii)     description1          -  The description of first object of batch.
+   xiii)    name1                 -  The name of first object of batch.
+   xiv)     description2          -  The description of second object of batch.
+   xv)      name2                 -  The name of second object of batch.
 
-   xiii)    registryPath          -  The registry path
-   ix)      intervalTime          - The access token validity period in seconds.
+   xvi)     registryPath          -  The registry path
+   xvii)    intervalTime          -  The access token validity period in seconds.
 
    Special Notes:
       
-      1)  Add files created in step 6 v) and 6 vii) to following location.
+      1)  Add files created in step 6 viii) and 6 x) to following location.
 
             <SALESFORCEBULK_CONNECTOR_HOME>/src/test/resources/artifacts/ESB/config/resources/salesforcebulk.
    
