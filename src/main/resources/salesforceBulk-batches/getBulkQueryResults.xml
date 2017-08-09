@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~  Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ ~
+ ~  WSO2 Inc. licenses this file to you under the Apache License,
+ ~  Version 2.0 (the "License"); you may not use this file except
+ ~  in compliance with the License.
+ ~  You may obtain a copy of the License at
+ ~
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~  Unless required by applicable law or agreed to in writing,
+ ~  software distributed under the License is distributed on an
+ ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~  KIND, either express or implied.  See the License for the
+ ~  specific language governing permissions and limitations
+ ~  under the License.
+-->
+<template xmlns="http://ws.apache.org/ns/synapse" name="getBulkQueryResults">
+    <parameter name="jobId" description="The unique identifier of the Job."/>
+    <parameter name="batchId" description="The unique identifier of the Batch."/>
+    <parameter name="resultId" description="The result ID in the response to the batch result list request."/>
+
+    <sequence>
+        <property name="uri.var.jobId" expression="$func:jobId"/>
+        <property name="uri.var.batchId" expression="$func:batchId"/>
+        <property name="uri.var.resultId" expression="$func:resultId"/>
+        <call>
+            <endpoint>
+                <http method="get"
+                      uri-template="{+uri.var.apiUrl}/job/{+uri.var.jobId}/batch/{+uri.var.batchId}/result/{+uri.var.resultId}"/>
+            </endpoint>
+        </call>
+        <!-- Remove custom Headers from the API Response -->
+        <header name="Cache-Control" action="remove" scope="transport"/>
+    </sequence>
+</template>
