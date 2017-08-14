@@ -38,5 +38,9 @@
             <file>listBatches.xml</file>
             <description>Get information about all batches in a job.</description>
         </component>
+        <component name="getBulkQueryResults">
+            <file>getBulkQueryResults.xml</file>
+            <description>Get the results of the query.</description>
+        </component>
     </subComponents>
 </component>
