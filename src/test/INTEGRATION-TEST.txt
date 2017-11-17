@@ -17,32 +17,19 @@ Tested Platform:
 
 Steps to follow in setting integration test.
 
- 1. Download ESB 5.0.0-BETA from official website. Extract the ESB and put "-XX:-UseSplitVerifier" under $JVM_MEM_OPTS into {ESB_HOME}/bin/wso2server.sh.
+ 1. Download EI-6.1.1 from official website.
 
- 2. If required add the X.509 certificate from https://{instance_name}.salesforce.com to the client-truststore.jks of the ESB located in <ESB_HOME>/repository/resources/security folder
-    and wso2carbon.jks located in <SALESFORCEBULK_CONNECTOR_HOME>/src/test/resources/keystores/products.
- 
- 3. Navigate to location "<ESB_HOME>/repository/conf/axis2" and add/uncomment following lines in "axis2.xml". 
+ 2. Navigate to location "<ESB_HOME>/repository/conf/axis2" and add/uncomment following lines in "axis2.xml".
 	
       Message Formatters :-
    
        <messageFormatter contentType="text/csv" class="org.wso2.carbon.relay.ExpandingMessageFormatter"/>
-       <messageFormatter contentType="zip/xml" class="org.wso2.carbon.relay.ExpandingMessageFormatter"/>
-       <messageFormatter contentType="zip/csv" class="org.wso2.carbon.relay.ExpandingMessageFormatter"/>
-       <messageFormatter contentType="text/xml" class="org.wso2.carbon.relay.ExpandingMessageFormatter"/>
-       <messageFormatter contentType="text/html" class="org.wso2.carbon.relay.ExpandingMessageFormatter"/>
        
       Message Builders :-    
    
        <messageBuilder contentType="text/csv" class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
-       <messageBuilder contentType="zip/xml" class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
-       <messageBuilder contentType="zip/csv" class="org.wso2.carbon.relay.BinaryRelayBuilder"/> 
-       <messageBuilder contentType="text/xml" class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
-       <messageBuilder contentType="text/html" class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
- 
- 4. Compress modified ESB as wso2esb-5.0.0-BETA.zip and copy that zip file in to location "<SALESFORCEBULK_CONNECTOR_HOME>/repository/".
    
- 5. Create a salesforcebulk trial account and derive the API Token.
+ 3. Create a salesforcebulk trial account and derive the API Token.
    i)    Using the URL "https://www.salesforce.com/" create a salesforcebulk trial account.
    ii)   Using the URL "https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_understanding_authentication.htm" setup the connected app, get the 'client id','client secret' and obtain the 'Access Token' and 'Refresh Token'.
    iii)  Create a job which has 'CSV' content type and object value should be 'Contact' by using the URL "https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/binary_create_job.htm".
@@ -54,21 +41,26 @@ Steps to follow in setting integration test.
        Getting Authorization Code: Make a 'GET' call to https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=<client_id>&redirect_uri=<redirect_uri>
        Getting Access Token      : Make a 'POST' call to  https://login.salesforce.com/services/oauth2/token?client_secret=<client_secret>&client_id=<client_id>&grant_type=authorization_code&code=<code>&redirect_uri=<redirect_uri>
 
+ 4. If required add the X.509 certificate from https://{instance_name}.salesforce.com to the client-truststore.jks of the ESB located in <ESB_HOME>/repository/resources/security folder
+        and wso2carbon.jks located in <SALESFORCEBULK_CONNECTOR_HOME>/src/test/resources/keystores/products.
+
+ 5. Compress modified EI as wso2ei-6.1.1.zip and copy that zip file in to location "<SALESFORCEBULK_CONNECTOR_HOME>/repository/".
+
  6. Update the salesforcebulk properties file at location "<SALESFORCEBULK_CONNECTOR_HOME>/src/test/resources/artifacts/ESB/connector/config" as below.
    
    i)       apiUrl                -  Use following value 'https://{instance_name}.salesforce.com'
-   ii)      accessToken           -  Use the Access Token obtained in step 5 ii).
-   iii)     refreshToken          -  Obtain and use the Refresh Token as mentioned in step 5 ii).
-   iv)      clientId              -  Obtain and use the 'client id' as mentioned in step 5 ii).
-   v)       clientSecret          -  Obtain and use the 'client secret' as mentioned in step 5 ii).
+   ii)      accessToken           -  Use the Access Token obtained in step 3 ii).
+   iii)     refreshToken          -  Obtain and use the Refresh Token as mentioned in step 3 ii).
+   iv)      clientId              -  Obtain and use the 'client id' as mentioned in step 3 ii).
+   v)       clientSecret          -  Obtain and use the 'client secret' as mentioned in step 3 ii).
    vi)      apiVersion            -  Use 34.0 or above version.
    vii)     timeOut               -  Salesforcebulk API is take some time to proceed the uploaded file. Keep a suitable time gap between create and retrieve calls.
    
-   viii)    jobFileName           -  Name of the file created in step 5 iv).
+   viii)    jobFileName           -  Name of the file created in step 3 iv).
    ix)      jobContentType        -  Content type of the job which is going to create by uploading file.
  
-   x)       batchFileName         -  Name of the file created in step 5 v).
-   xi)      CSVJobId              -  Id of a job created in step 5 iii).
+   x)       batchFileName         -  Name of the file created in step 3 v).
+   xi)      CSVJobId              -  Id of a job created in step 3 iii).
    
    xii)     description1          -  The description of first object of batch.
    xiii)    name1                 -  The name of first object of batch.
@@ -77,14 +69,8 @@ Steps to follow in setting integration test.
 
    xvi)     registryPath          -  The registry path
    xvii)    intervalTime          -  The access token validity period in seconds.
-
-   Special Notes:
-      
-      1)  Add files created in step 6 viii) and 6 x) to following location.
-
-            <SALESFORCEBULK_CONNECTOR_HOME>/src/test/resources/artifacts/ESB/config/resources/salesforcebulk.
    
  7. Navigate to "<SALESFORCEBULK_CONNECTOR_HOME>/" and run the following command.
-         $ mvn clean install
+         $ mvn clean install -Dskip-tests=false
 
 

@@ -51,7 +51,9 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
 
-        init("salesforcebulk-connector-1.0.2-SNAPSHOT");
+        String connectorName = System.getProperty("connector_name") + "-connector-" +
+                System.getProperty("connector_version") + ".zip";
+        init(connectorName);
         String apiVersion = connectorProperties.getProperty("apiVersion");
         apiUrl = connectorProperties.getProperty("apiUrl") + "/services/async/" + apiVersion;
 
@@ -670,12 +672,7 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
         final String responseString =
                 proxyUrl + "?apiUrl=" + connectorProperties.getProperty("apiUrl") + "&accessToken="
                         + connectorProperties.getProperty("accessToken") + "&apiVersion="
-                        + connectorProperties.getProperty("apiVersion") + "&refreshToken="
-                        + connectorProperties.getProperty("refreshToken") + "&clientId="
-                        + connectorProperties.getProperty("clientId") + "&clientSecret="
-                        + connectorProperties.getProperty("clientSecret") + "&intervalTime="
-                        + connectorProperties.getProperty("intervalTime") + "&registryPath="
-                        + connectorProperties.getProperty("registryPath");
+                        + connectorProperties.getProperty("apiVersion");
 
         RestResponse<OMElement> esbRestResponse =
                 sendBinaryContentForXmlResponse(responseString, "POST", esbRequestHeadersMap, jobFileName);
@@ -844,12 +841,7 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
                 proxyUrl + "?apiUrl=" + connectorProperties.getProperty("apiUrl") + "&jobId="
                         + invalidId + "&accessToken="
                         + connectorProperties.getProperty("accessToken") + "&apiVersion="
-                        + connectorProperties.getProperty("apiVersion") + "&refreshToken="
-                        + connectorProperties.getProperty("refreshToken") + "&clientId="
-                        + connectorProperties.getProperty("clientId") + "&clientSecret="
-                        + connectorProperties.getProperty("clientSecret") + "&intervalTime="
-                        + connectorProperties.getProperty("intervalTime") + "&registryPath="
-                        + connectorProperties.getProperty("registryPath");
+                        + connectorProperties.getProperty("apiVersion");
 
         RestResponse<OMElement> esbRestResponse =
                 sendBinaryContentForXmlResponse(responseString, "POST", esbRequestHeadersMap, bathcFileName);
@@ -953,11 +945,5 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
 
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 400);
         Assert.assertEquals(esbRestResponse.getHttpStatusCode(), 400);
-        Assert.assertEquals(getValueByExpression("//*[local-name()='error']/*[local-name()='exceptionCode']/text()",
-                esbRestResponse.getBody()), getValueByExpression(
-                "//*[local-name()='error']/*[local-name()='exceptionCode']/text()", apiRestResponse.getBody()));
-        Assert.assertEquals(getValueByExpression("//*[local-name()='error']/*[local-name()='exceptionMessage']/text()",
-                esbRestResponse.getBody()), getValueByExpression(
-                "//*[local-name()='error']/*[local-name()='exceptionMessage']/text()", apiRestResponse.getBody()));
     }
 }
