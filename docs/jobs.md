@@ -1,4 +1,4 @@
-# Working with Project Jobs in Salesforce Bulk
+# Working with Jobs in Salesforce Bulk
 
 [[  Overview ]](#overview)  [[ Operation details ]](#operation-details)  [[  Sample configuration  ]](#sample-configuration)
 
