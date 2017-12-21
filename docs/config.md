@@ -94,7 +94,7 @@ Required message builders
 
 Now that you have connected to Salesforce Bulk, use the information in the following topics to perform various operations with the connector:
 
-[Working with Projects Batches](batches.md)
+[Working with Batches](batches.md)
 
 [Working with Binary Attachments](attachments.md)
 
