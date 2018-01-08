@@ -1,50 +1,53 @@
 # Configuring Salesforce Bulk Operations
 
-[[Initializing the Connector]](#initializing-the-connector)  [[Obtaining user credentials]](#obtaining-user-credentials)
+[[Obtaining user credentials]](#obtaining-user-credentials)      [[Initializing the connector]](#initializing-the-connector)   [[Additional information]](#additional-information)  
 
 > NOTE: To work with the Salesforce Bulk connector, you need to have a Salesforce account. If you do not have a Salesforce account, go to [https://developer.salesforce.com/signup](https://developer.salesforce.com/signup) and create a Salesforce developer account.
 
-To use the SalesforceBulk connector, add the <salesforcebulk.init> element in your configuration before carrying out any other SalesforceBulk operations. 
+To use the SalesforceBulk connector, add the <salesforcebulk.init> element in your configuration before carrying out any other SalesforceBulk operation. 
 
-Salesforce  uses the OAuth protocol to allow users of applications to securely access data without having to reveal username and password credentials.  For more information, see [Understanding Authentication](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_understanding_authentication.htm).
+Salesforce uses the OAuth protocol to allow application users to securely access data without having to reveal their user credentials.  For more information on authentication is done in Salesforce, see [Understanding Authentication](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_understanding_authentication.htm).
+
 ## Obtaining user credentials
 
-* **Follow the steps below to create a connected application using Salesforce:**
+* **Follow the steps below to create a connected application using Salesforce and obtain the Consumer Key as well as the Consumer Secret:**
 
     1. Go to https://developer.salesforce.com/, and sign up to get a free developer environment. 
     2. Go to **Setup** -> **Create** -> **Apps**, and click **New**. This creates a new connected application.
-    3. Specify a name for your application, your email address as well as any other information applicable to your application.
-    4. Select **Enable OAuth Settings**.
-    5. Specify a callback URL. Depending on the OAuth flow you use, this is typically the URL that your browser is redirected to, after successful authentication. Since this URL is used in some of the OAuth flows to pass an access token, the URL must use secure HTTP or a custom URI scheme.
-    6. Add all supported OAuth scopes as **Selected OAuth Scopes**. These OAuth scopes include permission given by the user running the connected application.
-    7. Click Specify a **Info URL**. This is where a user can go for more information about your application.
-    8. Click **Save**. Once you navigate to the application that you created, you can see the following:    
-     * **Consumer Key** created and displayed. 
-     * **Consumer Secret** created.
+    3. Specify a name for your application, your email address as well as any other information that is applicable to your application.
+    4. Specify an **Info URL**. This is where a user can go for more information about your application.
+    5. Select **Enable OAuth Settings**.
+    6. Specify a **Callback URL**. Depending on the OAuth flow you use, this is typically the URL that your browser is redirected to, after successful authentication. Since this URL is used in some of the OAuth flows to pass an access token, the URL must use secure HTTP or a custom URI scheme.
+    7. Select the required OAuth scopes from the **Available OAuth Scopes** list and click **Add** to include those as **Selected OAuth Scopes**. These OAuth scopes include permission given by the user running the connected application.
+    8. Click **Save**. This displays details of the connected application that you created. In the displayed details you will see the **Consumer Key** as well as the **Consumer Secret** of the connected application .
     
-* **Follow the steps below to obtain an access token and refresh token:**
+* **Follow the steps below to obtain the access token and refresh token:**
 
-    1. Replace the placeholders (i.e., <your_client_id> and <your_redirect_uri>) of the following URL with the values that you created earlier and view the URL using a web browser. 
+    1. In the following URL, first replace <your_client_id> placeholder with the consumer key that you obtained. Next, replace <your_redirect_uri> placeholder with the value that you specified as the callback URL when creating the connected application, and then open the URL via a web browser. 
         ```xml
         https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=<your_client_id>&redirect_uri=<your_redirect_uri>
         ```
-    2. Approve the application to access your Salesforce account and note that the browser redirects you to the call-back URL (redirect URL):
+    2. Approve the application to access your Salesforce account. You will see that the browser redirects you to the callback URL that you specified when creating the connected application:
        ```xml
        https://app.com/oauth_callback?code=aWe...c4w%3D%3D
        ```
-    3. From the call-back URL, extract the authorization code.
-    4. Send a direct POST request to the authorization server using the following request. Be sure to change the values here to the actual values that you got earlier.
+    3. Extract the authorisation code from the callback URL.
+.
+    4. Send a direct POST request to the authorisation server using the following request: 
+        > NOTE: Be sure to replace the placeholders with the values applicable to the connected application that you created.
         ```xml
         https://login.salesforce.com/services/oauth2/token?code=aWe...c4w==&grant_type=authorization_code&client_id=<your_client_id>&client_secret=<your_client_secret>&redirect_uri=<your_redirect_uri>&format=json
         ```
-        ```xml
-        In the above request, you can set the format as urlencoded, json or xml to get the response in one of the three formats.
-        ```
-    5. From the response that you get, extract the accessToken to access Salesforce via the created app. You also get a refreshToken to renew the accessToken when it expires.
+        > NOTE:In the above request, you can set the format to one of the following based on the format in which you want to retrieve the response:
+        * **url encoded**
+        * **json**
+        * **xml**
+    5. From the response that you get, extract the accessToken to access Salesforce via the created application. 
+       > NOTE: You will also get a refreshToken to renew the accessToken when it expires.
 
-## Initializing the Connector
-Specify the init method as follows:
-
+## Initializing the connector
+Add the following <salesforcebulk.init> method in your configuration:
+ 
 **init**
 ```xml
 <salesforcebulk.init>
@@ -60,16 +63,17 @@ Specify the init method as follows:
 ```
 **Properties** 
 * apiVersion:  The version of the Salesforce API. 
-* accessToken:  Access token of the organizational account.
+* accessToken:  The access token to authenticate your API calls.
 * apiUrl:  The API URL to access the endpoint.
-* refreshToken:  The refresh token to refresh the API access token.
-* clientId:  The value of the Consumer Key of your application.
-* clientSecret:  The value of the Consumer Secret of your application.
-* intervalTime:  The interval time to check the validity of the access token.
-* registryPath:  Registry path of the connector where the values are stored. You must give the value as : connectors/<value> 
-  For example: registryPath = "connectors/salesforcebulk".
+* refreshToken:  The refresh token that you received to refresh the API access token.
+* clientId:  The consumer key of the connected application that you created.
+* clientSecret:  The consumer secret of the connected application that you created.
+* intervalTime:  The time interval in milliseconds, after which you need to check the validity of the access token.
+* registryPath:  The registry path of the connector. You must specify the registry path as follows: registryPath = “connectors/salesforcebulk”.
   
-Please ensure that the following Axis2 configurations are added and enabled in the <EI_HOME>\conf\axis2\axis2.xml file.
+## Additional information
+
+Be sure to add and enable the following Axis2 configurations in the <EI_HOME>/conf/axis2/axis2.xml file.
 
 Required message formatters
 
