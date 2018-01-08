@@ -1,6 +1,6 @@
 # Configuring the Salesforce Bulk Fault Handler Sequence
 
-Following is a sample proxy service and fault handler sequence you can use as a starting point for handling faults when integrating with SalesforceBulk. Customize this sample to match your requirements.
+Following is a sample proxy service and fault handler sequence that you can use as a starting point for handling faults when integrating with Salesforce Bulk. You can customize this sample based on your requirement.
 
 **Sample Proxy**
 ```xml
