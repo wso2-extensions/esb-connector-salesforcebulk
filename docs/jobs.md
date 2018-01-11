@@ -1,6 +1,6 @@
 # Working with Jobs in Salesforce Bulk
 
-[[  Overview ]](#overview)  [[ Operation details ]](#operation-details)  [[  Sample configuration  ]](#sample-configuration)
+[[Overview]](#overview)  [[Operation details]](#operation-details)  [[Sample configuration]](#sample-configuration)
 
 ### Overview 
 
@@ -11,14 +11,14 @@ For a sample proxy service that illustrates how to work with jobs, see [Sample c
 | ------------- |-------------|
 | [createJob](#creating-a-new-job)    | Creates a new job. |
 | [updateJob](#closing-a-job-or-aborting-an-existing-job)      | Closes a job or aborts an existing job. |
-| [getJob](#retrieving-messages-published-to-a-topic)      | Retrieves all details for an existing job. |
+| [getJob](#retrieving-details-of-an-existing-job)      | Retrieves all details for an existing job. |
 
 ### Operation details
 
 This section provides more details on each of the operations.
 
 #### Creating a new job
-The createJob operation creates a new job by sending a POST request.
+The createJob operation creates a new job based on the properties that you specify.
 
 **createJob**
 ```xml
@@ -30,9 +30,9 @@ The createJob operation creates a new job by sending a POST request.
 ```
 
 **Properties**
-* operation: The processing operation for batches in the job.
-* contentType: The content type for the job.
-* object: The object type for the data being processed.
+* operation: The processing operation that the job should perform.
+* contentType: The content type of the job.
+* object: The object type of data that is to be processed by the job.
 
 **Sample request**
 
@@ -60,7 +60,7 @@ Following is a sample request that can be handled by the createJob operation.
 
 #### Closing a job or aborting an existing job
 
-The updateJob operation closes a job by sending a POST request or aborts an existing job by sending a POST request.
+The updateJob operation closes or aborts a job that you specify.
 
 **updateJob**
 ```xml
@@ -71,8 +71,8 @@ The updateJob operation closes a job by sending a POST request or aborts an exis
 ```
 
 **Properties**
-* jobId: The ID of the job.
-* state: The state of processing for the job.
+* jobId: The ID of the job that you either want to close or abort.
+* state: The state of processing of the job.
 
 **Sample request**
 
@@ -96,9 +96,9 @@ Following is a sample request that can be handled by the updateJob operation.
 
 [https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_quickstart_close_job.htm](https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_quickstart_close_job.htm)
 
-#### Retrieving all details for an existing job
+#### Retrieving details of an existing job
 
-The getJob operation retrieves all details for an existing job by sending a GET request.
+The getJob operation retrieves all details of an existing job based on the job ID that you specify.
 
 **getJob**
 ```xml
@@ -108,7 +108,7 @@ The getJob operation retrieves all details for an existing job by sending a GET 
 ```
 
 **Properties**
-* jobId: The ID of the job.
+* jobId: The ID of the job to retrieve details.
 
 **Sample request**
 
@@ -131,7 +131,7 @@ Following is a sample request that can be handled by the getJob operation.
 
 [https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_jobs_get_details.htm](https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_jobs_get_details.htm)
 
-#### Sample configuration
+### Sample configuration
 
 Following is a sample proxy service that illustrates how to connect to Salesforce Bulk with the init operation, and then use the createJob operation. The sample request for this proxy can be found in the createJob sample request. You can use this sample as a template for using other operations in this category.
 
