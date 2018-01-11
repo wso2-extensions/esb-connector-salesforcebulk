@@ -33,7 +33,7 @@ Salesforce uses the OAuth protocol to allow application users to securely access
        ```
     3. Extract the authorisation code from the callback URL.
 .
-    4. Send a direct POST request to the authorisation server using the following request: 
+    4. Send a direct POST request to the authorization server using the following request: 
         > NOTE: Be sure to replace the placeholders with the values applicable to the connected application that you created.
         ```xml
         https://login.salesforce.com/services/oauth2/token?code=aWe...c4w==&grant_type=authorization_code&client_id=<your_client_id>&client_secret=<your_client_secret>&redirect_uri=<your_redirect_uri>&format=json
