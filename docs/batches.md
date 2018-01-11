@@ -1,6 +1,6 @@
 # Working with Batches in Salesforce Bulk
 
-[[  Overview ]](#overview)  [[ Operation details ]](#operation-details)  [[  Sample configuration  ]](#sample-configuration)
+[[Overview]](#overview)  [[Operation details]](#operation-details)  [[Sample configuration]](#sample-configuration)
 
 ### Overview 
 
@@ -10,10 +10,10 @@ For a sample proxy service that illustrates how to work with batches, see [Sampl
 | Operation        | Description |
 | ------------- |-------------|
 | [addBatch](#adding-a-new-batch-to-a-job)    | Adds a new batch to a job. |
-| [getBatchStatus](#retrieving-the-status-of-an-individual-batch)      | Retrieves the status of an individual batch.     |
+| [getBatchStatus](#retrieving-the-status-of-a-batch)      | Retrieves the status of an individual batch.     |
 | [getBatchResults](#retrieving-results-of-a-batch-that-has-completed-processing)    | Retrieves results of a batch that has completed processing. |
 | [getBatchRequest](#retrieving-a-batch-request)      | Retrieves a batch request.     |
-| [listBatches](#retrieving-information-about-all-batches-in-a-job)    | Retrieves information about all batches in a job. |
+| [listBatches](#retrieving-details-of-all-batches-in-a-job)    | Retrieves details of all batches in a job. |
 
 ### Operation details
 
@@ -21,7 +21,7 @@ This section provides more details on each of the operations.
 
 #### Adding a new batch to a job
 
-The addBatch operation adds a new batch to a job by sending a POST request.
+The addBatch operation adds a new batch to a job based on the properties that you specify.
 
 **addBatch**
 ```xml
@@ -33,13 +33,13 @@ The addBatch operation adds a new batch to a job by sending a POST request.
 ```
 
 **Properties**
-* jobId: The unique identifier of the Job.
-* objects: The group of records to be processed.
-* contentType: The content type to add batch. Content type must be compatible with the job content type. The accepted content types are application/xml and text/csv.
+* jobId: The unique identifier of the job to which you want add a new batch.
+* objects: A list of records to process.
+* contentType: The content type of the batch data. The content type you specify should be compatible with the content type of the associated job. Possible values are application/xml and text/csv.
 
 **Sample request**
 
-Following is a sample request that can be handled by the addBatch operation.
+Following is a sample request that can be handled by the addBatch operation, where the content type of the batch data is in application/xml format.
 
 ```xml
 <addBatch>
@@ -67,7 +67,7 @@ Following is a sample request that can be handled by the addBatch operation.
    </objects>
 </addBatch>
 ```
-Following is a sample request for the CSV data that can be handled by the addBatch operation.
+Following is a sample request that can be handled by the addBatch operation, where the content type of the batch data is in text/csv format.
 
 ```xml
 <addBatch>
@@ -93,21 +93,22 @@ Following is a sample request for the CSV data that can be handled by the addBat
 
 [https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_batches_create.htm](https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_batches_create.htm)
 
-#### Retrieving the status of an individual batch
+#### Retrieving the status of a batch
 
-The getBatchStatus operation retrieves the status of an individual batch.
+The getBatchStatus operation retrieves the status of a batch based on the properties that you specify.
 
 **getBatchStatus**
 ```xml
 <salesforcebulk.getBatchStatus>
     <jobId>{$ctx:jobId}</jobId>
-    <batchId>{$ctx:batchId}</batchId>
+    <batchId>{$ctx:batchId}</batchId>   
 </salesforcebulk.getBatchStatus>
 ```
 
 **Properties**
-* jobId: The ID of the job.
-* batchId: The ID of the batch.
+* jobId: The unique identifier of the job to which the batch you specify belongs.
+* batchId: The unique identifier of the batch for which you want to retrieve the status.
+
 
 **Sample request**
 
@@ -133,7 +134,7 @@ Following is a sample request that can be handled by the getBatchStatus operatio
 
 #### Retrieving results of a batch that has completed processing
 
-The getBatchResults operation retrieves results of a batch that has completed processing by sending a GET request.
+The getBatchResults operation retrieves results of a batch that has completed processing.
 
 **getBatchResults**
 ```xml
@@ -144,8 +145,8 @@ The getBatchResults operation retrieves results of a batch that has completed pr
 ```
 
 **Properties**
-* jobId: The unique identifier of the Job.
-* batchId: The unique identifier of the batch.
+* jobId: The unique identifier of the job to which the batch you specify belongs.
+* batchId: The unique identifier of the batch for which you want to retrieve results.
 
 **Sample request**
 
@@ -172,7 +173,7 @@ Following is a sample request that can be handled by the getBatchResults operati
 
 #### Retrieving a batch request
 
-The getBatchRequest operation retrieves a batch request by sending a GET request.
+The getBatchRequest operation retrieves a batch request based on the properties that you specify.
 
 **getBatchRequest**
 ```xml
@@ -183,8 +184,8 @@ The getBatchRequest operation retrieves a batch request by sending a GET request
 ```
 
 **Properties**
-* jobId: The ID of the job.
-* batchId: The ID of the batch.
+* jobId: The unique identifier of the job to which the batch you specify belongs.
+* batchId: The unique identifier of the batch for which you want to retrieve the batch request.
 
 **Sample request**
 
@@ -208,9 +209,9 @@ Following is a sample request that can be handled by the getBatchRequest operati
 
 [https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_batches_get_request.htm](https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_batches_get_request.htm)
 
-#### Retrieving information about all batches in a job
+#### Retrieving details of all batches in a job
 
-The listBatches operation retrieves information about all batches in a job by sending a GET request.
+The listBatches operation retrieves details of all batches in a job that you specify.
 
 **listBatches**
 ```xml
@@ -220,7 +221,7 @@ The listBatches operation retrieves information about all batches in a job by se
 ```
 
 **Properties**
-* jobId: The ID of the job.
+* jobId: The unique identifier of the job for which you want to retrieve batch details.
 
 **Sample request**
 
@@ -244,9 +245,9 @@ Following is a sample request that can be handled by the listBatches operation.
 [https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_batches_get_info_all.htm](https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_batches_get_info_all.htm)
 
 
-#### Sample configuration
+### Sample configuration
 
-Following is a sample proxy service that illustrates how to connect to SalesforceBulk with the init operation and use the addBatch operation. The sample request for this proxy can be found in the addBatch sample request.
+Following is a sample proxy service that illustrates how to connect to SalesforceBulk with the init operation, and then use the addBatch operation. The sample request for this proxy can be found in the addBatch sample request. You can use this sample as a template for using other operations in this category.
 
 **Sample Proxy**
 ```xml
