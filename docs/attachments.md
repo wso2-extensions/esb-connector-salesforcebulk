@@ -1,6 +1,6 @@
 # Working with Binary Attachments in Salesforce Bulk
 
-[[  Overview ]](#overview)  [[ Operation details ]](#operation-details)  [[  Sample configuration  ]](#sample-configuration)
+[[Overview]](#overview)  [[Operation details]](#operation-details)  [[Sample configuration]](#sample-configuration)
 
 ### Overview 
 
@@ -9,7 +9,7 @@ For a sample proxy service that illustrates how to work with binary attachments,
 
 | Operation        | Description |
 | ------------- |-------------|
-| [createJobToUploadBatchFile](#creating-a-job-for-batches-containing-attachment-records)    | Creates a job for batches containing attachment records. |
+| [createJobToUploadBatchFile](#creating-a-job-for-batches-containing-attachment-records)    | Creates a job for batches that contain attachment records. |
 | [uploadBatchFile](#creating-a-batch-of-attachment-records)      | Creates a batch of attachment records. |
 
 ### Operation details
@@ -18,7 +18,7 @@ This section provides more details on each of the operations.
 
 #### Creating a job for batches containing attachment records
 
-The createJobToUploadBatchFile operation creates a job for batches containing attachment records.
+The createJobToUploadBatchFile operation creates a job for batches that contain attachment records.
 
 **createJobToUploadBatchFile**
 ```xml
@@ -49,7 +49,7 @@ The uploadBatchFile operation creates a batch of attachment records.
 ```
 
 **Properties**
-* jobId: The ID of the job to attach batch file.
+* jobId: The ID of the job for which you want to create a batch of attachment records.
 
 **Sample request**
 
@@ -62,7 +62,7 @@ http://localhost:8280/services/salesforcebulk_uploadBatchFile?apiUrl=https://ap2
 
 [https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/binary_create_batch.htm](https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/binary_create_batch.htm)
 
-#### Sample configuration
+### Sample configuration
 
 Following is a sample proxy service that illustrates how to connect to Salesforce Bulk with the init operation, and then use the createTopicSubscription operation. The sample request for this proxy can be found in the createJobToUploadBatchFile sample request. You can use this sample as a template for using other operations in this category.
 
