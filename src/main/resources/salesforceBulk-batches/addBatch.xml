@@ -23,22 +23,41 @@
     <parameter name="contentType"
                description="The content type to add batch. Content type must be compatible with the job content type. The accepted content types are application/xml and text/csv."/>
     <sequence>
-        <property name="uri.var.objects" expression="$func:objects"/>
+        <property name="objects" expression="$func:objects"/>
         <property name="uri.var.jobId" expression="$func:jobId"/>
-        <property name="uri.var.contentType" expression="$func:contentType"/>
-        <property name="messageType" value="application/xml" scope="axis2"/>
-        <script language="js">
-            <![CDATA[
-            var objects = new XML(mc.getProperty('uri.var.objects'));
-            var payload = new XML('<sObjects xmlns="http://www.force.com/2009/06/asyncapi/dataload">'+objects.values.* +'</sObjects>');
-			mc.setPayloadXML(payload);
-         ]]>
-        </script>
-        <filter source="boolean(get-property('uri.var.contentType'))" regex="true">
+        <property name="contentType" expression="$func:contentType"/>
+        <filter source="$ctx:contentType" regex="text/csv">
             <then>
-                <property name="ContentType" expression="get-property('uri.var.contentType')" scope="axis2"/>
+                <script language="js">
+                    <![CDATA[
+                    var objects = new XML(mc.getProperty('objects'));
+                    mc.setProperty("objects", objects.values );
+                    ]]>
+                </script>
+                <payloadFactory media-type="xml">
+                    <format>
+                        <text xmlns="http://ws.apache.org/commons/ns/payload">$1</text>
+                    </format>
+                    <args>
+                        <arg expression="$ctx:objects"/>
+                    </args>
+                </payloadFactory>
+                <property name="messageType" value="text/plain" scope="axis2" type="STRING"/>
+                <property name="ContentType" expression="$ctx:contentType" scope="axis2"/>
             </then>
+            <else>
+                <script language="js">
+                    <![CDATA[
+                    var objects = new XML(mc.getProperty('objects'));
+                    var payload = new XML('<sObjects xmlns="http://www.force.com/2009/06/asyncapi/dataload">'+objects.values.* +'</sObjects>');
+			        mc.setPayloadXML(payload);
+                    ]]>
+                </script>
+                <property name="ContentType" expression="$ctx:contentType" scope="axis2"/>
+                <property name="messageType" value="application/xml" scope="axis2"/>
+            </else>
         </filter>
+        <property name="Content-Encoding" action="remove" scope="transport"/>
         <call>
             <endpoint>
                 <http method="post" uri-template="{+uri.var.apiUrl}/job/{+uri.var.jobId}/batch"/>
