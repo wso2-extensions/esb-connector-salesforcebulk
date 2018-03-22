@@ -26,6 +26,7 @@ The createJob operation creates a new job based on the properties that you speci
     <operation>{$ctx:operation}</operation>
     <contentType>{$ctx:contentType}</contentType>
     <object>{$ctx:object}</object>
+    <externalIdFieldName>{$ctx:externalIdFieldName}</externalIdFieldName>
 </salesforcebulk.createJob>
 ```
 
@@ -33,6 +34,7 @@ The createJob operation creates a new job based on the properties that you speci
 * operation: The processing operation that the job should perform.
 * contentType: The content type of the job.
 * object: The object type of data that is to be processed by the job.
+* externalIdFieldName: The id of the external object.
 
 **Sample request**
 
@@ -51,6 +53,7 @@ Following is a sample request that can be handled by the createJob operation.
    <operation>insert</operation>
    <contentType>CSV</contentType>
    <object>Contact</object>
+   <externalIdFieldName>Languages__c</externalIdFieldName>
 </createJob>
 ```
 
@@ -152,6 +155,7 @@ Following is a sample proxy service that illustrates how to connect to Salesforc
       <property name="operation" expression="//operation/text()"/>
       <property name="contentType" expression="//contentType/text()"/>
       <property name="object" expression="//object/text()"/>   
+      <property name="externalIdFieldName" expression="//externalIdFieldName"/>
       <salesforcebulk.init>
          <apiVersion>{$ctx:apiVersion}</apiVersion>
          <accessToken>{$ctx:accessToken}</accessToken>
@@ -166,6 +170,7 @@ Following is a sample proxy service that illustrates how to connect to Salesforc
          <operation>{$ctx:operation}</operation>
          <contentType>{$ctx:contentType}</contentType>
          <object>{$ctx:object}</object>
+         <externalIdFieldName>{$ctx:externalIdFieldName}</externalIdFieldName>
       </salesforcebulk.createJob>
        <respond/>
      </inSequence>
