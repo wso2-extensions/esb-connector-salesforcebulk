@@ -10,5 +10,5 @@ For general information on using connectors and their operations in your configu
 
 | | Version |
 | ------------- |-------------|
-| Connector    | 1.0.3 |
+| Connector    | 1.0.4 |
 | API     | 2      |
