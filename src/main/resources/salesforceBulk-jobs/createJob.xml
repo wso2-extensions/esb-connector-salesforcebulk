@@ -21,20 +21,24 @@
     <parameter name="operation" description="The processing operation for batches in the job."/>
     <parameter name="object" description="The object type for the data being processed."/>
     <parameter name="contentType" description="The content type for the job."/>
+    <parameter name="externalIdFieldName" description="The name of the exernal id."/>
     <sequence>
         <property name="uri.var.operation" expression="$func:operation"/>
         <property name="uri.var.object" expression="$func:object"/>
+        <property name="uri.var.externalIdFieldName" expression="$func:externalIdFieldName"/>
         <property name="uri.var.contentType" expression="$func:contentType"/>
         <payloadFactory media-type="xml">
             <format>
                 <jobInfo xmlns="http://www.force.com/2009/06/asyncapi/dataload">
                     <operation>$1</operation>
                     <object>$2</object>
+                    <externalIdFieldName>$3</externalIdFieldName>
                 </jobInfo>
             </format>
             <args>
                 <arg expression="get-property('uri.var.operation')"/>
                 <arg expression="get-property('uri.var.object')"/>
+                <arg expression="get-property('uri.var.externalIdFieldName')"/>
             </args>
         </payloadFactory>
         <script language="js">
