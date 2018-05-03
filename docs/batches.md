@@ -30,6 +30,7 @@ The addBatch operation adds a new batch to a job based on the properties that yo
     <jobId>{$ctx:jobId}</jobId>
     <objects>{$ctx:objects}</objects>
     <contentType>{$ctx:contentType}</contentType>
+    <isQuery>{$ctx:isQuery}</isQuery>
 </salesforcebulk.addBatch>
 ```
 
@@ -37,6 +38,7 @@ The addBatch operation adds a new batch to a job based on the properties that yo
 * jobId: The unique identifier of the job to which you want add a new batch.
 * objects: A list of records to process.
 * contentType: The content type of the batch data. The content type you specify should be compatible with the content type of the associated job. Possible values are application/xml and text/csv.
+* isQuery: Set to true if the operation is query.
 
 **Sample request**
 
@@ -53,6 +55,7 @@ Following is a sample request that can be handled by the addBatch operation, whe
    <intervalTime>1000000</intervalTime>
    <registryPath>connectors/SalesforceBulk</registryPath>
    <contentType>application/xml</contentType>
+   <isQuery>false</isQuery>
    <jobId>75028000000McSwAAK</jobId>
    <objects>
       <values>
@@ -81,11 +84,33 @@ Following is a sample request that can be handled by the addBatch operation, whe
    <intervalTime>1000000</intervalTime>
    <registryPath>connectors/SalesforceBulk</registryPath>
    <contentType>text/csv</contentType>
+   <isQuery>false</isQuery>
    <jobId>75028000000McSwAAK</jobId>
    <objects>
       <values>Name,description
         Tom Dameon,Created from Bulk API
       </values>
+   </objects>
+</addBatch>
+```
+
+Following is a sample request that can be handled by the addBatch operation, where the operation is query and the content type of the bulk query results is in application/xml format.
+
+```xml
+<addBatch>
+   <apiUrl>https://ap2.salesforce.com</apiUrl>
+   <apiVersion>34.0</apiVersion>
+   <accessToken>5Aep861TSESvWeug_xOdumSVTdDsD7OrADzhKVu9YrPFLB1zce_I21lnWIBR7uaGvedTTXJ4uPswE676H2pQpCZ</accessToken>
+   <refreshToken>5Aep861TSESvWeug_wHqvFVePrOMjj7CUFncs.cGdlPln68mKYpAbAJ9l7A5FTFsmqFY8Jl0m6fkIMWkIKc4WKL</refreshToken>
+   <clientId>3MVG9ZL0ppGP5UrDGNWmP9oSpiNtudQv6b06Ru7K6UPW5xQhd6vakhfjA2HUGsLSpDOQmO8JGozttODpABcnY</clientId>
+   <clientSecret>5437293348319318299</clientSecret>
+   <intervalTime>1000000</intervalTime>
+   <registryPath>connectors/SalesforceBulk</registryPath>
+   <contentType>text/csv</contentType>
+   <isQuery>true</isQuery>
+   <jobId>75028000000McSwAAK</jobId>
+   <objects>
+      <values>SELECT Id, Name FROM Account LIMIT 100</values>
    </objects>
 </addBatch>
 ```
