@@ -14,6 +14,7 @@ For a sample proxy service that illustrates how to work with batches, see [Sampl
 | [getBatchResults](#retrieving-results-of-a-batch-that-has-completed-processing)    | Retrieves results of a batch that has completed processing. |
 | [getBatchRequest](#retrieving-a-batch-request)      | Retrieves a batch request.     |
 | [listBatches](#retrieving-details-of-all-batches-in-a-job)    | Retrieves details of all batches in a job. |
+| [getBulkQueryResults](#retrieving-the-bulk-query-results)    | Retrieves the bulk query results. |
 
 ### Operation details
 
@@ -244,6 +245,46 @@ Following is a sample request that can be handled by the listBatches operation.
 
 [https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_batches_get_info_all.htm](https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_batches_get_info_all.htm)
 
+### Retrieving the bulk query results
+
+The getBulkQueryResults operation retrieves the bulk query results that you specify.
+
+**getBulkQueryResults**
+```xml
+<salesforcebulk.getBulkQueryResults>
+    <jobId>{$ctx:jobId}</jobId>
+    <batchId>{$ctx:batchId}</batchId>
+    <resultsId>{$ctx:resultsId}</resultsId>
+</salesforcebulk.getBulkQueryResults>
+```
+
+**Properties**
+* jobId: The unique identifier of the job for which you want to retrieve batch details.
+* batchId: The unique identifier of the batch for which you want to retrieve the batch request.
+* resultsId: The unique identifier of the results for which you want to retrieve.
+
+**Sample request**
+
+Following is a sample request that can be handled by the getBulkQueryResults operation.
+
+```xml
+<getBulkQueryResults>
+   <apiVersion>34.0</apiVersion>
+   <accessToken>00D280000011oQO!ARwAQFPbKzWInyf.4veB3NY0hiKNQTxaSiZnPh9AybHplDpix34y_UOdwiKcL3e1_IquaUuO3A54A4thmSplNUQei9ARsNFV</accessToken>
+   <apiUrl>https://ap2.salesforce.com</apiUrl>
+   <refreshToken>5Aep861TSESvWeug_wHqvFVePrOMjj7CUFncs.cGdlPln68mKYpAbAJ9l7A5FTFsmqFY8Jl0m6fkIMWkIKc4WKL</refreshToken>
+   <clientId>3MVG9ZL0ppGP5UrDGNWmP9oSpiNtudQv6b06Ru7K6UPW5xQhd6vakhfjA2HUGsLSpDOQmO8JGozttODpABcnY</clientId>
+   <clientSecret>5437293348319318299</clientSecret>
+   <intervalTime>1000000</intervalTime>
+   <registryPath>connectors/SalesforceBulk</registryPath>
+   <jobId>75028000000MCqEAAW</jobId>
+   <batchId>7510K00000Kzb6XQAR</batchId>
+   <resultId>7520K000006xofz</resultId>
+</getBulkQueryResults>
+```
+**Related Salesforce Bulk documentation**
+
+[https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_code_curl_walkthrough.htm](https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_code_curl_walkthrough.htm)
 
 ### Sample configuration
 
