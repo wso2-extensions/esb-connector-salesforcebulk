@@ -20,13 +20,15 @@
 <template xmlns="http://ws.apache.org/ns/synapse" name="addBatch">
     <parameter name="objects" description="The group of records to be processed."/>
     <parameter name="jobId" description="The unique identifier of the Job."/>
+    <parameter name="isQuery" description="Set true if the operation is query."/>
     <parameter name="contentType"
                description="The content type to add batch. Content type must be compatible with the job content type. The accepted content types are application/xml and text/csv."/>
     <sequence>
         <property name="objects" expression="$func:objects"/>
         <property name="uri.var.jobId" expression="$func:jobId"/>
         <property name="contentType" expression="$func:contentType"/>
-        <filter source="$ctx:contentType" regex="text/csv">
+        <property name="isQuery" expression="$func:isQuery"/>
+        <filter xpath="$ctx:contentType='text/csv' or $ctx:isQuery='true'">
             <then>
                 <script language="js">
                     <![CDATA[
