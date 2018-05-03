@@ -106,7 +106,7 @@ Following is a sample request that can be handled by the addBatch operation, whe
    <clientSecret>5437293348319318299</clientSecret>
    <intervalTime>1000000</intervalTime>
    <registryPath>connectors/SalesforceBulk</registryPath>
-   <contentType>text/csv</contentType>
+   <contentType>application/xml</contentType>
    <isQuery>true</isQuery>
    <jobId>75028000000McSwAAK</jobId>
    <objects>
