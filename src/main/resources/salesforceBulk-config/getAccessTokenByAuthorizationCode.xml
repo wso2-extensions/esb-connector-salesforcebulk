@@ -65,7 +65,7 @@
         <property name="messageType" value="application/x-www-form-urlencoded" scope="axis2"/>
         <call>
             <endpoint>
-                <http method="post" uri-template="https://login.salesforce.com/services/oauth2/token"/>
+                <http method="post" uri-template="{+uri.var.tokenEndpointUrl}"/>
             </endpoint>
         </call>
         <!-- Setting the access token and refresh token to the property. -->
