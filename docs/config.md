@@ -54,6 +54,7 @@ Add the following <salesforcebulk.init> method in your configuration:
     <apiVersion>{$ctx:apiVersion}</apiVersion>
     <accessToken>{$ctx:accessToken}</accessToken>
     <apiUrl>{$ctx:apiUrl}</apiUrl>
+    <tokenEndpointHostname>{$ctx:tokenEndpointHostname}</tokenEndpointHostname>
     <refreshToken>{$ctx:refreshToken}</refreshToken>
     <clientId>{$ctx:clientId}</clientId>
     <clientSecret>{$ctx:clientSecret}</clientSecret>
@@ -65,6 +66,7 @@ Add the following <salesforcebulk.init> method in your configuration:
 * apiVersion:  The version of the Salesforce API. 
 * accessToken:  The access token to authenticate your API calls.
 * apiUrl:  The API URL to access the endpoint.
+* tokenEndpointHostname:  The instance url for OAuth 2.0 token endpoint when issuing authentication requests in your application. If you haven't set any token endpoint hostname, the default hostname (https://login.salesforce.com) will be set.
 * refreshToken:  The refresh token that you received to refresh the API access token.
 * clientId:  The consumer key of the connected application that you created.
 * clientSecret:  The consumer secret of the connected application that you created.

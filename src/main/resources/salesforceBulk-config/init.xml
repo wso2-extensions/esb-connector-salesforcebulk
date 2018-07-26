@@ -18,6 +18,7 @@
 -->
 <template name="init" xmlns="http://ws.apache.org/ns/synapse">
     <parameter name="apiUrl" description="API Url to access the endpoint."/>
+    <parameter name="tokenEndpointHostname" description="Instance url for OAuth 2.0 token endpoint when issuing authentication requests in your application."/>
     <parameter name="accessToken" description="Access token of the organizational account."/>
     <parameter name="apiVersion" description="Version of salesforce API."/>
     <parameter name="refreshToken" description="value of the refresh token."/>
@@ -30,6 +31,7 @@
     <parameter name="intervalTime" description="The Interval time to check the accessToken validity"/>
     <sequence>
         <property name="uri.var.apiUrl" expression="$func:apiUrl"/>
+        <property name="uri.var.tokenEndpointHostname" expression="$func:tokenEndpointHostname"/>
         <property name="uri.var.accessToken" expression="$func:accessToken"/>
         <property name="uri.var.apiVersion" expression="$func:apiVersion"/>
         <property name="uri.var.refreshToken" expression="$func:refreshToken"/>
@@ -40,6 +42,13 @@
         <!-- Append the common URL's string with API URL. -->
         <property name="uri.var.apiUrl"
                   expression="fn:concat(get-property('uri.var.apiUrl'),'/services/async/',get-property('uri.var.apiVersion'))"/>
+        <filter source="boolean($ctx:uri.var.tokenEndpointHostname)" regex="false">
+            <then>
+                <property name="uri.var.tokenEndpointHostname" value="https://login.salesforce.com"/>
+            </then>
+        </filter>
+        <property name="uri.var.tokenEndpointUrl"
+                  expression="fn:concat(get-property('uri.var.tokenEndpointHostname'),'/services/oauth2/token')"/>
         <filter source="boolean($ctx:uri.var.refreshToken) and boolean($ctx:uri.var.clientSecret) and boolean($ctx:uri.var.clientId) and boolean($ctx:uri.var.accessToken)"
                 regex="true">
             <then>
