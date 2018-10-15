@@ -28,6 +28,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.axiom.om.OMElement;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -51,9 +53,15 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
     @BeforeClass(alwaysRun = true)
     public void setEnvironment() throws Exception {
 
+        addCertificatesToEIKeyStore("client-truststore.jks", "wso2carbon");
+
         String connectorName = System.getProperty("connector_name") + "-connector-" +
                 System.getProperty("connector_version") + ".zip";
         init(connectorName);
+        getApiConfigProperties();
+
+        getAccessToken();
+
         String apiVersion = connectorProperties.getProperty("apiVersion");
         apiUrl = connectorProperties.getProperty("apiUrl") + "/services/async/" + apiVersion;
 
@@ -62,6 +70,23 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
         apiRequestHeadersMap.putAll(esbRequestHeadersMap);
 
 
+    }
+
+    private void getAccessToken() throws IOException, JSONException {
+
+        Map<String, String> apiTokenRequestHeadersMap = new HashMap<String, String>();
+        Map<String, String> apiParametersMap = new HashMap<String, String>();
+        apiTokenRequestHeadersMap.put("Content-Type", "application/x-www-form-urlencoded");
+        RestResponse<JSONObject> apiTokenRestResponse =
+                sendJsonRestRequest(connectorProperties.getProperty("tokenEndpointHostname") +
+                                "/services/oauth2/token?grant_type=refresh_token&client_id=" +
+                                connectorProperties.getProperty("clientId")+"&client_secret=" +
+                                connectorProperties.getProperty("clientSecret")+"&refresh_token=" +
+                                connectorProperties.getProperty("refreshToken"), "POST",
+                        apiTokenRequestHeadersMap, "", apiParametersMap);
+
+        String accessToken = apiTokenRestResponse.getBody().get("access_token").toString();
+        connectorProperties.put("accessToken",accessToken);
     }
 
     /**
@@ -764,6 +789,14 @@ public class SalesforceBulkConnectorIntegrationTest extends ConnectorIntegration
             description = "SalesforceBulk {uploadBatchFile} integration test with mandatory parameters.")
     public void testUploadBatchFileWithMandatoryParameters() throws IOException, XMLStreamException,
             XPathExpressionException, SAXException, ParserConfigurationException, InterruptedException {
+
+        esbRequestHeadersMap.put("Action", "urn:createJob");
+        RestResponse<OMElement> esbContactRestResponse =
+                sendXmlRestRequest(proxyUrl, "POST", esbRequestHeadersMap, "esb_createJob_optional.xml");
+        String contactJobId =
+                getValueByExpression("//*[local-name()='jobInfo']/*[local-name()='id']/text()", esbContactRestResponse
+                        .getBody());
+        connectorProperties.setProperty("CSVJobId", contactJobId);
 
         esbRequestHeadersMap.put("Action", "urn:uploadBatchFile");
 
