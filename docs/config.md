@@ -1,6 +1,8 @@
 # Configuring Salesforce Bulk Operations
 
-[[Obtaining user credentials]](#obtaining-user-credentials)      [[Initializing the connector]](#initializing-the-connector)   [[Additional information]](#additional-information)  
+[[Prerequisites]](#Prerequisites) [[Initializing the connector]](#initializing-the-connector)   [[Additional information]](#additional-information)  
+
+## Prerequisites
 
 > NOTE: To work with the Salesforce Bulk connector, you need to have a Salesforce account. If you do not have a Salesforce account, go to [https://developer.salesforce.com/signup](https://developer.salesforce.com/signup) and create a Salesforce developer account.
 
@@ -8,7 +10,7 @@ To use the SalesforceBulk connector, add the <salesforcebulk.init> element in yo
 
 Salesforce uses the OAuth protocol to allow application users to securely access data without having to reveal their user credentials.  For more information on authentication is done in Salesforce, see [Understanding Authentication](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_understanding_authentication.htm).
 
-## Obtaining user credentials
+### Obtaining user credentials
 
 * **Follow the steps below to create a connected application using Salesforce and to obtain the consumer key as well as the consumer secret for the created connected application:**
 
@@ -45,6 +47,20 @@ Salesforce uses the OAuth protocol to allow application users to securely access
     5. From the response that you get, extract the access token to access Salesforce via the created application. 
        > NOTE: You will also get a refresh token to renew the access token when it expires.
 
+### Importing the Salesforce Certificate
+
+Before you start configuring the connector, import the Salesforce certificate to your EI client keystore.
+
+* Follow the steps below to import the Salesforce certificate into the EI client keystore:
+
+    1. To view the certificate, log in to your Salesforce account in your browser (e.g., https://login.salesforce.com), and click the lock on the address bar.
+    2. Export the certificate to the file system.
+    3. Import the certificate to the EI client keystore using either the following command or the EI Management Console:
+    ```
+    keytool -importcert -file <certificate file> -keystore <EI>/repository/resources/security/client-truststore.jks -alias "Salesforce"
+    ```
+    4. Restart the server and deploy the Salesforce Bulk configuration:
+    
 ## Initializing the connector
 Add the following <salesforcebulk.init> method in your configuration:
  

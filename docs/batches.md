@@ -114,6 +114,26 @@ Following is a sample request that can be handled by the addBatch operation, whe
    </objects>
 </addBatch>
 ```
+**Sample response**
+
+Given below is a sample response for the addBatch operation.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<batchInfo
+   xmlns="http://www.force.com/2009/06/asyncapi/dataload">
+    <id>7510K00000Kzb6XQAR</id>
+    <jobId>7500K00000EVfY2QAL</jobId>
+    <state>Queued</state>
+    <createdDate>2018-04-24T07:50:45.000Z</createdDate>
+    <systemModstamp>2018-04-24T07:50:45.000Z</systemModstamp>
+    <numberRecordsProcessed>0</numberRecordsProcessed>
+    <numberRecordsFailed>0</numberRecordsFailed>
+    <totalProcessingTime>0</totalProcessingTime>
+    <apiActiveProcessingTime>0</apiActiveProcessingTime>
+    <apexProcessingTime>0</apexProcessingTime>
+</batchInfo>
+```
 
 **Related Salesforce Bulk documentation**
 
@@ -154,6 +174,24 @@ Following is a sample request that can be handled by the getBatchStatus operatio
     <batchId>75128000000OZzq</batchId>
 </getBatchStatus>
 ```
+**Sample response**
+
+Given below is a sample response for the getBatchStatus operation.
+
+```xml
+<batchInfo xmlns="http://www.force.com/2009/06/asyncapi/dataload">
+ <id>7510K00000OpbkdQAB</id>
+ <jobId>7500K00000GV5p0QAD</jobId>
+ <state>Completed</state>
+ <createdDate>2018-10-25T16:45:32.000Z</createdDate>
+ <systemModstamp>2018-10-25T16:45:32.000Z</systemModstamp>
+ <numberRecordsProcessed>2</numberRecordsProcessed>
+ <numberRecordsFailed>2</numberRecordsFailed>
+ <totalProcessingTime>91</totalProcessingTime>
+ <apiActiveProcessingTime>3</apiActiveProcessingTime>
+ <apexProcessingTime>0</apexProcessingTime>
+</batchInfo>
+```
 **Related Salesforce Bulk documentation**
 
 [https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_quickstart_check_status.htm ](https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_quickstart_check_status.htm)
@@ -191,6 +229,15 @@ Following is a sample request that can be handled by the getBatchResults operati
    <jobId>75028000000M5X0</jobId>
    <batchId>75128000000OZzq</batchId>
 </getBatchResults>
+```
+**Sample response**
+
+Given below is a sample response for the getBatchResults operation.
+
+```xml
+<result-list xmlns="http://www.force.com/2009/06/asyncapi/dataload">
+    <result>7520K000006xcOc</result>
+</result-list>
 ```
 
 **Related Salesforce Bulk documentation**
@@ -231,6 +278,23 @@ Following is a sample request that can be handled by the getBatchRequest operati
    <batchId>75128000000OpZFAA0</batchId>
 </getBatchRequest>
 ```
+**Sample response**
+
+Given below is a sample response for the getBatchRequest operation.
+
+```xml
+<sObjects xmlns="http://www.force.com/2009/06/asyncapi/dataload">
+  <sObject>
+    <description>Open-source</description>
+    <name>Qlit</name>
+  </sObject>
+  <sObject>
+    <description>Open-source</description>
+    <name>Trient</name>
+  </sObject>
+</sObjects>
+```
+
 **Related Salesforce Bulk documentation**
 
 [https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_batches_get_request.htm](https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_batches_get_request.htm)
@@ -265,6 +329,26 @@ Following is a sample request that can be handled by the listBatches operation.
    <registryPath>connectors/SalesforceBulk</registryPath>
    <jobId>75028000000MCqEAAW</jobId>
 </listBatches>
+```
+**Sample response**
+
+Given below is a sample response for the listBatches operation.
+
+```xml
+<batchInfoList xmlns="http://www.force.com/2009/06/asyncapi/dataload">
+ <batchInfo>
+  <id>7510K00000OpbYhQAJ</id>
+  <jobId>7500K00000GV5koQAD</jobId>
+  <state>Completed</state>
+  <createdDate>2018-10-25T16:30:39.000Z</createdDate>
+  <systemModstamp>2018-10-25T16:30:39.000Z</systemModstamp>
+  <numberRecordsProcessed>2</numberRecordsProcessed>
+  <numberRecordsFailed>2</numberRecordsFailed>
+  <totalProcessingTime>138</totalProcessingTime>
+  <apiActiveProcessingTime>48</apiActiveProcessingTime>
+  <apexProcessingTime>0</apexProcessingTime>
+ </batchInfo>
+</batchInfoList>
 ```
 **Related Salesforce Bulk documentation**
 
@@ -307,15 +391,34 @@ Following is a sample request that can be handled by the getBulkQueryResults ope
    <resultId>7520K000006xofz</resultId>
 </getBulkQueryResults>
 ```
+**Sample response**
+
+Given below is a sample response for the getBulkQueryResults operation.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<queryResult xmlns="http://www.force.com/2009/06/asyncapi/dataload" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <records xsi:type="sObject">
+        <type>Account</type>
+        <Id>00128000005dMcSAAU</Id>
+        <Id>00128000005dMcSAAU</Id>
+        <Name>GenePoint</Name>
+    </records>
+    .
+    .
+</queryResult>
+```
+
 **Related Salesforce Bulk documentation**
 
 [https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_code_curl_walkthrough.htm](https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_code_curl_walkthrough.htm)
 
 ### Sample configuration
 
-Following is a sample proxy service that illustrates how to connect to SalesforceBulk with the init operation, and then use the addBatch operation. The sample request for this proxy can be found in the addBatch sample request. You can use this sample as a template for using other operations in this category.
+Following example illustrates how to connect to Salesforce Bulk with the init operation and addBatch operation.
 
-**Sample Proxy**
+1. Create a sample proxy as below :
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
     <proxy xmlns="http://ws.apache.org/ns/synapse" name="salesforcebulk_addBatch" transports="https,http" statistics="disable" trace="disable" startOnLoad="true">
@@ -346,6 +449,7 @@ Following is a sample proxy service that illustrates how to connect to Salesforc
          <jobId>{$ctx:jobId}</jobId>
          <objects>{$ctx:objects}</objects>
          <contentType>{$ctx:contentType}</contentType>
+         <isQuery>{$ctx:isQuery}</isQuery>
       </salesforcebulk.addBatch>
        <respond/>
      </inSequence>
@@ -356,4 +460,51 @@ Following is a sample proxy service that illustrates how to connect to Salesforc
      </target>
    <description/>
   </proxy>
+```
+2. Create a xml file called addBatch.xml containing the following xml:
+
+```xml
+<addBatch>
+   <apiVersion>34</apiVersion>
+   <accessToken>00D28000000erPd!ARsAQLkIRoO7KdP9dQeqEfZuEYmSBIw3.OqbHUZbFSDwDBEV9ginNZmNi4yJuf14bnLN2cVpkUqVyxpUl5gqZSqFV0v_90hf</accessToken>
+   <apiUrl>https://ap2.salesforce.com</apiUrl>
+   <refreshToken>5Aep861TSESvWeug_wh8Zdrl_XXXXXXXX.QEq4FGbXtI5ARrLxzibR</refreshToken>
+   <clientId>3MVG9ZL0ppGP5UrBKXXXXXXKwHHYHfEh.gTMriEXwhf6DFvyXXXXXXXwQxmFraW3k0KgU</clientId>
+   <clientSecret>914846950346786099</clientSecret>
+   <intervalTime>1000000</intervalTime>
+   <registryPath>connectors/SalesforceBulk</registryPath>
+   <contentType>text/csv</contentType>
+   <isQuery>false</isQuery>
+   <jobId>7500K00000GV8lBQAT</jobId>
+   <objects>
+      <values>Name,description
+        Tom Dameon,Created from Bulk API
+      </values>
+   </objects>
+</addBatch>                        
+```
+3. Replace the credentials with your values.
+
+4. Execute the following cURL command:
+
+```bash
+curl http://localhost:8280/services/salesforcebulk_addBatch -H "Content-Type: text/xml" -d @addBatch.xml
+```
+5. Salesforce returns a xml response as below.
+ 
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<batchInfo
+   xmlns="http://www.force.com/2009/06/asyncapi/dataload">
+    <id>7510K00000NYWUIQA5</id>
+    <jobId>7500K00000Frr9CQAR</jobId>
+    <state>Queued</state>
+    <createdDate>2018-08-22T09:16:52.000Z</createdDate>
+    <systemModstamp>2018-08-22T09:16:52.000Z</systemModstamp>
+    <numberRecordsProcessed>0</numberRecordsProcessed>
+    <numberRecordsFailed>0</numberRecordsFailed>
+    <totalProcessingTime>0</totalProcessingTime>
+    <apiActiveProcessingTime>0</apiActiveProcessingTime>
+    <apexProcessingTime>0</apexProcessingTime>
+</batchInfo>
 ```
