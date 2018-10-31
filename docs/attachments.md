@@ -141,7 +141,7 @@ Following example illustrates how to connect to Salesforce Bulk with the init op
       <description/>
   </proxy>
 ```
-2. Create a file called job.txt containing the following configuration:
+2. Create a file named job.txt and copy the configurations given below to it:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -153,13 +153,13 @@ Following example illustrates how to connect to Salesforce Bulk with the init op
 ```
 3. Replace the configurations with your values.
 
-4. Execute the following cURL command:
+4. Execute the following curl command:
 
 ```bash
 curl -X POST 'http://localhost:8280/services/salesforcebulk_createJobToUploadBatchFile?apiUrl=https://ap2.salesforce.com&accessToken=00D280000011oQO!ARwAQFPbKzWInyf.4veB3NY0hiKNQTxaSiZnPh9AybHplDpix34y_UOdwiKcL3e1_IquaUuO3A54A4thmSplNUQei9ARsNFV&apiVersion=34.0&refreshToken=5Aep861TSESvWeug_wHqvFVePrOMjj7CUFncs.cGdlPln68mKYpAbAJ9l7A5FTFsmqFY8Jl0m6fkIMWkIKc4WKL&clientId=3MVG9ZL0ppGP5UrDGNWmP9oSpiNtudQv6b06Ru7K6UPW5xQhd6vakhfjA2HUGsLSpDOQmO8JGozttODpABcnY&clientSecret=5437293348319318299&intervalTime=1000000'
 -F file=@/path/to/a/job.txt
 ```
-5. Salesforce returns a xml response as below.
+5. Salesforce returns an XML response similar to the one shown below:
  
 ```xml
 <jobInfo xmlns="http://www.force.com/2009/06/asyncapi/dataload">

@@ -53,7 +53,7 @@ Before you start configuring the connector, import the Salesforce certificate to
 
 * Follow the steps below to import the Salesforce certificate into the EI client keystore:
 
-    1. To view the certificate, log in to your Salesforce account in your browser (e.g., https://login.salesforce.com), and click the lock on the address bar.
+    1. To view the certificate, log in to your Salesforce account using your browser (e.g., https://login.salesforce.com), and click the lock on the address bar.
     2. Export the certificate to the file system.
     3. Import the certificate to the EI client keystore using either the following command or the EI Management Console:
     ```

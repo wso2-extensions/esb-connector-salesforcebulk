@@ -274,7 +274,7 @@ Following example illustrates how to connect to Salesforce Bulk with the init op
   </proxy>
 ```
 
-2. Create a xml file called createJob.xml containing the following xml:
+2. Create an XML file named createJob.xml and copy the configurations given below to it:
 
 ```xml
 <createJob>
@@ -293,12 +293,12 @@ Following example illustrates how to connect to Salesforce Bulk with the init op
 ```
 3. Replace the credentials with your values.
 
-4. Execute the following cURL command:
+4. Execute the following curl command:
 
 ```bash
 curl http://localhost:8280/services/salesforcebulk_createJob -H "Content-Type: text/xml" -d @createJob.xml
 ```
-5. Salesforce returns a xml response as below.
+5. Salesforce returns an XML response similar to the one shown below:
  
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
