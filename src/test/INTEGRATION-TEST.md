@@ -13,7 +13,7 @@
  - Microsoft WINDOWS V-7
  - UBUNTU 16.04, Mac OSx 10.10.3
  - WSO2 EI - 6.4.0
- - Java 1.7
+ - Java 1.8
 
 ### Steps to follow in setting integration test.
 

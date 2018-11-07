@@ -27,7 +27,7 @@ The createJobToUploadBatchFile operation creates a job for batches that contain 
 ```
 **Sample request**
 
-Following is a sample request that can be handled by the createJobToUploadBatchFile operation and attach the file as form data.
+Following is a sample request that can be handled by the createJobToUploadBatchFile operation. It creates a job for batches that contain attachment records..
 
 ```xml
 http://localhost:8280/services/salesforcebulk_createJobToUploadBatchFile?apiUrl=https://ap2.salesforce.com&accessToken=00D280000011oQO!ARwAQFPbKzWInyf.4veB3NY0hiKNQTxaSiZnPh9AybHplDpix34y_UOdwiKcL3e1_IquaUuO3A54A4thmSplNUQei9ARsNFV&apiVersion=34.0&refreshToken=5Aep861TSESvWeug_wHqvFVePrOMjj7CUFncs.cGdlPln68mKYpAbAJ9l7A5FTFsmqFY8Jl0m6fkIMWkIKc4WKL&clientId=3MVG9ZL0ppGP5UrDGNWmP9oSpiNtudQv6b06Ru7K6UPW5xQhd6vakhfjA2HUGsLSpDOQmO8JGozttODpABcnY&clientSecret=5437293348319318299&intervalTime=1000000
@@ -82,7 +82,7 @@ The uploadBatchFile operation creates a batch of attachment records.
 
 **Sample request**
 
-Following is a sample request that can be handled by the uploadBatchFile operation and attach the file as form data.
+Following is a sample request that can be handled by the uploadBatchFile operation.It creates a job for batches that contain attachment records.
 
 ```xml
 http://localhost:8280/services/salesforcebulk_uploadBatchFile?apiUrl=https://ap2.salesforce.com&accessToken=00D280000011oQO!ARwAQFPbKzWInyf.4veB3NY0hiKNQTxaSiZnPh9AybHplDpix34y_UOdwiKcL3e1_IquaUuO3A54A4thmSplNUQei9ARsNFV&apiVersion=34.0&refreshToken=5Aep861TSESvWeug_wHqvFVePrOMjj7CUFncs.cGdlPln68mKYpAbAJ9l7A5FTFsmqFY8Jl0m6fkIMWkIKc4WKL&clientId=3MVG9ZL0ppGP5UrDGNWmP9oSpiNtudQv6b06Ru7K6UPW5xQhd6vakhfjA2HUGsLSpDOQmO8JGozttODpABcnY&clientSecret=5437293348319318299&intervalTime=1000000&jobId=75028000000MCv9AAG
