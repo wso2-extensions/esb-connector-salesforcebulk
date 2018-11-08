@@ -56,6 +56,37 @@ Following is a sample request that can be handled by the createJob operation.
    <externalIdFieldName>Languages__c</externalIdFieldName>
 </createJob>
 ```
+**Sample response**
+
+Given below is a sample response for the createJob operation.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<jobInfo
+   xmlns="http://www.force.com/2009/06/asyncapi/dataload">
+    <id>7500K00000EVfY2QAL</id>
+    <operation>query</operation>
+    <object>Account</object>
+    <createdById>00528000000ToIrAAK</createdById>
+    <createdDate>2018-04-24T07:46:34.000Z</createdDate>
+    <systemModstamp>2018-04-24T07:46:34.000Z</systemModstamp>
+    <state>Open</state>
+    <concurrencyMode>Parallel</concurrencyMode>
+    <contentType>XML</contentType>
+    <numberBatchesQueued>0</numberBatchesQueued>
+    <numberBatchesInProgress>0</numberBatchesInProgress>
+    <numberBatchesCompleted>0</numberBatchesCompleted>
+    <numberBatchesFailed>0</numberBatchesFailed>
+    <numberBatchesTotal>0</numberBatchesTotal>
+    <numberRecordsProcessed>0</numberRecordsProcessed>
+    <numberRetries>0</numberRetries>
+    <apiVersion>34.0</apiVersion>
+    <numberRecordsFailed>0</numberRecordsFailed>
+    <totalProcessingTime>0</totalProcessingTime>
+    <apiActiveProcessingTime>0</apiActiveProcessingTime>
+    <apexProcessingTime>0</apexProcessingTime>
+</jobInfo>
+```
 
 **Related Salesforce Bulk documentation**
 
@@ -95,6 +126,36 @@ Following is a sample request that can be handled by the updateJob operation.
    <state>Closed</state>
 </updateJob>
 ```
+**Sample response**
+
+Given below is a sample response for the updateJob operation.
+
+```xml
+<jobInfo xmlns="http://www.force.com/2009/06/asyncapi/dataload">
+ <id>7500K00000GV5p5QAD</id>
+ <operation>insert</operation>
+ <object>Contact</object>
+ <createdById>00528000000ToIrAAK</createdById>
+ <createdDate>2018-10-25T16:45:43.000Z</createdDate>
+ <systemModstamp>2018-10-25T16:45:43.000Z</systemModstamp>
+ <state>Closed</state>
+ <concurrencyMode>Parallel</concurrencyMode>
+ <contentType>CSV</contentType>
+ <numberBatchesQueued>0</numberBatchesQueued>
+ <numberBatchesInProgress>0</numberBatchesInProgress>
+ <numberBatchesCompleted>0</numberBatchesCompleted>
+ <numberBatchesFailed>0</numberBatchesFailed>
+ <numberBatchesTotal>0</numberBatchesTotal>
+ <numberRecordsProcessed>0</numberRecordsProcessed>
+ <numberRetries>0</numberRetries>
+ <apiVersion>34.0</apiVersion>
+ <numberRecordsFailed>0</numberRecordsFailed>
+ <totalProcessingTime>0</totalProcessingTime>
+ <apiActiveProcessingTime>0</apiActiveProcessingTime>
+ <apexProcessingTime>0</apexProcessingTime>
+</jobInfo>
+```
+
 **Related Salesforce Bulk documentation**
 
 [https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_quickstart_close_job.htm](https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_quickstart_close_job.htm)
@@ -130,15 +191,46 @@ Following is a sample request that can be handled by the getJob operation.
    <jobId>75028000000MCqEAAW</jobId>
 </getJob>
 ```
+**Sample response**
+
+Given below is a sample response for the getJob operation.
+
+```xml
+<jobInfo xmlns="http://www.force.com/2009/06/asyncapi/dataload">
+ <id>7500K00000GV5p5QAD</id>
+ <operation>insert</operation>
+ <object>Contact</object>
+ <createdById>00528000000ToIrAAK</createdById>
+ <createdDate>2018-10-25T16:45:43.000Z</createdDate>
+ <systemModstamp>2018-10-25T16:45:43.000Z</systemModstamp>
+ <state>Open</state>
+ <concurrencyMode>Parallel</concurrencyMode>
+ <contentType>CSV</contentType>
+ <numberBatchesQueued>0</numberBatchesQueued>
+ <numberBatchesInProgress>0</numberBatchesInProgress>
+ <numberBatchesCompleted>0</numberBatchesCompleted>
+ <numberBatchesFailed>0</numberBatchesFailed>
+ <numberBatchesTotal>0</numberBatchesTotal>
+ <numberRecordsProcessed>0</numberRecordsProcessed>
+ <numberRetries>0</numberRetries>
+ <apiVersion>34.0</apiVersion>
+ <numberRecordsFailed>0</numberRecordsFailed>
+ <totalProcessingTime>0</totalProcessingTime>
+ <apiActiveProcessingTime>0</apiActiveProcessingTime>
+ <apexProcessingTime>0</apexProcessingTime>
+</jobInfo>
+```
+
 **Related Salesforce Bulk documentation**
 
 [https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_jobs_get_details.htm](https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_jobs_get_details.htm)
 
 ### Sample configuration
 
-Following is a sample proxy service that illustrates how to connect to Salesforce Bulk with the init operation, and then use the createJob operation. The sample request for this proxy can be found in the createJob sample request. You can use this sample as a template for using other operations in this category.
+Following example illustrates how to connect to Salesforce Bulk with the init operation and createJob operation.
 
-**Sample Proxy**
+1. Create a sample proxy as below :
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
     <proxy xmlns="http://ws.apache.org/ns/synapse" name="salesforcebulk_createJob" transports="https,http" statistics="disable" trace="disable" startOnLoad="true">
@@ -180,4 +272,58 @@ Following is a sample proxy service that illustrates how to connect to Salesforc
      </target>
    <description/>
   </proxy>
+```
+
+2. Create an XML file named createJob.xml and copy the configurations given below to it:
+
+```xml
+<createJob>
+   <apiVersion>34</apiVersion>
+   <accessToken>00D28000000erPd!ARsAQLkIRoO7KdP9dQeqEfZuEYmSBIw3.OqbHUZbFSDwDBEV9ginNZmNi4yJuf14bnLN2cVpkUqVyxpUl5gqZSqFV0v_90hf</accessToken>
+   <apiUrl>https://ap2.salesforce.com</apiUrl>
+   <refreshToken>5Aep861TSESvWeug_wh8Zdrl_XXXXXXXX.QEq4FGbXtI5ARrLxzibR</refreshToken>
+   <clientId>3MVG9ZL0ppGP5UrBKXXXXXXKwHHYHfEh.gTMriEXwhf6DFvyXXXXXXXwQxmFraW3k0KgU</clientId>
+   <clientSecret>914846950346786099</clientSecret>
+   <intervalTime>1000000</intervalTime>
+   <registryPath>connectors/SalesforceBulk</registryPath>
+   <operation>insert</operation>
+   <contentType>CSV</contentType>
+   <object>Contact</object>
+</createJob>                        
+```
+3. Replace the credentials with your values.
+
+4. Execute the following curl command:
+
+```bash
+curl http://localhost:8280/services/salesforcebulk_createJob -H "Content-Type: text/xml" -d @createJob.xml
+```
+5. Salesforce returns an XML response similar to the one shown below:
+ 
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<jobInfo
+   xmlns="http://www.force.com/2009/06/asyncapi/dataload">
+    <id>7500K00000GV8lpQAD</id>
+    <operation>insert</operation>
+    <object>Contact</object>
+    <createdById>00528000000ToIrAAK</createdById>
+    <createdDate>2018-10-26T06:19:18.000Z</createdDate>
+    <systemModstamp>2018-10-26T06:19:18.000Z</systemModstamp>
+    <state>Open</state>
+    <concurrencyMode>Parallel</concurrencyMode>
+    <contentType>CSV</contentType>
+    <numberBatchesQueued>0</numberBatchesQueued>
+    <numberBatchesInProgress>0</numberBatchesInProgress>
+    <numberBatchesCompleted>0</numberBatchesCompleted>
+    <numberBatchesFailed>0</numberBatchesFailed>
+    <numberBatchesTotal>0</numberBatchesTotal>
+    <numberRecordsProcessed>0</numberRecordsProcessed>
+    <numberRetries>0</numberRetries>
+    <apiVersion>34.0</apiVersion>
+    <numberRecordsFailed>0</numberRecordsFailed>
+    <totalProcessingTime>0</totalProcessingTime>
+    <apiActiveProcessingTime>0</apiActiveProcessingTime>
+    <apexProcessingTime>0</apexProcessingTime>
+</jobInfo>
 ```
