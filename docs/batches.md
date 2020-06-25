@@ -88,7 +88,7 @@ Following is a sample request that can be handled by the addBatch operation, whe
    <jobId>75028000000McSwAAK</jobId>
    <objects>
       <values>Name,description
-        Tom Dameon,Created from Bulk API
+          Tom Dameon,Created from Bulk API
       </values>
    </objects>
 </addBatch>
