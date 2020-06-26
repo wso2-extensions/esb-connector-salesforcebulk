@@ -1,0 +1,143 @@
+{
+  "connectorName": "salesforcebulk",
+  "connectionName": "init",
+  "title": "Init Salesforcerest Connection",
+  "help": "<h1>Salesforcebulk Connector</h1> <b>The Salesforce Bulk connector initializes connection through init operation</b>",
+  "elements": [
+    {
+      "type": "attribute",
+      "value": {
+        "name": "connectionName",
+        "displayName": "Connection Name",
+        "inputType": "string",
+        "defaultValue": "SALESFORCEBULK_CONNECTION_1",
+        "required": "true",
+        "helpTip": "The name for the salesforcebulk connection",
+        "validation": "nameWithoutSpecialCharactors"
+      }
+    },
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "apiUrl",
+                    "displayName": "API URL",
+                    "inputType": "stringOrExpresion",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "API Url to access the endpoint."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "tokenEndpointHostname",
+                    "displayName": "Token Endpoint Hostname",
+                    "inputType": "stringOrExpresion",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "Instance url for OAuth 2.0 token endpoint when issuing authentication requests in your application"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "accessToken",
+                    "displayName": "Access Token",
+                    "inputType": "stringOrExpresion",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "Access token of the organizational account."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "apiVersion",
+                    "displayName": "API Version",
+                    "inputType": "stringOrExpresion",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "Version of salesforce API."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "refreshToken",
+                    "displayName": "Refresh Token",
+                    "inputType": "stringOrExpresion",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "value of the refresh token."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "clientSecret",
+                    "displayName": "Client Secret",
+                    "inputType": "stringOrExpresion",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "Value of your Consumer Secret given when you registered your application with salesforce."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "clientId",
+                    "displayName": "Client ID",
+                    "inputType": "stringOrExpresion",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "Value of your Consumer Key given when you registered your application with salesforce."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "registryPath",
+                    "displayName": "Registry Path",
+                    "inputType": "stringOrExpresion",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "Registry Path of the Connector where the values are stored"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "intervalTime",
+                    "displayName": "Interval Time",
+                    "inputType": "stringOrExpresion",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The Interval time to check the accessToken validity."
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "Advanced",
+        "elements": [
+        ]
+      }
+    }
+  ]
+}
