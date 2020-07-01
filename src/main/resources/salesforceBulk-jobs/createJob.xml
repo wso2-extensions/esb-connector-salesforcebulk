@@ -51,11 +51,16 @@
            mc.setPayloadXML(payload);
         ]]>
         </script>
-        <call>
-            <endpoint>
-                <http method="post" uri-template="{+uri.var.apiUrl}/job"/>
-            </endpoint>
-        </call>
+
+        <property name="uri.var.callEndpointUri" expression="fn:concat($ctx:uri.var.apiUrl,'/job')"/>
+        <property name="httpMethod" value="post"/>
+        <salesforcebulk.callWithRetry/>
+
+        <!--<call>-->
+            <!--<endpoint>-->
+                <!--<http method="post" uri-template="{+uri.var.apiUrl}/job"/>-->
+            <!--</endpoint>-->
+        <!--</call>-->
         <!-- Remove custom Headers from the API Response -->
         <header name="Cache-Control" action="remove" scope="transport"/>
     </sequence>
