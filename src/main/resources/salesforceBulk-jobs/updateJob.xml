@@ -18,6 +18,7 @@
 -->
 <!-- Method Documentation URL: https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_quickstart_close_job.htm -->
 <template name="updateJob" xmlns="http://ws.apache.org/ns/synapse">
+    <parameter name="jobId" description="ID of the job."/>
     <parameter name="state" description="The state of processing for the job."/>
     <sequence>
         <property name="uri.var.state" expression="$func:state"/>
