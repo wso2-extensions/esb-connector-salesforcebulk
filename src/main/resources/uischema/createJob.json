@@ -1,0 +1,82 @@
+{
+  "connectorName": "salesforcebulk",
+  "operationName": "createJob",
+  "title": "Create Job",
+  "help": "<h1>Create Job</h1> <b>Creates a new job.</b><br><br><ul><li><a href=\"https://ei.docs.wso2.com/en/latest/micro-integrator/references/connectors/salesforcebulk-connector/sf-bulk-connector-config/\"> More Help </a></li></ul>",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "configRef",
+              "displayName": "Connection",
+              "inputType": "connection",
+              "allowedConnectionTypes": [
+                "init"
+              ],
+              "defaultValue": "",
+              "required": "true",
+              "helpTip": "Connection to be used"
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "object",
+                    "displayName": "Object",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The object type for the data being processed."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "operation",
+                    "displayName": "Operation",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The processing operation for batches in the job."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "externalIdFieldName",
+                    "displayName": "External ID Field Name",
+                    "inputType": "booleanOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The name of the exernal id."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "contentType",
+                    "displayName": "Content Type",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The content type to add batch. Content type must be compatible with the job content type. The accepted content types are application/xml and text/csv."
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
