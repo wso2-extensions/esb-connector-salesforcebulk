@@ -22,7 +22,7 @@
     <parameter name="resultId" description="The result ID in the response to the batch result list request."/>
 
     <sequence>
-        <property name="uri.var.callEndpointUri" expression="fn:concat($ctx:uri.var.apiUrl,'/job/',$func:jobId,'/batch/',$func:batchId,'/result/',$func:resultId"/>
+        <property name="uri.var.callEndpointUri" expression="fn:concat($ctx:uri.var.apiUrl,'/job/',$func:jobId,'/batch/',$func:batchId,'/result/',$func:resultId)"/>
         <property name="httpMethod" value="get"/>
         <salesforcebulk.callWithRetry/>
     </sequence>
