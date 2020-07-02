@@ -21,14 +21,9 @@
 <template name="getJob" xmlns="http://ws.apache.org/ns/synapse">
     <parameter name="jobId" description="ID of the job."/>
     <sequence>
-        <property name="uri.var.jobId" expression="$func:jobId"/>
         <property name="Content-Type" value="Content-Type: application/xml; charset=UTF-8" scope="transport"/>
-        <call>
-            <endpoint>
-                <http method="get" uri-template="{+uri.var.apiUrl}/job/{+uri.var.jobId}"/>
-            </endpoint>
-        </call>
-        <!-- Remove custom Headers from the API Response -->
-        <header name="Cache-Control" action="remove" scope="transport"/>
+        <property name="uri.var.callEndpointUri" expression="fn:concat($ctx:uri.var.apiUrl,'/job/',$func:jobId)"/>
+        <property name="httpMethod" value="get"/>
+        <salesforcebulk.callWithRetry/>
     </sequence>
 </template>
