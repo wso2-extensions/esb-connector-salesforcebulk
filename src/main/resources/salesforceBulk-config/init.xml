@@ -26,9 +26,7 @@
                description="Value of your Consumer Secret given when you registered your application with salesforce."/>
     <parameter name="clientId"
                description="Value of your Consumer Key given when you registered your application with salesforce."/>
-    <parameter name="registryPath"
-               description="Registry Path of the Connector where the values are stored"/>
-    <parameter name="intervalTime" description="The Interval time to check the accessToken validity"/>
+    <parameter name="timeout" description="Timeout duration of the API request."/>
     <sequence>
         <property name="uri.var.apiUrl" expression="$func:apiUrl"/>
         <property name="uri.var.tokenEndpointHostname" expression="$func:tokenEndpointHostname"/>
@@ -37,8 +35,7 @@
         <property name="uri.var.refreshToken" expression="$func:refreshToken"/>
         <property name="uri.var.clientSecret" expression="$func:clientSecret"/>
         <property name="uri.var.clientId" expression="$func:clientId"/>
-        <property name="uri.var.registryPath" expression="$func:registryPath"/>
-        <property name="uri.var.intervalTime" expression="$func:intervalTime"/>
+        <property name="uri.var.accessTokenRegistryPath" value="connectors/salesforcebulk/accessToken"/>
         <!-- Append the common URL's string with API URL. -->
         <property name="uri.var.apiUrl"
                   expression="fn:concat(get-property('uri.var.apiUrl'),'/services/async/',get-property('uri.var.apiVersion'))"/>
@@ -49,67 +46,16 @@
         </filter>
         <property name="uri.var.tokenEndpointUrl"
                   expression="fn:concat(get-property('uri.var.tokenEndpointHostname'),'/services/oauth2/token')"/>
-        <filter source="boolean($ctx:uri.var.refreshToken) and boolean($ctx:uri.var.clientSecret) and boolean($ctx:uri.var.clientId) and boolean($ctx:uri.var.accessToken)"
-                regex="true">
-            <then>
-                <filter source="boolean($ctx:uri.var.intervalTime)" regex="false">
-                    <then>
-                        <property name="uri.var.intervalTime" value="3000000"/>
-                    </then>
-                </filter>
-                <filter source="boolean(get-property('uri.var.registryPath'))" regex="true">
-                    <then>
-                        <property name="uri.var.accessTokenRegistryPath"
-                                  expression="fn:concat($ctx:uri.var.registryPath, '/accessToken' )"/>
-                        <property name="uri.var.timeRegistryPath"
-                                  expression="fn:concat($ctx:uri.var.registryPath, '/time' )"/>
-                    </then>
-                </filter>
-                <property name="uri.var.accessToken.reg"
-                          expression="get-property('registry', $ctx:uri.var.accessTokenRegistryPath)"/>
-                <property name="systemTime" expression="get-property('SYSTEM_TIME')" scope="default"/>
-                <filter source="$ctx:uri.var.accessToken.reg=''" regex="true">
-                    <then>
-                        <script language="js">
-                            <![CDATA[
-                           importPackage(Packages.org.apache.synapse.config);
-                           var newAccess = mc.getProperty('uri.var.accessToken');
-                           var newAccessRegistryPath = mc.getProperty('uri.var.accessTokenRegistryPath');
-                           var newSysTime = mc.getProperty('systemTime');
-                           var newTimeRegistryPath = mc.getProperty('uri.var.timeRegistryPath');
-                           if(newAccess != null && newAccess != ''){
-                               //Create the registry entry if no such entry exists.
-                               mc.getConfiguration().getRegistry().newResource(newAccessRegistryPath,false);
-                               mc.getConfiguration().getRegistry().updateResource(newAccessRegistryPath,newAccess);
-                               mc.getConfiguration().getRegistry().newResource(newTimeRegistryPath, false);
-                               mc.getConfiguration().getRegistry().updateResource(newTimeRegistryPath, newSysTime);
-                           }
-                           ]]>
-                        </script>
-                    </then>
-                    <else>
-                        <property name="uri.var.accessToken"
-                                  expression="$ctx:uri.var.accessToken.reg"/>
-                    </else>
-                </filter>
-                <property name="registryTime"
-                          expression="get-property('registry', $ctx:uri.var.timeRegistryPath)"/>
-                <script language="js"><![CDATA[
-                    var time1 = mc.getProperty("systemTime");
-                    var time2 = mc.getProperty("registryTime");
-                    var timeTaken = time1 - time2;
-                    mc.setProperty("INTERVAL_TIME", timeTaken);
-                   ]]>
-                </script>
-                <!--If the access token is not in the registry(first call) or time interval less than 50 minutes , then get a new access token by calling getAccessTokenByRefreshToken method and store the time into registry-->
-                <filter source="$ctx:INTERVAL_TIME &gt;$ctx:uri.var.intervalTime or $ctx:uri.var.accessToken=''"
-                        regex="true">
-                    <then>
-                        <salesforcebulk.getAccessTokenByRefreshToken/>
-                    </then>
-                </filter>
-            </then>
-        </filter>
+        <property name="timeout" expression="$func:timeout"/>
+        <script language="js">
+            <![CDATA[
+                var timeout = mc.getProperty("uri.var.timeout");
+                if (timeout == null || timeout == "") {
+                    timeout = 3000;
+                }
+                mc.setProperty("timeout", timeout.toString());
+            ]]>
+        </script>
         <header name="X-SFDC-Session" expression="get-property('uri.var.accessToken')" scope="transport"/>
     </sequence>
 </template>

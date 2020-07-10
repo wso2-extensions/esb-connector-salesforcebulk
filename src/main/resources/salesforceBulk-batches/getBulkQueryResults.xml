@@ -22,16 +22,8 @@
     <parameter name="resultId" description="The result ID in the response to the batch result list request."/>
 
     <sequence>
-        <property name="uri.var.jobId" expression="$func:jobId"/>
-        <property name="uri.var.batchId" expression="$func:batchId"/>
-        <property name="uri.var.resultId" expression="$func:resultId"/>
-        <call>
-            <endpoint>
-                <http method="get"
-                      uri-template="{+uri.var.apiUrl}/job/{+uri.var.jobId}/batch/{+uri.var.batchId}/result/{+uri.var.resultId}"/>
-            </endpoint>
-        </call>
-        <!-- Remove custom Headers from the API Response -->
-        <header name="Cache-Control" action="remove" scope="transport"/>
+        <property name="uri.var.callEndpointUri" expression="fn:concat($ctx:uri.var.apiUrl,'/job/',$func:jobId,'/batch/',$func:batchId,'/result/',$func:resultId)"/>
+        <property name="httpMethod" value="get"/>
+        <salesforcebulk.callWithRetry/>
     </sequence>
 </template>
