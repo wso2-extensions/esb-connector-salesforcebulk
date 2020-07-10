@@ -26,8 +26,6 @@
                description="Value of your Consumer Secret given when you registered your application with salesforce."/>
     <parameter name="clientId"
                description="Value of your Consumer Key given when you registered your application with salesforce."/>
-    <parameter name="registryPath"
-               description="Registry Path of the Connector where the values are stored"/>
     <parameter name="timeout" description="Timeout duration of the API request."/>
     <sequence>
         <property name="uri.var.apiUrl" expression="$func:apiUrl"/>
@@ -37,7 +35,6 @@
         <property name="uri.var.refreshToken" expression="$func:refreshToken"/>
         <property name="uri.var.clientSecret" expression="$func:clientSecret"/>
         <property name="uri.var.clientId" expression="$func:clientId"/>
-        <property name="uri.var.registryPath" expression="$func:registryPath"/>
         <property name="uri.var.accessTokenRegistryPath" value="connectors/salesforcebulk/accessToken"/>
         <!-- Append the common URL's string with API URL. -->
         <property name="uri.var.apiUrl"

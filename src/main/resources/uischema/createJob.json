@@ -57,7 +57,7 @@
                     "displayName": "External ID Field Name",
                     "inputType": "booleanOrExpression",
                     "defaultValue": "",
-                    "required": "true",
+                    "required": "false",
                     "helpTip": "The name of the exernal id."
                   }
                 },
@@ -68,7 +68,7 @@
                     "displayName": "Content Type",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
-                    "required": "true",
+                    "required": "false",
                     "helpTip": "The content type to add batch. Content type must be compatible with the job content type. The accepted content types are application/xml and text/csv."
                   }
                 }
