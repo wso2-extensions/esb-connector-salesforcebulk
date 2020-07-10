@@ -30,17 +30,5 @@
             <file>callOptions.xml</file>
             <description>Templating the http call types GET, POST, etc.</description>
         </component>
-
-        <component name="getAccessTokenByRefreshToken">
-            <file>getAccessTokenByRefreshToken.xml</file>
-            <description>Get a new access token by negotiating the refresh token along with client_secret and
-                client_id.
-            </description>
-        </component>
-        <component name="getAccessTokenByAuthorizationCode">
-            <file>getAccessTokenByAuthorizationCode.xml</file>
-            <description>Get a new access token by negotiating the code along with client_secret and client_id.
-            </description>
-        </component>
     </subComponents>
 </component>
