@@ -6,6 +6,7 @@ The Salesforce Bulk [Connector](https://docs.wso2.com/display/EI650/Working+with
 
 | Connector version | Supported Salesforce Bulk API version | Supported WSO2 ESB/EI version |
 | ------------- | ------------- | ------------- |
+| [1.1.0](https://github.com/wso2-extensions/esb-connector-salesforcebulk/tree/org.wso2.carbon.connector.salesforcebulk-1.1.0) | 34.0 | EI 6.5.0, EI 6.6.0, EI 7.0.X, EI 7.1.0 |
 | [1.0.7](https://github.com/wso2-extensions/esb-connector-salesforcebulk/tree/org.wso2.carbon.connector.salesforcebulk-1.0.7) | 34.0 | EI 6.5.0    |
 | [1.0.6](https://github.com/wso2-extensions/esb-connector-salesforcebulk/tree/org.wso2.carbon.connector.salesforcebulk-1.0.6) | 34.0 | ESB 5.0.0, ESB 4.9.0, EI 6.3.0, EI 6.4.0    |
 | [1.0.5](https://github.com/wso2-extensions/esb-connector-salesforcebulk/tree/org.wso2.carbon.connector.salesforcebulk-1.0.5) | 34.0 | ESB 4.9.0, 5.0.0, 6.1.0, 6.1.1 |
