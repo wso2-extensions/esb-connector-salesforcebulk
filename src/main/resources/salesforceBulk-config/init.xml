@@ -56,6 +56,6 @@
                 mc.setProperty("timeout", timeout.toString());
             ]]>
         </script>
-        <!--<header name="X-SFDC-Session" expression="get-property('uri.var.accessToken')" scope="transport"/>-->
+        <header name="X-SFDC-Session" expression="get-property('uri.var.accessToken')" scope="transport"/>
     </sequence>
 </template>
