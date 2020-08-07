@@ -27,6 +27,7 @@
     <parameter name="clientId"
                description="Value of your Consumer Key given when you registered your application with salesforce."/>
     <parameter name="timeout" description="Timeout duration of the API request."/>
+    <parameter name="name" description="Name of the connection"/>
     <sequence>
         <property name="uri.var.apiUrl" expression="$func:apiUrl"/>
         <property name="uri.var.tokenEndpointHostname" expression="$func:tokenEndpointHostname"/>
@@ -35,7 +36,7 @@
         <property name="uri.var.refreshToken" expression="$func:refreshToken"/>
         <property name="uri.var.clientSecret" expression="$func:clientSecret"/>
         <property name="uri.var.clientId" expression="$func:clientId"/>
-        <property name="uri.var.accessTokenRegistryPath" value="connectors/salesforcebulk/accessToken"/>
+        <property name="uri.var.accessTokenRegistryPath" expression="fn:concat('connectors/salesforcerest/accessToken',$func:name)"/>
         <!-- Append the common URL's string with API URL. -->
         <property name="uri.var.apiUrl"
                   expression="fn:concat(get-property('uri.var.apiUrl'),'/services/async/',get-property('uri.var.apiVersion'))"/>
