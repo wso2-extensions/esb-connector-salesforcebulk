@@ -29,7 +29,7 @@
             <property name="uri.var.accessToken.reg"
                       expression="get-property('registry', $ctx:uri.var.accessTokenRegistryPath)"/>
             <header name="X-SFDC-Session" expression="get-property('uri.var.accessToken')" scope="transport"/>
-            <salesforcerest.callOptions/>
+            <salesforcebulk.callOptions/>
             <property name="httpCode" expression="$axis2:HTTP_SC" scope="default" type="STRING"/>
             <filter source="$ctx:httpCode" regex="4[0-9][0-9]">
                 <then>
@@ -41,13 +41,13 @@
                             <target type="body"/>
                         </enrich>
                     </filter>
-                    <salesforcerest.callOptions/>
+                    <salesforcebulk.callOptions/>
                 </then>
             </filter>
         </then>
         <else>
             <header name="X-SFDC-Session" expression="get-property('uri.var.accessToken')" scope="transport"/>
-            <salesforcerest.callOptions/>
+            <salesforcebulk.callOptions/>
         </else>
     </filter>
 </sequence>
