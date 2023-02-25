@@ -29,6 +29,17 @@
                 {
                   "type": "attribute",
                   "value": {
+                    "name": "instanceUrl",
+                    "displayName": "Instance URL",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Value of the Client ID you obtained when you register your application"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
                     "name": "clientId",
                     "displayName": "Client ID",
                     "inputType": "stringOrExpression",

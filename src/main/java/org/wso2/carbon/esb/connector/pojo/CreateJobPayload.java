@@ -2,11 +2,14 @@ package org.wso2.carbon.esb.connector.pojo;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
+import org.wso2.carbon.esb.connector.exception.ResponseParsingException;
 import org.wso2.carbon.esb.connector.utils.BulkJobOperationType;
 import org.wso2.carbon.esb.connector.utils.ColumnDelimiter;
 import org.wso2.carbon.esb.connector.utils.LineEnding;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.text.ParseException;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreateJobPayload {
@@ -34,52 +37,47 @@ public class CreateJobPayload {
     }
 
     public String getAssignmentRuleId() {
-
         return assignmentRuleId;
     }
 
     public ColumnDelimiter getColumnDelimiter() {
-
         return columnDelimiter;
     }
 
     public String getExternalIdFieldName() {
-
         return externalIdFieldName;
     }
 
     public LineEnding getLineEnding() {
-
         return lineEnding;
     }
 
-    public BulkJobOperationType getOperation() {
-
-        return operation;
+    public String getOperation() {
+        return operation.getOperationType();
     }
 
     public String getObject() {
-
         return object;
     }
 
     public void setAssignmentRuleId(String assignmentRuleId) {
-
         this.assignmentRuleId = assignmentRuleId;
     }
 
     public void setColumnDelimiter(ColumnDelimiter columnDelimiter) {
-
         this.columnDelimiter = columnDelimiter;
     }
 
     public void setLineEnding(LineEnding lineEnding) {
-
         this.lineEnding = lineEnding;
     }
 
-    public String toJson() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(this);
+    public String toJson() throws ResponseParsingException {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new ResponseParsingException("Error while parsing the response to JSON", e);
+        }
     }
 }

@@ -19,8 +19,44 @@
 <component name="operations" type="synapse/template" >
     <subComponents> 
 		<component name="createJob" >
-	    		<file>createJob.xml</file>
-	    		<description>A operation to create a job in Salesforce using bulk api 2.0</description>
-		</component>			
+			<file>createJob.xml</file>
+			<description>A operation to create a job in Salesforce using bulk api 2.0</description>
+		</component>
+		<component name="uploadJobData">
+			<file>uploadJobData.xml</file>
+			<description>An operation to upload data to a job in Salesforce using bulk api 2.0</description>
+		</component>
+		<component name="closeJob">
+			<file>closeJob.xml</file>
+			<description>An operation to close a job in Salesforce using bulk api 2.0</description>
+		</component>
+		<component name="abortJob">
+			<file>abortJob.xml</file>
+			<description>An operation to abort a job in Salesforce using bulk api 2.0</description>
+		</component>
+		<component name="getAllJobInfo">
+			<file>getAllJobInfo.xml</file>
+			<description>An operation to get all job info in Salesforce using bulk api 2.0</description>
+		</component>
+		<component name="getJobInfo">
+			<file>getJobInfo.xml</file>
+			<description>An operation to get job info in Salesforce using bulk api 2.0</description>
+		</component>
+		<component name="deleteJob">
+			<file>deleteJob.xml</file>
+			<description>An operation to delete a job in Salesforce using bulk api 2.0</description>
+		</component>
+		<component name="getSuccessfulResults">
+			<file>getSuccessfulResults.xml</file>
+			<description>An operation to get successful results of a job in Salesforce using bulk api 2.0</description>
+		</component>
+		<component name="getUnprocessedResults">
+			<file>getUnprocessedResults.xml</file>
+			<description>An operation to get unprocessed results of a job in Salesforce using bulk api 2.0</description>
+		</component>
+		<component name="getFailedResults">
+			<file>getFailedResults.xml</file>
+			<description>An operation to get failed results of a job in Salesforce using bulk api 2.0</description>
+		</component>
     </subComponents>    
 </component>

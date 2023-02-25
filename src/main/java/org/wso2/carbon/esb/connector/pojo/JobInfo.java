@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.wso2.carbon.esb.connector.exception.ResponseParsingException;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JobInfo {
@@ -49,8 +50,8 @@ public class JobInfo {
     private long numberRecordsFailed;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private long totalProcessingTime;
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    private int retries;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private int retries;
 
     public String getId() {
 
@@ -262,21 +263,63 @@ public class JobInfo {
         this.totalProcessingTime = totalProcessingTime;
     }
 
-    public String toJson() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(this);
+    public String toJson() throws ResponseParsingException {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new ResponseParsingException("Error while parsing the response to JSON", e);
+        }
     }
 
-    public static JobInfo fromJson(String json) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(json, JobInfo.class);
+    public static JobInfo fromJson(String json) throws ResponseParsingException {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(json, JobInfo.class);
+        } catch (JsonProcessingException e) {
+            throw new ResponseParsingException("Error while converting Jobinfo response string JobInfo object", e);
+        }
     }
 
-//    public int getRetries() {
-//        return retries;
-//    }
-//
-//    public void setRetries(int retries) {
-//        this.retries = retries;
-//    }
+    public int getRetries() {
+        return retries;
+    }
+
+    public void setRetries(int retries) {
+        this.retries = retries;
+    }
+
+    public String getXmlStringWithoutRoot() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<id>").append(id).append("</id>");
+        sb.append("<createdById>").append(createdById).append("</createdById>");
+        sb.append("<createdDate>").append(createdDate).append("</createdDate>");
+        sb.append("<systemModstamp>").append(systemModstamp).append("</systemModstamp>");
+        sb.append("<state>").append(state).append("</state>");
+        sb.append("<contentUrl>").append(contentUrl).append("</contentUrl>");
+        sb.append("<numberRecordsProcessed>").append(numberRecordsProcessed).append("</numberRecordsProcessed>");
+        sb.append("<numberRecordsFailed>").append(numberRecordsFailed).append("</numberRecordsFailed>");
+        sb.append("<totalProcessingTime>").append(totalProcessingTime).append("</totalProcessingTime>");
+        sb.append("<apiActiveProcessingTime>").append(apiActiveProcessingTime).append("</apiActiveProcessingTime>");
+        sb.append("<apexProcessingTime>").append(apexProcessingTime).append("</apexProcessingTime>");
+        sb.append("<errorMessage>").append(errorMessage).append("</errorMessage>");
+        sb.append("<operation>").append(operation).append("</operation>");
+        sb.append("<object>").append(object).append("</object>");
+        sb.append("<concurrencyMode>").append(concurrencyMode).append("</concurrencyMode>");
+        sb.append("<contentType>").append(contentType).append("</contentType>");
+        sb.append("<lineEnding>").append(lineEnding).append("</lineEnding>");
+        sb.append("<columnDelimiter>").append(columnDelimiter).append("</columnDelimiter>");
+        sb.append("<apiVersion>").append(apiVersion).append("</apiVersion>");
+        sb.append("<jobType>").append(jobType).append("</jobType>");
+        sb.append("<externalIdFieldName>").append(externalIdFieldName).append("</externalIdFieldName>");
+        return sb.toString();
+    }
+
+    public String getXmlString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<result>");
+        sb.append(getXmlStringWithoutRoot());
+        sb.append("</result>");
+        return sb.toString();
+    }
 }

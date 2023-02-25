@@ -23,6 +23,7 @@
 	<parameter name="accessToken" description="access token"/>
 	<parameter name="tokenUrl" description="tokenUrl"/>
 	<parameter name="name" description="Unique name of salesforce OAuth configuration name"/>
+	<parameter name="instanceUrl" description="Instance URL"/>
 	<sequence>
 		<property name="clientId" expression="$func:clientId"/>
 		<property name="clientSecret" expression="$func:clientSecret"/>
@@ -30,6 +31,7 @@
 		<property name="accessToken" expression="$func:accessToken"/>
 		<property name="tokenUrl" expression="$func:tokenUrl"/>
 		<property name="name" expression="$func:name"/>
-		<class name="org.wso2.carbon.esb.connector.operations.SalesforceConfig" />
+		<property name="instanceUrl" expression="$func:instanceUrl"/>
+		<class name="org.wso2.carbon.esb.connector.operations.InitSalesforce" />
 	</sequence>
 </template>

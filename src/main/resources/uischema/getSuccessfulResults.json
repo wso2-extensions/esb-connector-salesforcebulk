@@ -1,0 +1,41 @@
+{
+  "connectorName": "salesforce_bulkapi_v2",
+  "operationName": "getSuccessfulResults",
+  "title": "Get Successful Results",
+  "help": "This operation is used to get the successful results of a job.",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "configRef",
+              "displayName": "OAuthConfiguration",
+              "inputType": "connection",
+              "allowedConnectionTypes": [
+                "init"
+              ],
+              "defaultValue": "",
+              "required": "true",
+              "helpTip": "Connection to be used"
+            }
+          },
+          {
+            "type": "attribute",
+            "value": {
+              "name": "jobId",
+              "displayName": "Job ID",
+              "inputType": "stringOrExpression",
+              "defaultValue": "",
+              "required": "true",
+              "helpTip": "The ID of the job that you want to get the successful results for."
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

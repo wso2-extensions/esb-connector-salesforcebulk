@@ -21,28 +21,31 @@ import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.util.ConnectorUtils;
+import org.wso2.carbon.esb.connector.exception.SalesforceConnectionException;
+import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.store.SalesforceConfigStore;
 import org.wso2.carbon.esb.connector.utils.SalesforceConstants;
+import org.wso2.carbon.esb.connector.utils.SalesforceUtils;
 
 /**
  * Sample method implementation.
  */
-public class SalesforceConfig extends AbstractConnector {
+public class InitSalesforce extends AbstractConnector {
 
     @Override
-    public void connect(MessageContext messageContext) throws ConnectException {
+    public void connect(MessageContext messageContext) {
         try {
             log.info("salesforce-bulkapi-v2 sample connector received message");
-            org.wso2.carbon.esb.connector.pojo.SalesforceConfig oAuthConfig = getOAuthConfig(messageContext);
+            SalesforceConfig oAuthConfig = getSalesforceConfig(messageContext);
             SalesforceConfigStore.addSalesforceConfig(oAuthConfig);
             log.info("Successfully added salesforce config");
         } catch (Exception e) {
-            log.error("Error occured: " , e);
-	        throw new ConnectException(e);
+            SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
+            handleException(e.getMessage(), e, messageContext);
         }
     }
 
-    private org.wso2.carbon.esb.connector.pojo.SalesforceConfig getOAuthConfig(MessageContext messageContext) {
+    private SalesforceConfig getSalesforceConfig(MessageContext messageContext) {
         String clientID = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
                 SalesforceConstants.CLIENT_ID);
         String clientSecret = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
@@ -55,6 +58,8 @@ public class SalesforceConfig extends AbstractConnector {
                 SalesforceConstants.ACCESS_TOKEN);
         String salesforceConfigName = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
                 SalesforceConstants.SF_OAUTH_CONFIG_NAME);
+        String instanceUrl = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
+                SalesforceConstants.INSTANCE_URL);
         // log all of the above variables
         messageContext.getPropertyKeySet().forEach(key -> {
             log.info("key: " + key + " value: " + messageContext.getProperty((String)key));
@@ -65,14 +70,16 @@ public class SalesforceConfig extends AbstractConnector {
         log.info("tokenUrl: " + tokenUrl);
         log.info("accessToken: " + accessToken);
         log.info("sfOAuthConfigName: " + salesforceConfigName);
+        log.info("instanceUrl: " + instanceUrl);
 
-        org.wso2.carbon.esb.connector.pojo.SalesforceConfig oAuthConfig = new org.wso2.carbon.esb.connector.pojo.SalesforceConfig();
-        oAuthConfig.setClientId(clientID);
-        oAuthConfig.setClientSecret(clientSecret);
-        oAuthConfig.setRefreshToken(refreshToken);
-        oAuthConfig.setTokenUrl(tokenUrl);
-        oAuthConfig.setAccessToken(accessToken);
-        oAuthConfig.setSalesforceConfigName(salesforceConfigName);
-        return oAuthConfig;
+        SalesforceConfig salesforceConfig = new SalesforceConfig();
+        salesforceConfig.setClientId(clientID);
+        salesforceConfig.setClientSecret(clientSecret);
+        salesforceConfig.setRefreshToken(refreshToken);
+        salesforceConfig.setTokenUrl(tokenUrl);
+        salesforceConfig.setAccessToken(accessToken);
+        salesforceConfig.setSalesforceConfigName(salesforceConfigName);
+        salesforceConfig.setInstanceUrl(instanceUrl);
+        return salesforceConfig;
     }
 }

@@ -1,6 +1,8 @@
 package org.wso2.carbon.esb.connector.requests;
 
 import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
+import org.wso2.carbon.esb.connector.exception.ResponseParsingException;
+import org.wso2.carbon.esb.connector.exception.SalesforceConnectionException;
 import org.wso2.carbon.esb.connector.pojo.GetAllJobResponse;
 import org.wso2.carbon.esb.connector.pojo.JobInfo;
 import org.wso2.carbon.esb.connector.pojo.CreateJobPayload;
@@ -30,7 +32,7 @@ public class SalesforceRequest {
         this.salesforceConfig = salesforceConfig;
     }
 
-    public JobInfo createJob(CreateJobPayload createJobPayload) throws IOException {
+    public JobInfo createJob(CreateJobPayload createJobPayload) throws ResponseParsingException, SalesforceConnectionException {
         RestRequest restRequest = new RestRequest();
         restRequest.setMethod(HttpMethod.POST);
         restRequest.setUrl(SalesforceUtils.getCreateJobUrl(salesforceConfig));
@@ -49,7 +51,7 @@ public class SalesforceRequest {
         return JobInfo.fromJson(restResponse.getResponse());
     }
 
-    public void uploadJobData(String jobId, String filePath) throws IOException {
+    public void uploadJobData(String jobId, String filePath) throws SalesforceConnectionException, InvalidConfigurationException {
         FileUtils.verifyFile(filePath);
         RestRequest restRequest = new RestRequest();
         restRequest.setMethod(HttpMethod.PUT);
@@ -62,13 +64,18 @@ public class SalesforceRequest {
         restRequest.setHeaders(headers);
 
         File file = new File(filePath);
-        InputStream inputStream = Files.newInputStream(file.toPath());
+        InputStream inputStream = null;
+        try {
+            inputStream = Files.newInputStream(file.toPath());
+        } catch (IOException e) {
+            throw new SalesforceConnectionException("Error while reading file: " + filePath, e);
+        }
         restRequest.setBody(inputStream);
 
         restRequest.send();
     }
 
-    public void closeJob(String jobId) throws IOException {
+    public void closeJob(String jobId) throws SalesforceConnectionException {
         RestRequest restRequest = new RestRequest();
         restRequest.setMethod(HttpMethod.PATCH);
         restRequest.setUrl(SalesforceUtils.getCloseJobUrl(salesforceConfig, jobId));
@@ -86,7 +93,7 @@ public class SalesforceRequest {
         restRequest.send();
     }
 
-    public void abortJob(String jobId) throws IOException {
+    public void abortJob(String jobId) throws SalesforceConnectionException {
         RestRequest restRequest = new RestRequest();
         restRequest.setMethod(HttpMethod.PATCH);
         restRequest.setUrl(SalesforceUtils.getAbortJobUrl(salesforceConfig, jobId));
@@ -103,7 +110,7 @@ public class SalesforceRequest {
         restRequest.send();
     }
 
-    public void deleteJob(String jobId) throws IOException {
+    public void deleteJob(String jobId) throws SalesforceConnectionException {
         RestRequest restRequest = new RestRequest();
         restRequest.setMethod(HttpMethod.DELETE);
         restRequest.setUrl(SalesforceUtils.getAbortJobUrl(salesforceConfig, jobId));
@@ -117,7 +124,7 @@ public class SalesforceRequest {
         restRequest.send();
     }
 
-    public GetAllJobResponse getAllJobInfo() throws IOException {
+    public GetAllJobResponse getAllJobInfo() throws ResponseParsingException, SalesforceConnectionException {
         RestRequest restRequest = new RestRequest();
         restRequest.setMethod(HttpMethod.GET);
         restRequest.setUrl(SalesforceUtils.getGetAllJobInfoUrl(salesforceConfig));
@@ -132,7 +139,7 @@ public class SalesforceRequest {
         return GetAllJobResponse.fromJson(restResponse.getResponse());
     }
 
-    public JobInfo getJobInfo(String jobId) throws IOException {
+    public JobInfo getJobInfo(String jobId) throws ResponseParsingException, SalesforceConnectionException {
         RestRequest restRequest = new RestRequest();
         restRequest.setMethod(HttpMethod.GET);
         restRequest.setUrl(SalesforceUtils.getGetJobInfoUrl(salesforceConfig, jobId));
@@ -146,26 +153,4 @@ public class SalesforceRequest {
         RestRequest.RestResponse restResponse = restRequest.send();
         return JobInfo.fromJson(restResponse.getResponse());
     }
-
-//
-    public static void main(String[] args) throws InvalidConfigurationException, InvalidConfigurationException {
-        SalesforceConfig salesforceConfig = new SalesforceConfig();
-        salesforceConfig.setAccessToken("00D8d000009qNWB!AQsAQLUs3.AihmKrEtPpYbpX4nVYgRKyp87TOtGit9Mv7THYT619rUMRETP_xbYFonRZ2ZFfNzkKRMeMZqN0wxawdMxUpzxz");
-        salesforceConfig.setActiveAccessToken("00D8d000009qNWB!AQsAQLUs3.AihmKrEtPpYbpX4nVYgRKyp87TOtGit9Mv7THYT619rUMRETP_xbYFonRZ2ZFfNzkKRMeMZqN0wxawdMxUpzxz");
-        salesforceConfig.setInstanceUrl("https://wso2-b-dev-ed.develop.my.salesforce.com");
-        SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
-//        CreateJobPayload createJobPayload = new CreateJobPayload(BulkJobOperationType.INSERT, "dd");
-//        createJobPayload.setColumnDelimiter(ColumnDelimiter.COMMA);
-        try {
-//            GetAllJobResponse getAllJobResponse = salesforceRequest.getAllJobInfo();
-//            System.out.println(getAllJobResponse);
-            JobInfo jobInfo = salesforceRequest.getJobInfo("7508d00000HUvzNAAT");
-            System.out.println(jobInfo);
-//            salesforceRequest.uploadJobData("7508d00000HUwMgAAL", "/home/tharsanan/Documents/RRT/1946/BulkInsertExample/bulkinsert.csv");
-//            System.out.println("done");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

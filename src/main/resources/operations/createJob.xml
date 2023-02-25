@@ -16,9 +16,19 @@
    under the License.
 -->
 <template xmlns="http://ws.apache.org/ns/synapse" name="createJob">
-    <parameter name="filePath" description="filePath"/>
+    <parameter name="operation" description="operation"/>
+    <parameter name="object" description="object"/>
+    <parameter name="columnDelimiter" description="columnDelimiter"/>
+    <parameter name="lineEnding" description="lineEnding"/>
+    <parameter name="assignmentRuleId" description="assignmentRuleId"/>
+    <parameter name="externalIdFieldName" description="externalIdFieldName"/>
     <sequence>
-        <property name="filePath" expression="$func:filePath"/>
+        <property name="operation" expression="$func:operation"/>
+        <property name="object" expression="$func:object"/>
+        <property name="columnDelimiter" expression="$func:columnDelimiter"/>
+        <property name="lineEnding" expression="$func:lineEnding"/>
+        <property name="assignmentRuleId" expression="$func:assignmentRuleId"/>
+        <property name="externalIdFieldName" expression="$func:externalIdFieldName"/>
         <class name="org.wso2.carbon.esb.connector.operations.CreateJob" />
     </sequence>
 </template>

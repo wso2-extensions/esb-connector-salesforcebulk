@@ -1,7 +1,9 @@
 package org.wso2.carbon.esb.connector.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.wso2.carbon.esb.connector.exception.ResponseParsingException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,16 +44,33 @@ public class GetAllJobResponse {
         this.nextRecordsUrl = nextRecordsUrl;
     }
 
-    public static GetAllJobResponse fromJson(String json) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(json, GetAllJobResponse.class);
+    public static GetAllJobResponse fromJson(String json) throws ResponseParsingException {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(json, GetAllJobResponse.class);
+        } catch (
+            JsonProcessingException e) {
+            throw new ResponseParsingException("Error while parsing the response to GetAllJobResponse object", e);
+        }
     }
 
-//    public static void main(String[] args) throws IOException {
-//        String json = "{\"done\":true,\"records\":[{\"id\":\"001XXXXXXXXXXXXXXX\", \"numberRecordsFailed\":12312}],\"nextRecordsUrl\":\"/services/data/v50.0/jobs/ingest/750XXXXXXXXXXXXX/batches?fromResultId=751XXXXXXXXXXXXXX\"}";
-//
-//        GetAllJobResponse response = GetAllJobResponse.fromJson(json);
-//
-//        System.out.println(response.getRecords().get(0).getId());
-//    }
+     public String getXmlStringWithoutRoot() {
+        StringBuilder xmlString = new StringBuilder();
+        xmlString.append("<done>").append(this.done).append("</done>");
+        xmlString.append("<nextRecordsUrl>").append(this.nextRecordsUrl).append("</nextRecordsUrl>");
+        for (JobInfo jobInfo : this.records) {
+            xmlString.append("<jobInfo>");
+            xmlString.append(jobInfo.getXmlString());
+            xmlString.append("</jobInfo>");
+        }
+        return xmlString.toString();
+     }
+
+     public String getXmlString() {
+        StringBuilder xmlString = new StringBuilder();
+        xmlString.append("<result>");
+        xmlString.append(this.getXmlStringWithoutRoot());
+        xmlString.append("</result>");
+        return xmlString.toString();
+     }
 }

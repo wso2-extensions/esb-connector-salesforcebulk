@@ -1,10 +1,26 @@
 package org.wso2.carbon.esb.connector.utils;
 
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.soap.SOAPBody;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.synapse.MessageContext;
+import org.apache.synapse.commons.json.JsonUtil;
+import org.apache.synapse.core.axis2.Axis2MessageContext;
+import org.wso2.carbon.connector.core.exception.ContentBuilderException;
 import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
+import org.wso2.carbon.connector.core.util.PayloadUtils;
+
+import javax.xml.stream.XMLStreamException;
 
 public class SalesforceUtils {
+
+    private static final Log log = LogFactory.getLog(SalesforceUtils.class);
+
     /**
      * Retrieves connection name from message context if configured as configKey attribute
      * or from the template parameter
@@ -44,5 +60,99 @@ public class SalesforceUtils {
     public static String getGetJobInfoUrl(SalesforceConfig salesforceConfig, String jobId) {
         return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH + jobId;
 
+    }
+
+    /**
+     * Sets the error code and error detail in message
+     *
+     * @param messageContext Message Context
+     * @param statusCode     Status code to be set
+     * @param message        Error message to be set
+     */
+    public static void setErrorsInMessage(MessageContext messageContext, int statusCode, String message) {
+        messageContext.setProperty(ResponseConstants.PROPERTY_ERROR_CODE, statusCode);
+        messageContext.setProperty(ResponseConstants.PROPERTY_ERROR_MESSAGE, message);
+    }
+
+    public static BulkJobOperationType getBulkJobOperationTypeEnum(String enumString) throws InvalidConfigurationException {
+        try {
+            return BulkJobOperationType.valueOf(enumString);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidConfigurationException("Invalid operation type provided: " + enumString);
+        }
+    }
+
+    public static BulkJobState getBulkJobStateTypeEnum(String enumString) throws InvalidConfigurationException {
+        try {
+            return BulkJobState.valueOf(enumString);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidConfigurationException("Invalid job state provided: " + enumString);
+        }
+    }
+
+    public static ColumnDelimiter getColumnDelimiterEnum(String enumString) throws InvalidConfigurationException {
+        try {
+            return ColumnDelimiter.valueOf(enumString);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidConfigurationException("Invalid content type provided: " + enumString);
+        }
+    }
+
+    public static LineEnding getLineEndingEnum(String enumString) throws InvalidConfigurationException {
+        try {
+            return LineEnding.valueOf(enumString);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidConfigurationException("Invalid content type provided: " + enumString);
+        }
+    }
+
+    /**
+     * Generates the output payload
+     *
+     * @param messageContext The message context that is processed
+     * @param xmlString   Result of the status
+     */
+    public static void generateOutput(MessageContext messageContext, String xmlString) throws InvalidConfigurationException {
+
+        try {
+            OMElement omElement = AXIOMUtil.stringToOM(xmlString);
+            //Detaching first element (soapBody.getFirstElement().detach()) will be done by following method anyway.
+            JsonUtil.removeJsonPayload(((Axis2MessageContext) messageContext).getAxis2MessageContext());
+            ((Axis2MessageContext) messageContext).getAxis2MessageContext().
+                    removeProperty("NO_ENTITY_BODY");
+            SOAPBody soapBody = messageContext.getEnvelope().getBody();
+            soapBody.addChild(omElement);
+
+//            PayloadUtils.preparePayload(((Axis2MessageContext) messageContext).getAxis2MessageContext(), xmlString);
+//        } catch (ContentBuilderException e) {
+//            throw new InvalidConfigurationException(e.getMessage(), e);
+        } catch (XMLStreamException e) {
+            throw new InvalidConfigurationException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Create an OMElement.
+     *
+     * @param elementName Name of the element
+     * @param value       Value to be added
+     * @return OMElement or null if error
+     */
+    public static OMElement createOMElement(String elementName, String value) {
+        OMElement resultElement = null;
+        try {
+            if (StringUtils.isNotEmpty(value)) {
+                resultElement = AXIOMUtil.
+                        stringToOM("<" + elementName + ">" + value
+                                + "</" + elementName + ">");
+            } else {
+                resultElement = AXIOMUtil.
+                        stringToOM("<" + elementName
+                                + "></" + elementName + ">");
+            }
+        } catch (XMLStreamException | OMException e) {
+            log.error("FileConnector:unzip: Error while generating OMElement from element name" + elementName, e);
+        }
+        return resultElement;
     }
 }
