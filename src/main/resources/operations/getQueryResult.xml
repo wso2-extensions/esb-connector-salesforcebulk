@@ -1,0 +1,13 @@
+<template xmlns="http://ws.apache.org/ns/synapse" name="getQueryJobResult">
+    <parameter name="queryJobId" description="Query Job ID"/>
+    <parameter name="locator" description="Query Locator"/>
+    <parameter name="maxRecords" description="Query Job ID"/>
+    <parameter name="filePath" description="File path"/>
+    <sequence>
+        <property name="queryJobId" expression="$func:queryJobId" />
+        <property name="locator" expression="$func:locator" />
+        <property name="maxRecords" expression="$func:maxRecords" />
+        <property name="filePath" expression="$func:filePath" />
+        <class name="org.wso2.carbon.esb.connector.operations.GetQueryJobResult" />
+    </sequence>
+</template>

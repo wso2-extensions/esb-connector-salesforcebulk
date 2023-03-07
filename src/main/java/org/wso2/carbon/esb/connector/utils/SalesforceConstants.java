@@ -10,6 +10,7 @@ public class SalesforceConstants {
     public static final String INSTANCE_URL = "instanceUrl";
     public static final String SF_API_VERSION = "v57.0";
     public static final String SF_API_JOBS_INGEST_RELATIVE_PATH = "/services/data/" + SF_API_VERSION + "/jobs/ingest/";
+    public static final String SF_API_JOBS_QUERY_RELATIVE_PATH = "/services/data/" + SF_API_VERSION + "/jobs/ingest/";
     public static final String SF_API_JOBS_BATCHES = "/batches/";
 
     // Create constants for assignmentRuleId, columnDelimiter, contentType, externalIdFieldName, lineEnding, operation
@@ -22,5 +23,10 @@ public class SalesforceConstants {
     public static final String OBJECT = "object";
 
     public static final String JOB_ID = "jobId";
+    public static final String QUERY_JOB_ID = "queryJobId";
     public static final String FILE_PATH = "filePath";
+    public static final String QUERY = "query";
+    public static final String LOCATOR = "locator";
+    public static final String MAX_RECORDS = "maxRecords";
+
 }

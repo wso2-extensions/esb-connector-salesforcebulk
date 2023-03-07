@@ -1,0 +1,7 @@
+<template xmlns="http://ws.apache.org/ns/synapse" name="abortQueryJob">
+    <parameter name="queryJobId" description="Query Job ID"/>
+    <sequence>
+        <property name="queryJobId" expression="$func:queryJobId" />
+        <class name="org.wso2.carbon.esb.connector.operations.AbortQueryJob" />
+    </sequence>
+</template>

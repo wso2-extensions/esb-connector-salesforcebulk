@@ -8,6 +8,7 @@ import org.wso2.carbon.esb.connector.utils.HttpMethod;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -138,6 +139,44 @@ public class RestRequest {
                 }
             } else {
                 throw new SalesforceConnectionException("Unsupported HTTP method");
+            }
+        } catch (IOException e) {
+            throw new SalesforceConnectionException("Error while sending request", e);
+        }
+    }
+
+    public void sendGetAndReceiveToFile(String filePath) throws SalesforceConnectionException {
+        try {
+            URL endpoint = new URL(this.url);
+            HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection();
+            connection.setRequestMethod(this.method.toString());
+            for (String headerName : this.headers.keySet()) {
+                connection.setRequestProperty(headerName, this.headers.get(headerName));
+            }
+            int responseCode = connection.getResponseCode();
+            if (responseCode >= 200 && responseCode < 300) {
+                try (InputStream inputStream = connection.getInputStream()) {
+                    try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
+                        byte[] buffer = new byte[4096];
+                        int bytesRead = -1;
+                        while ((bytesRead = inputStream.read(buffer)) != -1) {
+                            outputStream.write(buffer, 0, bytesRead);
+                        }
+                    }
+                }
+            } else {
+                String errorMessage = connection.getResponseMessage();
+                String errorDetails;
+                try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(connection.getErrorStream()))) {
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = errorReader.readLine()) != null) {
+                        sb.append(line);
+                    }
+                    errorDetails = sb.toString();
+                }
+                throw new SalesforceConnectionException(String.format("Server returned error status code: %s, with error message:" +
+                        " %s. Error details: %s", responseCode, errorMessage, errorDetails), responseCode);
             }
         } catch (IOException e) {
             throw new SalesforceConnectionException("Error while sending request", e);

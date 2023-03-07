@@ -41,6 +41,10 @@ public class SalesforceUtils {
         return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH;
     }
 
+    public static String getCreateQueryJobUrl(SalesforceConfig salesforceConfig) {
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_QUERY_RELATIVE_PATH;
+    }
+
     public static String getUploadJobDataUrl(SalesforceConfig salesforceConfig, String jobId) {
         return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH + jobId + SalesforceConstants.SF_API_JOBS_BATCHES;
     }
@@ -53,13 +57,47 @@ public class SalesforceUtils {
         return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH + jobId;
     }
 
+    public static String getDeleteJobUrl(SalesforceConfig salesforceConfig, String jobId) {
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH + jobId;
+    }
+
+    public static String getAbortQueryJobUrl(SalesforceConfig salesforceConfig, String jobId) {
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_QUERY_RELATIVE_PATH + jobId;
+    }
+
+    public static String getDeleteQueryJobUrl(SalesforceConfig salesforceConfig, String jobId) {
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_QUERY_RELATIVE_PATH + jobId;
+    }
+
     public static String getGetAllJobInfoUrl(SalesforceConfig salesforceConfig) {
         return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH;
     }
 
     public static String getGetJobInfoUrl(SalesforceConfig salesforceConfig, String jobId) {
         return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH + jobId;
+    }
 
+    public static String getGetQueryJobInfoUrl(SalesforceConfig salesforceConfig, String jobId) {
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_QUERY_RELATIVE_PATH + jobId;
+    }
+
+    public static String getGetQueryJobResultUrl(SalesforceConfig salesforceConfig, String queryJobId,
+                                                 Integer maxRecords, String locator) {
+        String paramString = "";
+        if (maxRecords != null) {
+            paramString += SalesforceConstants.LOCATOR + "=" + locator;
+        }
+        if (StringUtils.isNotEmpty(locator)) {
+            if (StringUtils.isNotEmpty(paramString)) {
+                paramString += "&";
+            }
+            paramString += SalesforceConstants.MAX_RECORDS + "=" + maxRecords;
+        }
+        if (StringUtils.isNotEmpty(paramString)) {
+            paramString = "?" + paramString;
+        }
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_QUERY_RELATIVE_PATH + queryJobId
+                + paramString;
     }
 
     /**
@@ -77,6 +115,14 @@ public class SalesforceUtils {
     public static BulkJobOperationType getBulkJobOperationTypeEnum(String enumString) throws InvalidConfigurationException {
         try {
             return BulkJobOperationType.valueOf(enumString);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidConfigurationException("Invalid operation type provided: " + enumString);
+        }
+    }
+
+    public static BulkQueryJobOperationType getBulkQueryJobOperationTypeEnum(String enumString) throws InvalidConfigurationException {
+        try {
+            return BulkQueryJobOperationType.valueOf(enumString);
         } catch (IllegalArgumentException e) {
             throw new InvalidConfigurationException("Invalid operation type provided: " + enumString);
         }
