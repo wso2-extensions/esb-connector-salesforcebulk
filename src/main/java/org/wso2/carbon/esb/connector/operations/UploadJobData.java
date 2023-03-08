@@ -20,7 +20,10 @@ public class UploadJobData extends AbstractConnector {
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             String jobId = (String) getParameter(messageContext, SalesforceConstants.JOB_ID);
             String filePath = (String) getParameter(messageContext, SalesforceConstants.FILE_PATH);
+            log.info("jobId: " + jobId);
+            log.info("filePath: " + filePath);
             salesforceRequest.uploadJobData(jobId, filePath);
+            SalesforceUtils.generateOutput(messageContext, SalesforceUtils.getSuccessXml());
         } catch (InvalidConfigurationException | SalesforceConnectionException e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);

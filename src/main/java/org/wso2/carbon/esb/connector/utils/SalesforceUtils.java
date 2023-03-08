@@ -50,7 +50,7 @@ public class SalesforceUtils {
     }
 
     public static String getCloseJobUrl(SalesforceConfig salesforceConfig, String jobId) {
-        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH + jobId;
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH + jobId +  "/";
     }
 
     public static String getAbortJobUrl(SalesforceConfig salesforceConfig, String jobId) {
@@ -71,6 +71,10 @@ public class SalesforceUtils {
 
     public static String getGetAllJobInfoUrl(SalesforceConfig salesforceConfig) {
         return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH;
+    }
+
+    public static String getGetAllQueryJobInfoUrl(SalesforceConfig salesforceConfig) {
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_QUERY_RELATIVE_PATH;
     }
 
     public static String getGetJobInfoUrl(SalesforceConfig salesforceConfig, String jobId) {
@@ -96,8 +100,23 @@ public class SalesforceUtils {
         if (StringUtils.isNotEmpty(paramString)) {
             paramString = "?" + paramString;
         }
-        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_QUERY_RELATIVE_PATH + queryJobId
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_QUERY_RELATIVE_PATH + queryJobId + SalesforceConstants.SF_API_JOBS_QUERY_RESULTS_RELATIVE_PATH
                 + paramString;
+    }
+
+    public static String getGetJobFailedResultsUrl(SalesforceConfig salesforceConfig, String queryJobId) {
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH + queryJobId
+                + SalesforceConstants.SF_API_JOB_FAILED_RESULTS_RELATIVE_PATH;
+    }
+
+    public static String getGetJobSuccessfulResultsUrl(SalesforceConfig salesforceConfig, String queryJobId) {
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH + queryJobId
+                + SalesforceConstants.SF_API_JOB_SUCCESSFUL_RESULTS_RELATIVE_PATH;
+    }
+
+    public static String getGetJobUnprocessedResultsUrl(SalesforceConfig salesforceConfig, String queryJobId) {
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH + queryJobId
+                + SalesforceConstants.SF_API_JOB_UNPROCESSED_RESULTS_RELATIVE_PATH;
     }
 
     /**
@@ -164,14 +183,11 @@ public class SalesforceUtils {
             OMElement omElement = AXIOMUtil.stringToOM(xmlString);
             //Detaching first element (soapBody.getFirstElement().detach()) will be done by following method anyway.
             JsonUtil.removeJsonPayload(((Axis2MessageContext) messageContext).getAxis2MessageContext());
+
             ((Axis2MessageContext) messageContext).getAxis2MessageContext().
                     removeProperty("NO_ENTITY_BODY");
             SOAPBody soapBody = messageContext.getEnvelope().getBody();
             soapBody.addChild(omElement);
-
-//            PayloadUtils.preparePayload(((Axis2MessageContext) messageContext).getAxis2MessageContext(), xmlString);
-//        } catch (ContentBuilderException e) {
-//            throw new InvalidConfigurationException(e.getMessage(), e);
         } catch (XMLStreamException e) {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
@@ -200,5 +216,9 @@ public class SalesforceUtils {
             log.error("FileConnector:unzip: Error while generating OMElement from element name" + elementName, e);
         }
         return resultElement;
+    }
+
+    public static String getSuccessXml() {
+        return "<result>Success</result>";
     }
 }

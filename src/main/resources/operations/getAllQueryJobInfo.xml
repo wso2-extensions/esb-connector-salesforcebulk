@@ -1,0 +1,5 @@
+<template xmlns="http://ws.apache.org/ns/synapse" name="getAllQueryJobInfo">
+    <sequence>
+        <class name="org.wso2.carbon.esb.connector.operations.GetAllQueryJobInfo" />
+    </sequence>
+</template>

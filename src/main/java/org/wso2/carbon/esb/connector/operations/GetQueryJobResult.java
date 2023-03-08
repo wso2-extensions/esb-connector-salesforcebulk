@@ -3,9 +3,7 @@ package org.wso2.carbon.esb.connector.operations;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
-import org.wso2.carbon.esb.connector.exception.ResponseParsingException;
 import org.wso2.carbon.esb.connector.exception.SalesforceConnectionException;
-import org.wso2.carbon.esb.connector.pojo.QueryJobInfo;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.requests.SalesforceRequest;
 import org.wso2.carbon.esb.connector.store.SalesforceConfigStore;
@@ -36,8 +34,8 @@ public class GetQueryJobResult extends AbstractConnector {
             }
             String locator = (String) getParameter(messageContext, SalesforceConstants.LOCATOR);
 
-            salesforceRequest.getQueryJobResult(queryJobId, filePath, maxRecordsInt, locator);
-            SalesforceUtils.generateOutput(messageContext, "");
+            salesforceRequest.getQueryJobResults(queryJobId, filePath, maxRecordsInt, locator);
+            SalesforceUtils.generateOutput(messageContext, SalesforceUtils.getSuccessXml());
         } catch (InvalidConfigurationException | SalesforceConnectionException e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);

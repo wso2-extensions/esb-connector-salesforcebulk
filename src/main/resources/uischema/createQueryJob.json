@@ -46,8 +46,8 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "object",
-                    "displayName": "query",
+                    "name": "query",
+                    "displayName": "Query",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "true",

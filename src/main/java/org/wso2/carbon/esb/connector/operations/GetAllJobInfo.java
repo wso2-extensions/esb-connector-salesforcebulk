@@ -20,10 +20,8 @@ public class GetAllJobInfo extends AbstractConnector {
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
-
             GetAllJobResponse getAllJobResponse = salesforceRequest.getAllJobInfo();
             SalesforceUtils.generateOutput(messageContext, getAllJobResponse.getXmlString());
-
         } catch (InvalidConfigurationException | SalesforceConnectionException | ResponseParsingException e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);

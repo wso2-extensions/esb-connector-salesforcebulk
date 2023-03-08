@@ -60,17 +60,6 @@ public class InitSalesforce extends AbstractConnector {
                 SalesforceConstants.SF_OAUTH_CONFIG_NAME);
         String instanceUrl = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
                 SalesforceConstants.INSTANCE_URL);
-        // log all of the above variables
-        messageContext.getPropertyKeySet().forEach(key -> {
-            log.info("key: " + key + " value: " + messageContext.getProperty((String)key));
-        });
-        log.info("clientID: " + clientID);
-        log.info("clientSecret: " + clientSecret);
-        log.info("refreshToken: " + refreshToken);
-        log.info("tokenUrl: " + tokenUrl);
-        log.info("accessToken: " + accessToken);
-        log.info("sfOAuthConfigName: " + salesforceConfigName);
-        log.info("instanceUrl: " + instanceUrl);
 
         SalesforceConfig salesforceConfig = new SalesforceConfig();
         salesforceConfig.setClientId(clientID);

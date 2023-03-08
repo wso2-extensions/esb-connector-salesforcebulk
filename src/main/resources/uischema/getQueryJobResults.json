@@ -1,8 +1,8 @@
 {
   "connectorName": "salesforce_bulkapi_v2",
-  "operationName": "getFailedResults",
-  "title": "Get Failed Results",
-  "help": "This operation is used to get the failed results for a job.",
+  "operationName": "getQueryJobResults",
+  "title": "Get Job Info",
+  "help": "Get Job Info",
   "elements": [
     {
       "type": "attributeGroup",
@@ -31,12 +31,12 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "jobId",
-                    "displayName": "Job ID",
+                    "name": "queryJobId",
+                    "displayName": "Query Job ID",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "true",
-                    "helpTip": "The ID of the job that you want to get the failed results for."
+                    "helpTip": "The ID of the job to get the information for."
                   }
                 },
                 {
@@ -48,6 +48,28 @@
                     "defaultValue": "",
                     "required": "true",
                     "helpTip": "The path to the file to write the results to."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "locator",
+                    "displayName": "Locator",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The locator of the result set to get the information for"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "maxRecords",
+                    "displayName": "Max Records",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "The maximum number of records to return in the response."
                   }
                 }
               ]

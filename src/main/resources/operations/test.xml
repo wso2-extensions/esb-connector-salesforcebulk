@@ -1,19 +1,16 @@
-<template xmlns="http://ws.apache.org/ns/synapse" name="abortJob">
+<template xmlns="http://ws.apache.org/ns/synapse" name="test">
     <parameter name="jobId" description="Job ID"/>
+    <parameter name="url" description="url"/>
+    <parameter name="method" description="url"/>
     <sequence>
         <property name="jobId" expression="$func:jobId" />
-        <class name="org.wso2.carbon.esb.connector.operations.AbortJob" />
-        <property name="uri.var.url" expression="get-property('abortJobUrl')" />
-        <property name="uri.var.accessToken" expression="get-property('accessToken')" />
+        <property name="url" expression="$func:url" />
+        <property name="uri.var.url" expression="fn:concat(get-property('instanceUrl'),'')" />
+        <class name="org.wso2.carbon.esb.connector.operations.Test" />
+        <property name="uri.var.accessToken" expression="get-property('accessTokenTest')" />
         <header name="Authorization"
-                expression="fn:concat('Bearer ', $ctx:uri.var.accessToken )"
+                expression="fn:concat('Bearer  ', $ctx:uri.var.accessToken )"
                 scope="transport"/>
-        <payloadFactory media-type="json">
-            <format>
-                <![CDATA[{ "state" : "Aborted" }]]>
-            </format>
-            <args/>
-        </payloadFactory>
         <call>
             <endpoint>
                 <http method="patch" uri-template="{uri.var.url}">
@@ -29,5 +26,6 @@
                 </http>
             </endpoint>
         </call>
+
     </sequence>
 </template>

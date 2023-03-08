@@ -32,6 +32,7 @@
 		<property name="tokenUrl" expression="$func:tokenUrl"/>
 		<property name="name" expression="$func:name"/>
 		<property name="instanceUrl" expression="$func:instanceUrl"/>
+		<property name="instanceUrlTest" expression="$func:instanceUrl" scope="axis2"/>
 		<class name="org.wso2.carbon.esb.connector.operations.InitSalesforce" />
 	</sequence>
 </template>

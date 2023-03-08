@@ -17,11 +17,10 @@ public class AbortQueryJob extends AbstractConnector {
             log.info("AbortQueryJob operation now started.");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
-            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             String queryJobId = (String) getParameter(messageContext, SalesforceConstants.QUERY_JOB_ID);
-
-            salesforceRequest.abortQueryJob(queryJobId);
-        } catch (InvalidConfigurationException | SalesforceConnectionException e) {
+            String url = SalesforceUtils.getAbortQueryJobUrl(salesforceConfig, queryJobId);
+            messageContext.setProperty(SalesforceConstants.ABORT_QUERY_JOB_URL, url);
+        } catch (InvalidConfigurationException e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);
         }

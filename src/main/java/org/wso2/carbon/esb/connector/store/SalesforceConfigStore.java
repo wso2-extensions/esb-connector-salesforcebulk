@@ -15,7 +15,6 @@ public class SalesforceConfigStore {
     public static void addSalesforceConfig(SalesforceConfig salesforceConfig) {
         String key = salesforceConfig.getSalesforceConfigName();
         if (!salesforceConfigMap.contains(key)) {
-            salesforceConfig.setActiveAccessToken(salesforceConfig.getAccessToken());
             salesforceConfigMap.put(key, salesforceConfig);
         }
     }
@@ -29,20 +28,12 @@ public class SalesforceConfigStore {
     }
 
     /**
-     * Get active access token from the store.
-     * @param salesforceConfigName Name of the Salesforce config.
-     */
-    public static String getActiveAccessToken(String salesforceConfigName) {
-        return salesforceConfigMap.get(salesforceConfigName).getActiveAccessToken();
-    }
-
-    /**
      * Update active access token in the store.
      * @param salesforceConfigName Name of the Salesforce config.
      * @param activeAccessToken Active access token.
      */
-    public static void updateActiveAccessToken(String salesforceConfigName, String activeAccessToken) {
-        salesforceConfigMap.get(salesforceConfigName).setActiveAccessToken(activeAccessToken);
+    public static void updateAccessToken(String salesforceConfigName, String activeAccessToken) {
+        salesforceConfigMap.get(salesforceConfigName).setAccessToken(activeAccessToken);
     }
 
     /**

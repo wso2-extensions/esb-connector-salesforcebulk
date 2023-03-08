@@ -26,11 +26,7 @@ public class CreateJob extends AbstractConnector {
             CreateJobPayload createJobPayload = getCreateJobPayload(messageContext);
 
             JobInfo jobInfo = salesforceRequest.createJob(createJobPayload);
-            log.info("Payload response: " + jobInfo.getXmlString());
             SalesforceUtils.generateOutput(messageContext, jobInfo.getXmlString());
-
-            log.info("Payload env: " + messageContext.getEnvelope().getBody().toString());
-            log.info("create job : oauthConfig accessToken" + (salesforceConfig == null ? "Its null" : salesforceConfig.getAccessToken()));
         } catch (InvalidConfigurationException | ResponseParsingException | SalesforceConnectionException e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);

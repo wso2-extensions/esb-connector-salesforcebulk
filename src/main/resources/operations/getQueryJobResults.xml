@@ -1,4 +1,4 @@
-<template xmlns="http://ws.apache.org/ns/synapse" name="getQueryJobResult">
+<template xmlns="http://ws.apache.org/ns/synapse" name="getQueryJobResults">
     <parameter name="queryJobId" description="Query Job ID"/>
     <parameter name="locator" description="Query Locator"/>
     <parameter name="maxRecords" description="Query Job ID"/>

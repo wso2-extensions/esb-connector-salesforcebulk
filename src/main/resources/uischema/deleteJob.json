@@ -24,14 +24,22 @@
             }
           },
           {
-            "type": "attribute",
+            "type": "attributeGroup",
             "value": {
-              "name": "jobId",
-              "displayName": "Job ID",
-              "inputType": "stringOrExpression",
-              "defaultValue": "",
-              "required": "true",
-              "helpTip": "The ID of the job to delete"
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "jobId",
+                    "displayName": "Job ID",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The ID of the job to delete"
+                  }
+                }
+              ]
             }
           }
         ]

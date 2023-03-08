@@ -24,25 +24,33 @@
             }
           },
           {
-            "type": "attribute",
+            "type": "attributeGroup",
             "value": {
-              "name": "jobId",
-              "displayName": "Job ID",
-              "inputType": "stringOrExpression",
-              "defaultValue": "",
-              "required": "true",
-              "helpTip": "The ID of the job to upload data to"
-            }
-          },
-          {
-            "type": "attribute",
-            "value": {
-              "name": "filePath",
-              "displayName": "File Path",
-              "inputType": "stringOrExpression",
-              "defaultValue": "",
-              "required": "true",
-              "helpTip": "The ID of the job to upload data to"
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "jobId",
+                    "displayName": "Job ID",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The ID of the job to upload data to"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "filePath",
+                    "displayName": "File Path",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The ID of the job to upload data to"
+                  }
+                }
+              ]
             }
           }
         ]

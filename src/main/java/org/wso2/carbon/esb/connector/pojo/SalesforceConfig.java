@@ -12,18 +12,7 @@ public class SalesforceConfig {
     private String tokenId = null;
     private String accessToken = null;
     private String sfOAuthConfigName = null;
-    private String activeAccessToken = null;
     private String instanceUrl = null;
-
-    public String getActiveAccessToken() {
-
-        return activeAccessToken;
-    }
-
-    public void setActiveAccessToken(String activeAccessToken) {
-
-        this.activeAccessToken = activeAccessToken;
-    }
 
     public String getInstanceUrl() {
 

@@ -15,11 +15,11 @@ public class CreateQueryJobPayload {
     private String query;
     private ColumnDelimiter columnDelimiter;
     private LineEnding lineEnding;
-    private BulkQueryJobOperationType operation;
+    private String operation;
 
-    public CreateQueryJobPayload(BulkQueryJobOperationType operation, String query) throws InvalidConfigurationException {
+    public CreateQueryJobPayload(String operation, String query) throws InvalidConfigurationException {
         if (operation == null || query == null) {
-            throw new InvalidConfigurationException("Operation and object cannot be null when creating a Bulk Job");
+            throw new InvalidConfigurationException("Operation or query cannot be null when creating a Bulk Job");
         }
         this.operation = operation;
         this.query = query;
@@ -34,7 +34,7 @@ public class CreateQueryJobPayload {
     }
 
     public String getOperation() {
-        return operation.getOperationType();
+        return operation;
     }
 
     public void setColumnDelimiter(ColumnDelimiter columnDelimiter) {
@@ -43,6 +43,14 @@ public class CreateQueryJobPayload {
 
     public void setLineEnding(LineEnding lineEnding) {
         this.lineEnding = lineEnding;
+    }
+
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
     }
 
     public String toJson() throws ResponseParsingException {

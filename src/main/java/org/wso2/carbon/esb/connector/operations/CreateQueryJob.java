@@ -27,11 +27,7 @@ public class CreateQueryJob extends AbstractConnector {
             CreateQueryJobPayload createQueryJobPayload = getCreateQueryJobPayload(messageContext);
 
             QueryJobInfo jobInfo = salesforceRequest.createQueryJob(createQueryJobPayload);
-            log.info("Payload response: " + jobInfo.getXmlString());
             SalesforceUtils.generateOutput(messageContext, jobInfo.getXmlString());
-
-            log.info("Payload env: " + messageContext.getEnvelope().getBody().toString());
-            log.info("create job : oauthConfig accessToken" + (salesforceConfig == null ? "Its null" : salesforceConfig.getAccessToken()));
         } catch (InvalidConfigurationException | ResponseParsingException | SalesforceConnectionException e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);
@@ -46,9 +42,11 @@ public class CreateQueryJob extends AbstractConnector {
         String columnDelimiter = (String) getParameter(messageContext, SalesforceConstants.COLUMN_DELIMITER);
 
         CreateQueryJobPayload createQueryJobPayload =
-                new CreateQueryJobPayload(SalesforceUtils.getBulkQueryJobOperationTypeEnum(operation), query);
+                new CreateQueryJobPayload(SalesforceUtils.getBulkQueryJobOperationTypeEnum(operation).getOperationType(), query);
         createQueryJobPayload.setLineEnding(SalesforceUtils.getLineEndingEnum(lineEnding));
         createQueryJobPayload.setColumnDelimiter(SalesforceUtils.getColumnDelimiterEnum(columnDelimiter));
         return createQueryJobPayload;
     }
 }
+
+

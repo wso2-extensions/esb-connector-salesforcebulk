@@ -1,8 +1,8 @@
 {
   "connectorName": "salesforce_bulkapi_v2",
-  "operationName": "getFailedResults",
-  "title": "Get Failed Results",
-  "help": "This operation is used to get the failed results for a job.",
+  "operationName": "closeJob",
+  "title": "Close Job",
+  "help": "Closes a Salesforce Bulk API job",
   "elements": [
     {
       "type": "attributeGroup",
@@ -36,18 +36,7 @@
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "true",
-                    "helpTip": "The ID of the job that you want to get the failed results for."
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "filePath",
-                    "displayName": "File Path",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "The path to the file to write the results to."
+                    "helpTip": "The ID of the job to abort"
                   }
                 }
               ]
