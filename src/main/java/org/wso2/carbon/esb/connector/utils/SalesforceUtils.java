@@ -20,7 +20,10 @@ import javax.xml.stream.XMLStreamException;
 public class SalesforceUtils {
 
     private static final Log log = LogFactory.getLog(SalesforceUtils.class);
-
+    private static final String GRANT_TYPE = "grant_type";
+    private static final String CLIENT_ID = "client_id";
+    private static final String CLIENT_SECRET = "client_secret";
+    private static final String REFRESH_TOKEN = "refresh_token";
     /**
      * Retrieves connection name from message context if configured as configKey attribute
      * or from the template parameter
@@ -117,6 +120,12 @@ public class SalesforceUtils {
     public static String getGetJobUnprocessedResultsUrl(SalesforceConfig salesforceConfig, String queryJobId) {
         return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH + queryJobId
                 + SalesforceConstants.SF_API_JOB_UNPROCESSED_RESULTS_RELATIVE_PATH;
+    }
+
+    public static String getSFTokenUrl(SalesforceConfig salesforceConfig) {
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_TOKEN_RELATIVE_PATH + "?" + GRANT_TYPE + "="
+                + REFRESH_TOKEN + "&" + CLIENT_ID + "=" + salesforceConfig.getClientId() + "&"
+                + CLIENT_SECRET + "=" + salesforceConfig.getClientSecret() + "&" + REFRESH_TOKEN + "=" + salesforceConfig.getRefreshToken();
     }
 
     /**

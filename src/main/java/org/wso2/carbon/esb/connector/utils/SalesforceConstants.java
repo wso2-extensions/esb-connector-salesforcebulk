@@ -11,6 +11,7 @@ public class SalesforceConstants {
     public static final String SF_API_VERSION = "v57.0";
     public static final String SF_API_JOBS_INGEST_RELATIVE_PATH = "/services/data/" + SF_API_VERSION + "/jobs/ingest/";
     public static final String SF_API_JOBS_QUERY_RELATIVE_PATH = "/services/data/" + SF_API_VERSION + "/jobs/query/";
+    public static final String SF_TOKEN_RELATIVE_PATH = "/services/oauth2/token";
     public static final String SF_API_JOBS_BATCHES = "/batches/";
     public static final String SF_API_JOB_FAILED_RESULTS_RELATIVE_PATH = "/failedResults/";
     public static final String SF_API_JOB_SUCCESSFUL_RESULTS_RELATIVE_PATH = "/successfulResults/";

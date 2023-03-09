@@ -28,8 +28,20 @@ public class RestRequest {
     private String url;
     private String body;
     private String inputFilePath;
+    private String outputFilePath;
     private boolean getBodyFromFile = false;
     private HashMap<String, String> headers;
+    private boolean receiveToFile = false;
+
+    public RestRequest(HttpMethod method, String url, String body, HashMap<String, String> headers) {
+        this.method = method;
+        this.url = url;
+        this.body = body;
+        this.headers = headers;
+        this.inputFilePath = null;
+        this.outputFilePath = null;
+    }
+
     public HttpMethod getMethod() {
         return method;
     }
@@ -82,36 +94,39 @@ public class RestRequest {
 
     public RestResponse send() throws SalesforceConnectionException {
         try {
-            //  TODO delete this log blocks
-            log.info(
-                    "url: " + this.url +
-                            " method: " + this.method
-            );
-            System.out.println("url: " + this.url +
-                    " method: " + this.method);
-            if (this.method == HttpMethod.PATCH) {
-                return sendPatchRequest();
-            }
             URL endpoint = new URL(this.url);
             HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection();
             connection.setRequestMethod(this.method.toString());
-            for (String headerName : this.headers.keySet()) {
-                connection.setRequestProperty(headerName, this.headers.get(headerName));
+            if (headers != null) {
+                for (String headerName : this.headers.keySet()) {
+                    connection.setRequestProperty(headerName, this.headers.get(headerName));
+                }
             }
             if (this.getMethod() == HttpMethod.GET || this.getMethod() == HttpMethod.DELETE) {
                 int responseCode = connection.getResponseCode();
                 if (responseCode >= 200 && responseCode < 300) {
                     try (InputStream inputStream = connection.getInputStream()) {
-                        BufferedReader inputReader = new BufferedReader(
-                                new InputStreamReader(inputStream));
-                        String inputLine;
-                        StringBuilder responseBody = new StringBuilder();
-                        while ((inputLine = inputReader.readLine()) != null) {
-                            responseBody.append(inputLine);
+                        if (isReceiveToFile()) {
+                            try (FileOutputStream outputStream = new FileOutputStream(this.outputFilePath)) {
+                                byte[] buffer = new byte[4096];
+                                int bytesRead = -1;
+                                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                                    outputStream.write(buffer, 0, bytesRead);
+                                }
+                                return new RestResponse(responseCode, null);
+                            }
+                        } else {
+                            BufferedReader inputReader = new BufferedReader(
+                                    new InputStreamReader(inputStream));
+                            String inputLine;
+                            StringBuilder responseBody = new StringBuilder();
+                            while ((inputLine = inputReader.readLine()) != null) {
+                                responseBody.append(inputLine);
+                            }
+                            inputReader.close();
+                            String response = responseBody.toString();
+                            return new RestResponse(responseCode, response);
                         }
-                        inputReader.close();
-                        String response = responseBody.toString();
-                        return new RestResponse(responseCode, response);
                     }
                 } else {
                     String errorMessage = connection.getResponseMessage();
@@ -125,14 +140,9 @@ public class RestRequest {
                         errorDetails = sb.toString();
                     }
                     log.error("error::: "  + errorDetails);//  TODO delete this line
-                    throw new SalesforceConnectionException(String.format("Server returned error status code: %s, with error message:" +
-                            " %s. Error details: %s", responseCode, errorMessage, errorDetails), responseCode);
+                    return new RestResponse(responseCode, errorMessage, errorDetails);
                 }
-            } else if (this.getMethod() == HttpMethod.POST || this.getMethod() == HttpMethod.PATCH
-                    || this.getMethod() == HttpMethod.PUT) {
-                if (!this.getBodyFromFile && this.body == null) {
-                    throw new SalesforceConnectionException("Body is required for POST and PATCH requests");
-                }
+            } else if (this.getMethod() == HttpMethod.POST || this.getMethod() == HttpMethod.PUT) {
                 if (this.getBodyFromFile && this.inputFilePath == null) {
                     throw new SalesforceConnectionException("Input file path is required when getBodyFromFile is true");
                 }
@@ -155,9 +165,11 @@ public class RestRequest {
                         dataOutputStream.flush();
                     }
                 } else {
-                    try (DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream())) {
-                        dataOutputStream.writeBytes(this.body);
-                        dataOutputStream.flush();
+                    if (this.body != null) {
+                        try (DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream())) {
+                            dataOutputStream.writeBytes(this.body);
+                            dataOutputStream.flush();
+                        }
                     }
                 }
                 int responseCode = connection.getResponseCode();
@@ -188,8 +200,7 @@ public class RestRequest {
                         errorDetails = sb.toString();
                     }
                     log.error("error::: "  + errorDetails); //  TODO delete this line
-                    throw new SalesforceConnectionException(String.format("Server returned error status code: %s, with error message:" +
-                            " %s. Error details: %s", responseCode, errorMessage, errorDetails), responseCode);
+                    return new RestResponse(responseCode, errorMessage, errorDetails);
                 }
             } else {
                 throw new SalesforceConnectionException("Unsupported HTTP method");
@@ -199,89 +210,88 @@ public class RestRequest {
         }
     }
 
-    public RestResponse sendGetAndReceiveToFile(String filePath) throws SalesforceConnectionException {
-        try {
-            URL endpoint = new URL(this.url);
-            HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection();
-            connection.setRequestMethod(this.method.toString());
-            for (String headerName : this.headers.keySet()) {
-                connection.setRequestProperty(headerName, this.headers.get(headerName));
-            }
-            int responseCode = connection.getResponseCode();
-            if (responseCode >= 200 && responseCode < 300) {
-                try (InputStream inputStream = connection.getInputStream()) {
-                    try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
-                        byte[] buffer = new byte[4096];
-                        int bytesRead = -1;
-                        while ((bytesRead = inputStream.read(buffer)) != -1) {
-                            outputStream.write(buffer, 0, bytesRead);
-                        }
-                    }
-                }
-                RestResponse response = new RestResponse(responseCode, null);
-                return response;
-            } else {
-                String errorMessage = connection.getResponseMessage();
-                String errorDetails;
-                try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(connection.getErrorStream()))) {
-                    StringBuilder sb = new StringBuilder();
-                    String line;
-                    while ((line = errorReader.readLine()) != null) {
-                        sb.append(line);
-                    }
-                    errorDetails = sb.toString();
-                }
-                throw new SalesforceConnectionException(String.format("Server returned error status code: %s, with error message:" +
-                        " %s. Error details: %s", responseCode, errorMessage, errorDetails), responseCode);
-            }
-        } catch (IOException e) {
-            throw new SalesforceConnectionException("Error while sending request", e);
-        }
+//    public RestResponse sendGetAndReceiveToFile(String filePath) throws SalesforceConnectionException {
+//        try {
+//            URL endpoint = new URL(this.url);
+//            HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection();
+//            connection.setRequestMethod(this.method.toString());
+//            if (this.headers != null) {
+//                for (String headerName : this.headers.keySet()) {
+//                    connection.setRequestProperty(headerName, this.headers.get(headerName));
+//                }
+//            }
+//            int responseCode = connection.getResponseCode();
+//            if (responseCode >= 200 && responseCode < 300) {
+//                try (InputStream inputStream = connection.getInputStream()) {
+//                    try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
+//                        byte[] buffer = new byte[4096];
+//                        int bytesRead = -1;
+//                        while ((bytesRead = inputStream.read(buffer)) != -1) {
+//                            outputStream.write(buffer, 0, bytesRead);
+//                        }
+//                    }
+//                }
+//                RestResponse response = new RestResponse(responseCode, null);
+//                return response;
+//            } else {
+//                String errorMessage = connection.getResponseMessage();
+//                String errorDetails;
+//                try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(connection.getErrorStream()))) {
+//                    StringBuilder sb = new StringBuilder();
+//                    String line;
+//                    while ((line = errorReader.readLine()) != null) {
+//                        sb.append(line);
+//                    }
+//                    errorDetails = sb.toString();
+//                }
+//                throw new SalesforceConnectionException(String.format("Server returned error status code: %s, with error message:" +
+//                        " %s. Error details: %s", responseCode, errorMessage, errorDetails), responseCode);
+//            }
+//        } catch (IOException e) {
+//            throw new SalesforceConnectionException("Error while sending request", e);
+//        }
+//    }
+
+//    public RestResponse sendPatchRequest() throws SalesforceConnectionException {
+//        try {
+//            OkHttpClient client = new OkHttpClient();
+//            RequestBody body = RequestBody.create(MediaType.parse(RequestConstants.APPLICATION_JSON), this.body);
+//            Request.Builder requestBuilder = new Request.Builder()
+//                    .url(this.url)
+//                    .patch(body);
+//            if (this.headers != null) {
+//                for (String headerName : this.headers.keySet()) {
+//                    requestBuilder.addHeader(headerName, this.headers.get(headerName));
+//                }
+//            }
+//            Request request = requestBuilder.build();
+//            Response response = client.newCall(request).execute();
+//            if (!response.isSuccessful() || response.code() < 200 || response.code() >= 300) {
+//                String errorDetails = response.body() != null ? response.body().string() : "";
+//                throw new SalesforceConnectionException(String.format("Server returned error status code: %s, with error message:" +
+//                        " %s. Error details: %s", response.code(), response.message(), errorDetails), response.code());
+//            }
+//            RestResponse restResponse = new RestResponse(response.code(),
+//                    response.body() != null ? response.body().string() : "");
+//            return restResponse;
+//        } catch (IOException e) {
+//            throw new SalesforceConnectionException("Error while sending request", e);
+//        }
+//    }
+
+    public boolean isReceiveToFile() {
+        return receiveToFile;
     }
 
-    public RestResponse sendPatchRequest() throws SalesforceConnectionException {
-        try {
-            OkHttpClient client = new OkHttpClient();
-            RequestBody body = RequestBody.create(MediaType.parse(RequestConstants.APPLICATION_JSON), this.body);
-            Request.Builder requestBuilder = new Request.Builder()
-                    .url(this.url)
-                    .patch(body);
-            for (String headerName : this.headers.keySet()) {
-                requestBuilder.addHeader(headerName, this.headers.get(headerName));
-            }
-            Request request = requestBuilder.build();
-            Response response = client.newCall(request).execute();
-            if (!response.isSuccessful() || response.code() < 200 || response.code() >= 300) {
-                String errorDetails = response.body() != null ? response.body().string() : "";
-                throw new SalesforceConnectionException(String.format("Server returned error status code: %s, with error message:" +
-                        " %s. Error details: %s", response.code(), response.message(), errorDetails), response.code());
-            }
-            RestResponse restResponse = new RestResponse(response.code(),
-                    response.body() != null ? response.body().string() : "");
-            return restResponse;
-        } catch (IOException e) {
-            throw new SalesforceConnectionException("Error while sending request", e);
-        }
+    public void setReceiveToFile(boolean receiveToFile) {
+        this.receiveToFile = receiveToFile;
     }
 
-    public static class RestResponse {
-        private int statusCode;
-        private String response;
-
-        public RestResponse(int statusCode, String response) {
-            this.statusCode = statusCode;
-            this.response = response;
-        }
-
-        public int getStatusCode() {
-
-            return statusCode;
-        }
-
-        public String getResponse() {
-
-            return response;
-        }
+    public String getOutputFilePath() {
+        return outputFilePath;
     }
 
+    public void setOutputFilePath(String outputFilePath) {
+        this.outputFilePath = outputFilePath;
+    }
 }
