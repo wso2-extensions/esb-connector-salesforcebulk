@@ -45,5 +45,3 @@ public class CreateQueryJob extends AbstractConnector {
         return createQueryJobPayload;
     }
 }
-
-

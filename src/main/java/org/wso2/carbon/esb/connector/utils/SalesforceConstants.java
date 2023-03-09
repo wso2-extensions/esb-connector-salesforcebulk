@@ -26,7 +26,6 @@ public class SalesforceConstants {
     public static final String LINE_ENDING = "lineEnding";
     public static final String OPERATION = "operation";
     public static final String OBJECT = "object";
-
     public static final String JOB_ID = "jobId";
     public static final String QUERY_JOB_ID = "queryJobId";
     public static final String FILE_PATH = "filePath";
@@ -35,6 +34,5 @@ public class SalesforceConstants {
     public static final String MAX_RECORDS = "maxRecords";
     public static final String CLOSE_JOB_URL = "closeJobUrl";
     public static final String ABORT_JOB_URL = "abortJobUrl";
-
     public static final String ABORT_QUERY_JOB_URL = "abortQueryJobUrl";
 }

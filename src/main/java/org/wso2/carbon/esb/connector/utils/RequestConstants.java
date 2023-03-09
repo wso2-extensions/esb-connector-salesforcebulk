@@ -17,6 +17,4 @@ public class RequestConstants {
     public static final String TEXT_CSV = "text/csv";
     public static final String X_PRETTY_PRINT = "X-PrettyPrint";
     public static final String BEARER = "Bearer ";
-
-
 }
