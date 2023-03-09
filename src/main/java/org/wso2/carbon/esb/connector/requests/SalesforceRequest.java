@@ -243,7 +243,7 @@ public class SalesforceRequest {
         sendRequest(restRequest);
     }
 
-    public void renewAccessToken() throws SalesforceConnectionException {
+    public String renewAccessToken() throws SalesforceConnectionException {
         RestRequest restRequest =
                 new RestRequest(HttpMethod.POST, SalesforceUtils.getSFTokenUrl(salesforceConfig), null, null);
 
@@ -251,8 +251,10 @@ public class SalesforceRequest {
         String responseStr = restResponse.getResponse();
         try {
             JSONObject jsonObject = new JSONObject(responseStr);
-            salesforceConfig.setAccessToken(jsonObject.getString(ACCESS_TOKEN));
+            String accessToken = jsonObject.getString(ACCESS_TOKEN);
+            salesforceConfig.setAccessToken(accessToken);
             log.info("Access token renewed successfully.");
+            return accessToken;
         } catch (JSONException e) {
             throw new SalesforceConnectionException("Error while parsing token response to json. " +
                     "Access token renewal process failed with exception: ", e);
@@ -278,7 +280,4 @@ public class SalesforceRequest {
         }
         return restResponse;
     }
-
-
-
 }
