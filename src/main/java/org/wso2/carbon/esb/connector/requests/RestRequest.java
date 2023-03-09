@@ -16,11 +16,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.HashMap;
-import okhttp3.*;
-import org.wso2.carbon.esb.connector.utils.RequestConstants;
-import org.wso2.carbon.esb.connector.utils.SalesforceConstants;
 
 public class RestRequest {
     private Log log = LogFactory.getLog(this.getClass());
