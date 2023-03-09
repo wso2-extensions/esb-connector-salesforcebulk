@@ -17,11 +17,11 @@ public class GetJobInfo extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) {
         try {
-            log.info("Get job info operation now started.");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             String jobId = (String) getParameter(messageContext, SalesforceConstants.JOB_ID);
+            log.debug("Getting job info with id: " + jobId);
             JobInfo jobInfo = salesforceRequest.getJobInfo(jobId);
             SalesforceUtils.generateOutput(messageContext, jobInfo.getXmlString());
         } catch (InvalidConfigurationException | SalesforceConnectionException | ResponseParsingException e) {

@@ -9,16 +9,16 @@ public class SalesforceConstants {
     public static final String SF_OAUTH_CONFIG_NAME = "name";
     public static final String INSTANCE_URL = "instanceUrl";
     public static final String SF_API_VERSION = "v57.0";
-    public static final String SF_API_JOBS_INGEST_RELATIVE_PATH = "/services/data/" + SF_API_VERSION + "/jobs/ingest/";
-    public static final String SF_API_JOBS_QUERY_RELATIVE_PATH = "/services/data/" + SF_API_VERSION + "/jobs/query/";
+    public static final String SF_API_JOBS_INGEST_RELATIVE_PATH = "/services/data/"
+            + SF_API_VERSION + "/jobs/ingest/";
+    public static final String SF_API_JOBS_QUERY_RELATIVE_PATH = "/services/data/"
+            + SF_API_VERSION + "/jobs/query/";
     public static final String SF_TOKEN_RELATIVE_PATH = "/services/oauth2/token";
     public static final String SF_API_JOBS_BATCHES = "/batches/";
     public static final String SF_API_JOB_FAILED_RESULTS_RELATIVE_PATH = "/failedResults/";
     public static final String SF_API_JOB_SUCCESSFUL_RESULTS_RELATIVE_PATH = "/successfulResults/";
     public static final String SF_API_JOB_UNPROCESSED_RESULTS_RELATIVE_PATH = "/unprocessedrecords/";
     public static final String SF_API_JOBS_QUERY_RESULTS_RELATIVE_PATH = "/results";
-
-    // Create constants for assignmentRuleId, columnDelimiter, contentType, externalIdFieldName, lineEnding, operation
     public static final String ASSIGNMENT_RULE_ID = "assignmentRuleId";
     public static final String COLUMN_DELIMITER = "columnDelimiter";
     public static final String CONTENT_TYPE = "contentType";

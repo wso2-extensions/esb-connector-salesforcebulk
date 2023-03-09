@@ -82,9 +82,5 @@
 			<file>getAllQueryJobInfo.xml</file>
 			<description>An operation to get the information of all the query jobs in Salesforce using bulk api 2.0</description>
 		</component>
-		<component name="test">
-			<file>test.xml</file>
-			<description>bla bla</description>
-		</component>
     </subComponents>    
 </component>

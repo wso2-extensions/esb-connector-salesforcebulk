@@ -14,11 +14,11 @@ public class DeleteQueryJob extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) {
         try {
-            log.info("Delete Query Job operation now started.");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             String queryJobId = (String) getParameter(messageContext, SalesforceConstants.QUERY_JOB_ID);
+            log.debug("Deleting query job with id: " + queryJobId);
             salesforceRequest.deleteQueryJob(queryJobId);
             SalesforceUtils.generateOutput(messageContext, SalesforceUtils.getSuccessXml());
         } catch (InvalidConfigurationException | SalesforceConnectionException e) {

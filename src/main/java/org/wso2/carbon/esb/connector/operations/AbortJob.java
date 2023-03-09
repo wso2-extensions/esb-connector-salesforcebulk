@@ -15,10 +15,10 @@ public class AbortJob extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) {
         try {
-            log.info("AbortJob operation now started.");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
             String jobId = (String) getParameter(messageContext, SalesforceConstants.JOB_ID);
+            log.debug("Aborting job with id: " + jobId);
             String url = SalesforceUtils.getAbortJobUrl(salesforceConfig, jobId);
             messageContext.setProperty(SalesforceConstants.ABORT_JOB_URL, url);
         } catch (InvalidConfigurationException e) {

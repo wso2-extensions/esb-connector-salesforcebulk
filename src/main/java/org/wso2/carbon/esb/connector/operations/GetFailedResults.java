@@ -16,13 +16,12 @@ public class GetFailedResults extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) {
         try {
-            log.info("Get query job result operation now started.");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             String jobId = (String) getParameter(messageContext, SalesforceConstants.JOB_ID);
             String filePath = (String) getParameter(messageContext, SalesforceConstants.FILE_PATH);
-
+            log.debug("Getting failed results for job with id: " + jobId + ". File path: " + filePath);
             salesforceRequest.getJobFailedResults(jobId, filePath);
             SalesforceUtils.generateOutput(messageContext, SalesforceUtils.getSuccessXml());
         } catch (InvalidConfigurationException | SalesforceConnectionException e) {

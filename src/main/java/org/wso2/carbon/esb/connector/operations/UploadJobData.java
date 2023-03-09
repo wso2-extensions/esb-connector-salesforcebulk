@@ -14,14 +14,12 @@ public class UploadJobData extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) {
         try {
-            log.info("CloseJob operation now started.");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             String jobId = (String) getParameter(messageContext, SalesforceConstants.JOB_ID);
             String filePath = (String) getParameter(messageContext, SalesforceConstants.FILE_PATH);
-            log.info("jobId: " + jobId);
-            log.info("filePath: " + filePath);
+            log.debug("Uploading job data for job with id: " + jobId + ". File path: " + filePath);
             salesforceRequest.uploadJobData(jobId, filePath);
             SalesforceUtils.generateOutput(messageContext, SalesforceUtils.getSuccessXml());
         } catch (InvalidConfigurationException | SalesforceConnectionException e) {

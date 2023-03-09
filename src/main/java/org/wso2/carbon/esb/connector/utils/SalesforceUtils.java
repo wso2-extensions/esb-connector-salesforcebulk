@@ -10,10 +10,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.commons.json.JsonUtil;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
-import org.wso2.carbon.connector.core.exception.ContentBuilderException;
 import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
-import org.wso2.carbon.connector.core.util.PayloadUtils;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -49,7 +47,8 @@ public class SalesforceUtils {
     }
 
     public static String getUploadJobDataUrl(SalesforceConfig salesforceConfig, String jobId) {
-        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH + jobId + SalesforceConstants.SF_API_JOBS_BATCHES;
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH
+                + jobId + SalesforceConstants.SF_API_JOBS_BATCHES;
     }
 
     public static String getCloseJobUrl(SalesforceConfig salesforceConfig, String jobId) {
@@ -103,7 +102,8 @@ public class SalesforceUtils {
         if (StringUtils.isNotEmpty(paramString)) {
             paramString = "?" + paramString;
         }
-        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_QUERY_RELATIVE_PATH + queryJobId + SalesforceConstants.SF_API_JOBS_QUERY_RESULTS_RELATIVE_PATH
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_QUERY_RELATIVE_PATH + queryJobId
+                + SalesforceConstants.SF_API_JOBS_QUERY_RESULTS_RELATIVE_PATH
                 + paramString;
     }
 
@@ -125,7 +125,8 @@ public class SalesforceUtils {
     public static String getSFTokenUrl(SalesforceConfig salesforceConfig) {
         return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_TOKEN_RELATIVE_PATH + "?" + GRANT_TYPE + "="
                 + REFRESH_TOKEN + "&" + CLIENT_ID + "=" + salesforceConfig.getClientId() + "&"
-                + CLIENT_SECRET + "=" + salesforceConfig.getClientSecret() + "&" + REFRESH_TOKEN + "=" + salesforceConfig.getRefreshToken();
+                + CLIENT_SECRET + "=" + salesforceConfig.getClientSecret() + "&" + REFRESH_TOKEN + "="
+                + salesforceConfig.getRefreshToken();
     }
 
     /**
@@ -140,7 +141,8 @@ public class SalesforceUtils {
         messageContext.setProperty(ResponseConstants.PROPERTY_ERROR_MESSAGE, message);
     }
 
-    public static BulkJobOperationType getBulkJobOperationTypeEnum(String enumString) throws InvalidConfigurationException {
+    public static BulkJobOperationType getBulkJobOperationTypeEnum(String enumString)
+            throws InvalidConfigurationException {
         try {
             return BulkJobOperationType.valueOf(enumString);
         } catch (IllegalArgumentException e) {
@@ -148,7 +150,8 @@ public class SalesforceUtils {
         }
     }
 
-    public static BulkQueryJobOperationType getBulkQueryJobOperationTypeEnum(String enumString) throws InvalidConfigurationException {
+    public static BulkQueryJobOperationType getBulkQueryJobOperationTypeEnum(String enumString)
+            throws InvalidConfigurationException {
         try {
             return BulkQueryJobOperationType.valueOf(enumString);
         } catch (IllegalArgumentException e) {
@@ -186,7 +189,8 @@ public class SalesforceUtils {
      * @param messageContext The message context that is processed
      * @param xmlString   Result of the status
      */
-    public static void generateOutput(MessageContext messageContext, String xmlString) throws InvalidConfigurationException {
+    public static void generateOutput(MessageContext messageContext, String xmlString)
+            throws InvalidConfigurationException {
 
         try {
             OMElement omElement = AXIOMUtil.stringToOM(xmlString);

@@ -16,14 +16,12 @@ public class GetAllQueryJobInfo extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) {
         try {
-            log.info("Get all query job info operation now started.");
+            log.debug("Getting all query job info");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
-
             GetAllQueryJobResponse getAllQueryJobResponse = salesforceRequest.getAllQueryJobInfo();
             SalesforceUtils.generateOutput(messageContext, getAllQueryJobResponse.getXmlString());
-
         } catch (InvalidConfigurationException | SalesforceConnectionException | ResponseParsingException e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);

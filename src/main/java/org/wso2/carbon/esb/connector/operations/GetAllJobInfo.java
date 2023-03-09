@@ -16,7 +16,7 @@ public class GetAllJobInfo extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) {
         try {
-            log.info("Get all jobinfo operation now started.");
+            log.debug("Getting all job info");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);

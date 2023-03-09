@@ -18,13 +18,11 @@ public class CreateJob extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) {
         try {
-            log.info("Createjob operation now started.");
+            log.debug("Creating salesforce job");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
-
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             CreateJobPayload createJobPayload = getCreateJobPayload(messageContext);
-
             JobInfo jobInfo = salesforceRequest.createJob(createJobPayload);
             SalesforceUtils.generateOutput(messageContext, jobInfo.getXmlString());
         } catch (InvalidConfigurationException | ResponseParsingException | SalesforceConnectionException e) {

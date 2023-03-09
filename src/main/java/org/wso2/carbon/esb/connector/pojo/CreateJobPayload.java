@@ -24,7 +24,8 @@ public class CreateJobPayload {
         this(operation, object, null);
     }
 
-    public CreateJobPayload(BulkJobOperationType operation, String object, String externalIdFieldName) throws InvalidConfigurationException {
+    public CreateJobPayload(BulkJobOperationType operation, String object, String externalIdFieldName)
+            throws InvalidConfigurationException {
         if (operation == null || object == null) {
             throw new InvalidConfigurationException("Operation and object cannot be null when creating a Bulk Job");
         }

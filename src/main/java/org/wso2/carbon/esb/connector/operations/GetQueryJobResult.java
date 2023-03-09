@@ -14,12 +14,12 @@ public class GetQueryJobResult extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) {
         try {
-            log.info("Get query job result operation now started.");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             String queryJobId = (String) getParameter(messageContext, SalesforceConstants.QUERY_JOB_ID);
             String filePath = (String) getParameter(messageContext, SalesforceConstants.FILE_PATH);
+            log.debug("Getting query job results with id: " + queryJobId + ". File path: " + filePath);
             String maxRecords = (String) getParameter(messageContext, SalesforceConstants.MAX_RECORDS);
             Integer maxRecordsInt = null;
             if (maxRecords != null) {

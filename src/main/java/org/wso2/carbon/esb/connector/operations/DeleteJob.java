@@ -17,11 +17,11 @@ public class DeleteJob extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) {
         try {
-            log.info("DeleteJob operation now started.");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             String jobId = (String) getParameter(messageContext, SalesforceConstants.JOB_ID);
+            log.debug("Deleting job with id: " + jobId);
             salesforceRequest.deleteJob(jobId);
             SalesforceUtils.generateOutput(messageContext, SalesforceUtils.getSuccessXml());
         } catch (InvalidConfigurationException | SalesforceConnectionException e) {

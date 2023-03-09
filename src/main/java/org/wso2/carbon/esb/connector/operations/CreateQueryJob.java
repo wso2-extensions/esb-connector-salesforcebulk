@@ -5,9 +5,7 @@ import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
 import org.wso2.carbon.esb.connector.exception.ResponseParsingException;
 import org.wso2.carbon.esb.connector.exception.SalesforceConnectionException;
-import org.wso2.carbon.esb.connector.pojo.CreateJobPayload;
 import org.wso2.carbon.esb.connector.pojo.CreateQueryJobPayload;
-import org.wso2.carbon.esb.connector.pojo.JobInfo;
 import org.wso2.carbon.esb.connector.pojo.QueryJobInfo;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.requests.SalesforceRequest;
@@ -19,13 +17,11 @@ public class CreateQueryJob extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) {
         try {
-            log.info("Create query job operation now started.");
+            log.debug("Creating salesforce query job");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
-
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             CreateQueryJobPayload createQueryJobPayload = getCreateQueryJobPayload(messageContext);
-
             QueryJobInfo jobInfo = salesforceRequest.createQueryJob(createQueryJobPayload);
             SalesforceUtils.generateOutput(messageContext, jobInfo.getXmlString());
         } catch (InvalidConfigurationException | ResponseParsingException | SalesforceConnectionException e) {
@@ -42,7 +38,8 @@ public class CreateQueryJob extends AbstractConnector {
         String columnDelimiter = (String) getParameter(messageContext, SalesforceConstants.COLUMN_DELIMITER);
 
         CreateQueryJobPayload createQueryJobPayload =
-                new CreateQueryJobPayload(SalesforceUtils.getBulkQueryJobOperationTypeEnum(operation).getOperationType(), query);
+                new CreateQueryJobPayload(SalesforceUtils.getBulkQueryJobOperationTypeEnum(operation).getOperationType()
+                        , query);
         createQueryJobPayload.setLineEnding(SalesforceUtils.getLineEndingEnum(lineEnding));
         createQueryJobPayload.setColumnDelimiter(SalesforceUtils.getColumnDelimiterEnum(columnDelimiter));
         return createQueryJobPayload;

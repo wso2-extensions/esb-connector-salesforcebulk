@@ -14,10 +14,10 @@ public class CloseJob extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) {
         try {
-            log.info("CloseJob operation now started.");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
             String jobId = (String) getParameter(messageContext, SalesforceConstants.JOB_ID);
+            log.debug("Closing job with id: " + jobId);
             String url = SalesforceUtils.getCloseJobUrl(salesforceConfig, jobId);
             messageContext.setProperty(SalesforceConstants.CLOSE_JOB_URL, url);
         } catch (InvalidConfigurationException e) {
