@@ -35,10 +35,8 @@ public class InitSalesforce extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) {
         try {
-            log.info("salesforce-bulkapi-v2 sample connector received message");
             SalesforceConfig oAuthConfig = getSalesforceConfig(messageContext);
             SalesforceConfigStore.addSalesforceConfig(oAuthConfig);
-            log.info("Successfully added salesforce config");
         } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);

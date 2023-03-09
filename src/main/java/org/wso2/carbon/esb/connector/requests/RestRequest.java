@@ -180,7 +180,7 @@ public class RestRequest {
                         }
                         inputReader.close();
                         String response = responseBody.toString();
-                        log.info("Returned reponse: " + response);
+                        log.debug("Returned reponse: " + response);
                         return new RestResponse(responseCode, response);
                     }
                 } else {
