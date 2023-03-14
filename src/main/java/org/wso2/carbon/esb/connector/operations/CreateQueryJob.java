@@ -41,7 +41,7 @@ public class CreateQueryJob extends AbstractConnector {
             CreateQueryJobPayload createQueryJobPayload = getCreateQueryJobPayload(messageContext);
             QueryJobInfo jobInfo = salesforceRequest.createQueryJob(createQueryJobPayload);
             SalesforceUtils.generateOutput(messageContext, jobInfo.getXmlString());
-        } catch (InvalidConfigurationException | ResponseParsingException | SalesforceConnectionException e) {
+        } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);
         }

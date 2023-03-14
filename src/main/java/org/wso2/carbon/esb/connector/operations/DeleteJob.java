@@ -41,7 +41,7 @@ public class DeleteJob extends AbstractConnector {
             log.debug("Deleting job with id: " + jobId);
             salesforceRequest.deleteJob(jobId);
             SalesforceUtils.generateOutput(messageContext, SalesforceUtils.getSuccessXml());
-        } catch (InvalidConfigurationException | SalesforceConnectionException e) {
+        } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);
         }

@@ -38,7 +38,7 @@ public class DeleteQueryJob extends AbstractConnector {
             log.debug("Deleting query job with id: " + queryJobId);
             salesforceRequest.deleteQueryJob(queryJobId);
             SalesforceUtils.generateOutput(messageContext, SalesforceUtils.getSuccessXml());
-        } catch (InvalidConfigurationException | SalesforceConnectionException e) {
+        } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);
         }

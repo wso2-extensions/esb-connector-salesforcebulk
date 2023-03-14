@@ -47,7 +47,7 @@
                     "inputType": "comboOrExpression",
                     "comboValues": [
                       "FILE",
-                      "BODY"
+                      "INLINE"
                     ],
                     "defaultValue": "",
                     "required": "true",

@@ -41,7 +41,7 @@ public class GetJobInfo extends AbstractConnector {
             log.debug("Getting job info with id: " + jobId);
             JobInfo jobInfo = salesforceRequest.getJobInfo(jobId);
             SalesforceUtils.generateOutput(messageContext, jobInfo.getXmlString());
-        } catch (InvalidConfigurationException | SalesforceConnectionException | ResponseParsingException e) {
+        } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);
         }

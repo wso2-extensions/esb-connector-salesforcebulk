@@ -41,7 +41,7 @@ public class GetQueryJobInfo  extends AbstractConnector {
             log.debug("Getting query job info with id: " + queryJobId);
             QueryJobInfo queryJobInfo = salesforceRequest.getQueryJobInfo(queryJobId);
             SalesforceUtils.generateOutput(messageContext, queryJobInfo.getXmlString());
-        } catch (InvalidConfigurationException | SalesforceConnectionException | ResponseParsingException e) {
+        } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);
         }

@@ -39,7 +39,7 @@ public class GetAllQueryJobInfo extends AbstractConnector {
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             GetAllQueryJobResponse getAllQueryJobResponse = salesforceRequest.getAllQueryJobInfo();
             SalesforceUtils.generateOutput(messageContext, getAllQueryJobResponse.getXmlString());
-        } catch (InvalidConfigurationException | SalesforceConnectionException | ResponseParsingException e) {
+        } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);
         }

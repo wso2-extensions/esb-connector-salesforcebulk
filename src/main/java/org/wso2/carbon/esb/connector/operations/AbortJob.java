@@ -38,7 +38,7 @@ public class AbortJob extends AbstractConnector {
             log.debug("Aborting job with id: " + jobId);
             String url = SalesforceUtils.getAbortJobUrl(salesforceConfig, jobId);
             messageContext.setProperty(SalesforceConstants.ABORT_JOB_URL, url);
-        } catch (InvalidConfigurationException e) {
+        } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);
         }

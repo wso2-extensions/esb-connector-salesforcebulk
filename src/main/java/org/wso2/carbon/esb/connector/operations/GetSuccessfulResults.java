@@ -52,7 +52,7 @@ public class GetSuccessfulResults extends AbstractConnector {
                 String response = salesforceRequest.getJobSuccessfulResults(jobId);
                 SalesforceUtils.generateOutput(messageContext, SalesforceUtils.csvToXml(response));
             }
-        } catch (InvalidConfigurationException | SalesforceConnectionException e) {
+        } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);
         }

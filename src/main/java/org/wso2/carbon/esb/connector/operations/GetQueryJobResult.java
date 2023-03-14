@@ -64,7 +64,7 @@ public class GetQueryJobResult extends AbstractConnector {
             } else {
                 throw new InvalidConfigurationException("Invalid input type: " + outputType);
             }
-        } catch (InvalidConfigurationException | SalesforceConnectionException e) {
+        } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);
         }

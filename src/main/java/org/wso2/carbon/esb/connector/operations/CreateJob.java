@@ -42,7 +42,7 @@ public class CreateJob extends AbstractConnector {
             CreateJobPayload createJobPayload = getCreateJobPayload(messageContext);
             JobInfo jobInfo = salesforceRequest.createJob(createJobPayload);
             SalesforceUtils.generateOutput(messageContext, jobInfo.getXmlString());
-        } catch (InvalidConfigurationException | ResponseParsingException | SalesforceConnectionException e) {
+        } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);
         }

@@ -37,7 +37,7 @@ public class CloseJob extends AbstractConnector {
             log.debug("Closing job with id: " + jobId);
             String url = SalesforceUtils.getCloseJobUrl(salesforceConfig, jobId);
             messageContext.setProperty(SalesforceConstants.CLOSE_JOB_URL, url);
-        } catch (InvalidConfigurationException e) {
+        } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);
         }

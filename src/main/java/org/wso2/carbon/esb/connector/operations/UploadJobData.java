@@ -37,7 +37,7 @@ public class UploadJobData extends AbstractConnector {
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             String jobId = (String) getParameter(messageContext, SalesforceConstants.JOB_ID);
             String filePath = (String) getParameter(messageContext, SalesforceConstants.FILE_PATH);
-            String inputData = (String) getParameter(messageContext, SalesforceConstants.INPUT_DATA);
+            String inputData = getParameter(messageContext, SalesforceConstants.INPUT_DATA).toString();
             String inputType = (String) getParameter(messageContext, SalesforceConstants.INPUT_TYPE);
             if (InputOutputType.FILE.toString().equals(inputType)) {
                 if (filePath == null || filePath.isEmpty()) {
@@ -55,7 +55,7 @@ public class UploadJobData extends AbstractConnector {
                 throw new InvalidConfigurationException("Invalid input type: " + inputType);
             }
             SalesforceUtils.generateOutput(messageContext, SalesforceUtils.getSuccessXml());
-        } catch (InvalidConfigurationException | SalesforceConnectionException e) {
+        } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);
         }
