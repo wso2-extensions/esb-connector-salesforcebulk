@@ -20,7 +20,6 @@ package org.wso2.carbon.esb.connector.utils;
 import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
 
 import java.io.File;
-import java.io.IOException;
 
 public class FileUtils {
     public static void verifyFile(String filePath) throws InvalidConfigurationException {

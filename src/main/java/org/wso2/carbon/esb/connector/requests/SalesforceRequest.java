@@ -24,12 +24,8 @@ import org.json.JSONObject;
 import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
 import org.wso2.carbon.esb.connector.exception.ResponseParsingException;
 import org.wso2.carbon.esb.connector.exception.SalesforceConnectionException;
-import org.wso2.carbon.esb.connector.pojo.CreateQueryJobPayload;
-import org.wso2.carbon.esb.connector.pojo.GetAllJobResponse;
-import org.wso2.carbon.esb.connector.pojo.GetAllQueryJobResponse;
-import org.wso2.carbon.esb.connector.pojo.JobInfo;
 import org.wso2.carbon.esb.connector.pojo.CreateJobPayload;
-import org.wso2.carbon.esb.connector.pojo.QueryJobInfo;
+import org.wso2.carbon.esb.connector.pojo.CreateQueryJobPayload;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.utils.FileUtils;
 import org.wso2.carbon.esb.connector.utils.HttpMethod;
@@ -40,8 +36,8 @@ import org.wso2.carbon.esb.connector.utils.SalesforceUtils;
 import java.util.HashMap;
 
 public class SalesforceRequest {
-    private Log log = LogFactory.getLog(this.getClass());
-    private SalesforceConfig salesforceConfig;
+    private final Log log = LogFactory.getLog(this.getClass());
+    private final SalesforceConfig salesforceConfig;
     private static final String ACCESS_TOKEN = "access_token";
 
     public SalesforceRequest(SalesforceConfig salesforceConfig) {

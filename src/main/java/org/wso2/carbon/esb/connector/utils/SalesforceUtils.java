@@ -379,7 +379,6 @@ public class SalesforceUtils {
         axisCtx.setProperty(Constants.Configuration.CONTENT_TYPE, RequestConstants.APPLICATION_JSON);
         axisCtx.removeProperty(NO_ENTITY_BODY);
         String jsonString = "{\"error\":\"" + e.getMessage() + "\"}";
-        log.info("setting error with code: ");
         try {
             JsonUtil.getNewJsonPayload(axisCtx, jsonString, true, true);
             if (e instanceof InvalidConfigurationException) {

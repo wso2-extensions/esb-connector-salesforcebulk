@@ -19,9 +19,7 @@ package org.wso2.carbon.esb.connector.operations;
 
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.core.AbstractConnector;
-import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.connector.core.util.ConnectorUtils;
-import org.wso2.carbon.esb.connector.exception.SalesforceConnectionException;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.store.SalesforceConfigStore;
 import org.wso2.carbon.esb.connector.utils.SalesforceConstants;

@@ -22,7 +22,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.wso2.carbon.esb.connector.exception.ResponseParsingException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 @JsonIgnoreProperties(ignoreUnknown = true)

@@ -109,7 +109,6 @@ public class RestRequest {
 
     public RestResponse send() throws SalesforceConnectionException, InvalidConfigurationException {
         try {
-            log.info("Url: " + this.url + " Method: " + this.method.toString());
             URL endpoint = new URL(this.url);
             HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection();
             connection.setRequestMethod(this.method.toString());
@@ -156,8 +155,8 @@ public class RestRequest {
                             sb.append(line);
                         }
                         errorDetails = sb.toString();
-                        errorDetails += "\nInvoked url: " + this.url;
-                        errorDetails += "\nInvoked method: " + this.method.toString();
+                        errorDetails += ". Invoked url: " + this.url;
+                        errorDetails += ". Invoked method: " + this.method.toString();
                     }
                     return new RestResponse(responseCode, errorMessage, errorDetails);
                 }

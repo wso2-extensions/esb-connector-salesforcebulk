@@ -18,7 +18,7 @@
 package org.wso2.carbon.esb.connector.exception;
 
 public class SalesforceConnectionException extends Exception {
-    private int responseCode;
+    private final int responseCode;
 
     public SalesforceConnectionException(String message, Throwable cause, int responseCode) {
         super(message, cause);

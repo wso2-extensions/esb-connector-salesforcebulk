@@ -22,8 +22,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
 import org.wso2.carbon.esb.connector.exception.ResponseParsingException;
-import org.wso2.carbon.esb.connector.utils.BulkJobOperationType;
-import org.wso2.carbon.esb.connector.utils.BulkQueryJobOperationType;
 import org.wso2.carbon.esb.connector.utils.ColumnDelimiter;
 import org.wso2.carbon.esb.connector.utils.LineEnding;
 
