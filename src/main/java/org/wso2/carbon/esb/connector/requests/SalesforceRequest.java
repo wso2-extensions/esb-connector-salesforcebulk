@@ -34,6 +34,7 @@ import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.utils.FileUtils;
 import org.wso2.carbon.esb.connector.utils.HttpMethod;
 import org.wso2.carbon.esb.connector.utils.RequestConstants;
+import org.wso2.carbon.esb.connector.utils.ResponseConstants;
 import org.wso2.carbon.esb.connector.utils.SalesforceUtils;
 
 import java.util.HashMap;
@@ -47,8 +48,8 @@ public class SalesforceRequest {
         this.salesforceConfig = salesforceConfig;
     }
 
-    public JobInfo createJob(CreateJobPayload createJobPayload)
-            throws ResponseParsingException, SalesforceConnectionException {
+    public String createJob(CreateJobPayload createJobPayload)
+            throws ResponseParsingException, SalesforceConnectionException, InvalidConfigurationException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION,
                 RequestConstants.BEARER + salesforceConfig.getAccessToken());
@@ -60,11 +61,11 @@ public class SalesforceRequest {
                 new RestRequest(HttpMethod.POST, SalesforceUtils.getCreateJobUrl(salesforceConfig), jobInfoJson,
                         headers);
         RestResponse restResponse = sendRequest(restRequest);
-        return JobInfo.fromJson(restResponse.getResponse());
+        return restResponse.getResponse();
     }
 
-    public QueryJobInfo createQueryJob(CreateQueryJobPayload createQueryJobPayload)
-            throws ResponseParsingException, SalesforceConnectionException {
+    public String createQueryJob(CreateQueryJobPayload createQueryJobPayload)
+            throws ResponseParsingException, SalesforceConnectionException, InvalidConfigurationException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION,
                 RequestConstants.BEARER + salesforceConfig.getAccessToken());
@@ -78,11 +79,11 @@ public class SalesforceRequest {
                         queryJobInfoJson, headers);
 
         RestResponse restResponse = sendRequest(restRequest);
-        return QueryJobInfo.fromJson(restResponse.getResponse());
+        return restResponse.getResponse();
     }
 
     public void uploadJobDataFromFile(String jobId, String filePath)
-            throws SalesforceConnectionException, InvalidConfigurationException {
+            throws SalesforceConnectionException, InvalidConfigurationException, InvalidConfigurationException {
         FileUtils.verifyFile(filePath);
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
@@ -112,7 +113,7 @@ public class SalesforceRequest {
         sendRequest(restRequest);
     }
 
-    public void deleteJob(String jobId) throws SalesforceConnectionException {
+    public void deleteJob(String jobId) throws SalesforceConnectionException, InvalidConfigurationException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
                 + salesforceConfig.getAccessToken());
@@ -126,7 +127,7 @@ public class SalesforceRequest {
         sendRequest(restRequest);
     }
 
-    public void deleteQueryJob(String queryJobId) throws SalesforceConnectionException {
+    public void deleteQueryJob(String queryJobId) throws SalesforceConnectionException, InvalidConfigurationException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
                 + salesforceConfig.getAccessToken());
@@ -140,7 +141,7 @@ public class SalesforceRequest {
         sendRequest(restRequest);
     }
 
-    public GetAllJobResponse getAllJobInfo() throws ResponseParsingException, SalesforceConnectionException {
+    public String getAllJobInfo(Boolean isPkChunkingEnabled, String jobType, String queryLocator) throws SalesforceConnectionException, InvalidConfigurationException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION
                 , RequestConstants.BEARER + salesforceConfig.getAccessToken());
@@ -148,14 +149,15 @@ public class SalesforceRequest {
         headers.put(RequestConstants.HTTP_HEADER_ACCEPT, RequestConstants.APPLICATION_JSON);
         headers.put(RequestConstants.X_PRETTY_PRINT, "1");
         RestRequest restRequest =
-                new RestRequest(HttpMethod.GET, SalesforceUtils.getGetAllJobInfoUrl(salesforceConfig), null,
-                        headers);
+                new RestRequest(HttpMethod.GET,
+                        SalesforceUtils.getGetAllJobInfoUrl(salesforceConfig, isPkChunkingEnabled, jobType,
+                                queryLocator), null, headers);
 
         RestResponse restResponse = sendRequest(restRequest);
-        return GetAllJobResponse.fromJson(restResponse.getResponse());
+        return restResponse.getResponse();
     }
 
-    public GetAllQueryJobResponse getAllQueryJobInfo() throws ResponseParsingException, SalesforceConnectionException {
+    public String getAllQueryJobInfo(Boolean isPkChunkingEnabled, String jobType, String queryLocator) throws SalesforceConnectionException, InvalidConfigurationException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
                 + salesforceConfig.getAccessToken());
@@ -163,14 +165,14 @@ public class SalesforceRequest {
         headers.put(RequestConstants.HTTP_HEADER_ACCEPT, RequestConstants.APPLICATION_JSON);
         headers.put(RequestConstants.X_PRETTY_PRINT, "1");
         RestRequest restRequest =
-                new RestRequest(HttpMethod.GET, SalesforceUtils.getGetAllQueryJobInfoUrl(salesforceConfig), null,
-                        headers);
+                new RestRequest(HttpMethod.GET, SalesforceUtils.getGetAllQueryJobInfoUrl(salesforceConfig, isPkChunkingEnabled, jobType,
+                        queryLocator), null, headers);
 
         RestResponse restResponse = sendRequest(restRequest);
-        return GetAllQueryJobResponse.fromJson(restResponse.getResponse());
+        return restResponse.getResponse();
     }
 
-    public JobInfo getJobInfo(String jobId) throws ResponseParsingException, SalesforceConnectionException {
+    public String getJobInfo(String jobId) throws SalesforceConnectionException, InvalidConfigurationException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
                 + salesforceConfig.getAccessToken());
@@ -182,10 +184,10 @@ public class SalesforceRequest {
                         headers);
 
         RestResponse restResponse = sendRequest(restRequest);
-        return JobInfo.fromJson(restResponse.getResponse());
+        return restResponse.getResponse();
     }
 
-    public QueryJobInfo getQueryJobInfo(String queryJobId) throws ResponseParsingException, SalesforceConnectionException {
+    public String getQueryJobInfo(String queryJobId) throws SalesforceConnectionException, InvalidConfigurationException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER + salesforceConfig.getAccessToken());
         headers.put(RequestConstants.HTTP_HEADER_CONTENT_TYPE, RequestConstants.APPLICATION_JSON);
@@ -196,11 +198,11 @@ public class SalesforceRequest {
                         null, headers);
 
         RestResponse restResponse = sendRequest(restRequest);
-        return QueryJobInfo.fromJson(restResponse.getResponse());
+        return restResponse.getResponse();
     }
 
     public String getQueryJobResults(String queryJobId, Integer maxRecords, String locator)
-            throws SalesforceConnectionException {
+            throws SalesforceConnectionException, InvalidConfigurationException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
                 + salesforceConfig.getAccessToken());
@@ -214,7 +216,7 @@ public class SalesforceRequest {
     }
 
     public void getQueryJobResultsAndStoreInFile(String queryJobId, String filePath, Integer maxRecords, String locator)
-            throws SalesforceConnectionException {
+            throws SalesforceConnectionException, InvalidConfigurationException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
                 + salesforceConfig.getAccessToken());
@@ -230,7 +232,7 @@ public class SalesforceRequest {
         sendRequest(restRequest);
     }
 
-    public void getJobFailedResultsAndStoreInFile(String jobId, String filePath) throws SalesforceConnectionException {
+    public void getJobFailedResultsAndStoreInFile(String jobId, String filePath) throws SalesforceConnectionException, InvalidConfigurationException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
                 + salesforceConfig.getAccessToken());
@@ -246,7 +248,7 @@ public class SalesforceRequest {
         sendRequest(restRequest);
     }
 
-    public String getJobFailedResults(String jobId) throws SalesforceConnectionException {
+    public String getJobFailedResults(String jobId) throws SalesforceConnectionException, InvalidConfigurationException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
                 + salesforceConfig.getAccessToken());
@@ -259,7 +261,7 @@ public class SalesforceRequest {
         return sendRequest(restRequest).getResponse();
     }
 
-    public void getJobSuccessfulResultsAndStoreInFile(String jobId, String filePath) throws SalesforceConnectionException {
+    public void getJobSuccessfulResultsAndStoreInFile(String jobId, String filePath) throws SalesforceConnectionException, InvalidConfigurationException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
                 + salesforceConfig.getAccessToken());
@@ -274,7 +276,7 @@ public class SalesforceRequest {
         sendRequest(restRequest);
     }
 
-    public String getJobSuccessfulResults(String jobId) throws SalesforceConnectionException {
+    public String getJobSuccessfulResults(String jobId) throws SalesforceConnectionException, InvalidConfigurationException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
                 + salesforceConfig.getAccessToken());
@@ -287,7 +289,7 @@ public class SalesforceRequest {
         return sendRequest(restRequest).getResponse();
     }
 
-    public void getJobUnprocessedResultsAndStoreInFile(String jobId, String filePath) throws SalesforceConnectionException {
+    public void getJobUnprocessedResultsAndStoreInFile(String jobId, String filePath) throws SalesforceConnectionException, InvalidConfigurationException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
                 + salesforceConfig.getAccessToken());
@@ -303,7 +305,7 @@ public class SalesforceRequest {
         sendRequest(restRequest);
     }
 
-    public String getJobUnprocessedResults(String jobId) throws SalesforceConnectionException {
+    public String getJobUnprocessedResults(String jobId) throws SalesforceConnectionException, InvalidConfigurationException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
                 + salesforceConfig.getAccessToken());
@@ -317,7 +319,7 @@ public class SalesforceRequest {
         return sendRequest(restRequest).getResponse();
     }
 
-    public String renewAccessToken() throws SalesforceConnectionException {
+    public String renewAccessToken() throws SalesforceConnectionException, InvalidConfigurationException {
         RestRequest restRequest =
                 new RestRequest(HttpMethod.POST, SalesforceUtils.getSFTokenUrl(salesforceConfig), null,
                         null);
@@ -332,11 +334,11 @@ public class SalesforceRequest {
             return accessToken;
         } catch (JSONException e) {
             throw new SalesforceConnectionException("Error while parsing token response to json. " +
-                    "Access token renewal process failed with exception: ", e);
+                    "Access token renewal process failed with exception: ", e, ResponseConstants.HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    private RestResponse sendRequest(RestRequest restRequest) throws SalesforceConnectionException {
+    private RestResponse sendRequest(RestRequest restRequest) throws SalesforceConnectionException, InvalidConfigurationException {
         RestResponse restResponse = restRequest.send();
         if (restResponse.isError()) {
             if (restResponse.getStatusCode() == 401) {
@@ -347,10 +349,10 @@ public class SalesforceRequest {
                 log.info("Retrying request with renewed access token.");
                 return restRequest.send();
             } else {
-                throw new SalesforceConnectionException("Error while sending request to salesforce. Status code: " +
+                throw new SalesforceConnectionException("Salesforce server returned a non success response. Status code: " +
                         restResponse.getStatusCode() +
                         ". Error message : " + restResponse.getErrorMessage() +
-                        ". Error detail : " + restResponse.getErrorDetails());
+                        ". Error detail : " + restResponse.getErrorDetails(), restResponse.getStatusCode());
             }
         }
         return restResponse;

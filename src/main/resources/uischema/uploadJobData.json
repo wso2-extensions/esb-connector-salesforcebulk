@@ -72,7 +72,7 @@
                     "displayName": "File Path",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
-                    "required": "true",
+                    "required": "false",
                     "helpTip": "The ID of the job to upload data to"
                   }
                 }

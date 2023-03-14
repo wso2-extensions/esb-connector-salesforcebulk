@@ -39,6 +39,7 @@ public class InitSalesforce extends AbstractConnector {
             SalesforceConfigStore.addSalesforceConfig(oAuthConfig);
         } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
+            SalesforceUtils.generateErrorOutput(messageContext, e);
             handleException(e.getMessage(), e, messageContext);
         }
     }

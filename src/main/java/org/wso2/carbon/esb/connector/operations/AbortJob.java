@@ -40,6 +40,7 @@ public class AbortJob extends AbstractConnector {
             messageContext.setProperty(SalesforceConstants.ABORT_JOB_URL, url);
         } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
+            SalesforceUtils.generateErrorOutput(messageContext, e);
             handleException(e.getMessage(), e, messageContext);
         }
     }

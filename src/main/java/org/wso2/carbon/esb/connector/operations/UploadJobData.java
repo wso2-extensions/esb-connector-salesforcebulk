@@ -25,6 +25,7 @@ import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.requests.SalesforceRequest;
 import org.wso2.carbon.esb.connector.store.SalesforceConfigStore;
 import org.wso2.carbon.esb.connector.utils.InputOutputType;
+import org.wso2.carbon.esb.connector.utils.ResponseConstants;
 import org.wso2.carbon.esb.connector.utils.SalesforceConstants;
 import org.wso2.carbon.esb.connector.utils.SalesforceUtils;
 
@@ -37,7 +38,13 @@ public class UploadJobData extends AbstractConnector {
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             String jobId = (String) getParameter(messageContext, SalesforceConstants.JOB_ID);
             String filePath = (String) getParameter(messageContext, SalesforceConstants.FILE_PATH);
-            String inputData = getParameter(messageContext, SalesforceConstants.INPUT_DATA).toString();
+            Object inputData = getParameter(messageContext, SalesforceConstants.INPUT_DATA);
+            String inputDataStr;
+            if (inputData != null) {
+                inputDataStr = getParameter(messageContext, SalesforceConstants.INPUT_DATA).toString();
+            } else {
+                inputDataStr = null;
+            }
             String inputType = (String) getParameter(messageContext, SalesforceConstants.INPUT_TYPE);
             if (InputOutputType.FILE.toString().equals(inputType)) {
                 if (filePath == null || filePath.isEmpty()) {
@@ -46,17 +53,19 @@ public class UploadJobData extends AbstractConnector {
                 log.debug("Uploading job data for job with id: " + jobId + ". File path: " + filePath);
                 salesforceRequest.uploadJobDataFromFile(jobId, filePath);
             } else if (InputOutputType.INLINE.toString().equals(inputType)) {
-                if (inputData == null || inputData.isEmpty()) {
+                if (inputDataStr == null || inputDataStr.isEmpty()) {
                     throw new InvalidConfigurationException("Input data is not specified");
                 }
-                log.debug("Uploading job data for job with id: " + jobId + ". Input data: " + inputData);
-                salesforceRequest.uploadJobData(jobId, inputData);
+                log.debug("Uploading job data for job with id: " + jobId + ". Input data: " + inputDataStr);
+                salesforceRequest.uploadJobData(jobId, inputDataStr);
             } else {
                 throw new InvalidConfigurationException("Invalid input type: " + inputType);
             }
-            SalesforceUtils.generateOutput(messageContext, SalesforceUtils.getSuccessXml());
+            SalesforceUtils.generateJsonOutput(messageContext, SalesforceUtils.getSuccessJson(),
+                    ResponseConstants.HTTP_OK);
         } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
+            SalesforceUtils.generateErrorOutput(messageContext, e);
             handleException(e.getMessage(), e, messageContext);
         }
     }

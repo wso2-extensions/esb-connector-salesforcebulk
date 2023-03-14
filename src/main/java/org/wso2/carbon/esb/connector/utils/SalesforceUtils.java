@@ -21,6 +21,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.soap.SOAPBody;
+import org.apache.axis2.AxisFault;
+import org.apache.axis2.Constants;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,6 +30,8 @@ import org.apache.synapse.MessageContext;
 import org.apache.synapse.commons.json.JsonUtil;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
+import org.wso2.carbon.esb.connector.exception.ResponseParsingException;
+import org.wso2.carbon.esb.connector.exception.SalesforceConnectionException;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 
 import javax.xml.stream.XMLStreamException;
@@ -39,6 +43,9 @@ public class SalesforceUtils {
     private static final String CLIENT_ID = "client_id";
     private static final String CLIENT_SECRET = "client_secret";
     private static final String REFRESH_TOKEN = "refresh_token";
+    private static final String NO_ENTITY_BODY = "NO_ENTITY_BODY";
+    private static final String HTTP_SC = "HTTP_SC";
+
     /**
      * Retrieves connection name from message context if configured as configKey attribute
      * or from the template parameter
@@ -88,12 +95,52 @@ public class SalesforceUtils {
         return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_QUERY_RELATIVE_PATH + jobId;
     }
 
-    public static String getGetAllJobInfoUrl(SalesforceConfig salesforceConfig) {
-        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH;
+    public static String getGetAllJobInfoUrl(SalesforceConfig salesforceConfig, Boolean isPkChunkingEnabled,
+                                             String jobType, String queryLocator) {
+        String paramString = "";
+        if (isPkChunkingEnabled != null) {
+            paramString += SalesforceConstants.IS_PK_CHUNKING_ENABLED + "=" + isPkChunkingEnabled;
+        }
+        if (StringUtils.isNotEmpty(queryLocator)) {
+            if (StringUtils.isNotEmpty(paramString)) {
+                paramString += "&";
+            }
+            paramString += SalesforceConstants.QUERY_LOCATOR + "=" + queryLocator;
+        }
+        if (StringUtils.isNotEmpty(jobType)) {
+            if (StringUtils.isNotEmpty(paramString)) {
+                paramString += "&";
+            }
+            paramString += SalesforceConstants.JOB_TYPE + "=" + jobType;
+        }
+        if (StringUtils.isNotEmpty(paramString)) {
+            paramString = "?" + paramString;
+        }
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_INGEST_RELATIVE_PATH + paramString;
     }
 
-    public static String getGetAllQueryJobInfoUrl(SalesforceConfig salesforceConfig) {
-        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_QUERY_RELATIVE_PATH;
+    public static String getGetAllQueryJobInfoUrl(SalesforceConfig salesforceConfig, Boolean isPkChunkingEnabled,
+                                                  String jobType, String queryLocator) {
+        String paramString = "";
+        if (isPkChunkingEnabled != null) {
+            paramString += SalesforceConstants.IS_PK_CHUNKING_ENABLED + "=" + isPkChunkingEnabled;
+        }
+        if (StringUtils.isNotEmpty(queryLocator)) {
+            if (StringUtils.isNotEmpty(paramString)) {
+                paramString += "&";
+            }
+            paramString += SalesforceConstants.QUERY_LOCATOR + "=" + queryLocator;
+        }
+        if (StringUtils.isNotEmpty(jobType)) {
+            if (StringUtils.isNotEmpty(paramString)) {
+                paramString += "&";
+            }
+            paramString += SalesforceConstants.JOB_TYPE + "=" + jobType;
+        }
+        if (StringUtils.isNotEmpty(paramString)) {
+            paramString = "?" + paramString;
+        }
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_QUERY_RELATIVE_PATH + paramString;
     }
 
     public static String getGetJobInfoUrl(SalesforceConfig salesforceConfig, String jobId) {
@@ -200,6 +247,14 @@ public class SalesforceUtils {
         }
     }
 
+    public static JobType getJobTypeEnum(String enumString) throws InvalidConfigurationException {
+        try {
+            return JobType.valueOf(enumString);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidConfigurationException("Invalid content type provided: " + enumString);
+        }
+    }
+
     /**
      * Generates the output payload
      *
@@ -222,6 +277,21 @@ public class SalesforceUtils {
             throw new InvalidConfigurationException(e.getMessage(), e);
         }
     }
+
+    public static void generateJsonOutput(MessageContext messageContext, String jsonString, int responseCode)
+            throws ResponseParsingException {
+        try {
+            org.apache.axis2.context.MessageContext axisCtx = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
+            axisCtx.setProperty(Constants.Configuration.MESSAGE_TYPE, RequestConstants.APPLICATION_JSON);
+            axisCtx.setProperty(Constants.Configuration.CONTENT_TYPE, RequestConstants.APPLICATION_JSON);
+            axisCtx.removeProperty(NO_ENTITY_BODY);
+            JsonUtil.getNewJsonPayload(axisCtx, jsonString, true, true);
+            axisCtx.setProperty(HTTP_SC, responseCode);
+        } catch (AxisFault e) {
+            throw new ResponseParsingException(e.getMessage(), e);
+        }
+    }
+
 
     /**
      * Create an OMElement.
@@ -299,4 +369,32 @@ public class SalesforceUtils {
         return "<result>Success</result>";
     }
 
+    public static String getSuccessJson() {
+        return "{\"result\":\"Success\"}";
+    }
+
+    public static void generateErrorOutput(MessageContext messageContext, Exception e) {
+        org.apache.axis2.context.MessageContext axisCtx = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
+        axisCtx.setProperty(Constants.Configuration.MESSAGE_TYPE, RequestConstants.APPLICATION_JSON);
+        axisCtx.setProperty(Constants.Configuration.CONTENT_TYPE, RequestConstants.APPLICATION_JSON);
+        axisCtx.removeProperty(NO_ENTITY_BODY);
+        String jsonString = "{\"error\":\"" + e.getMessage() + "\"}";
+        log.info("setting error with code: ");
+        try {
+            JsonUtil.getNewJsonPayload(axisCtx, jsonString, true, true);
+            if (e instanceof InvalidConfigurationException) {
+                axisCtx.setProperty(HTTP_SC, ResponseConstants.HTTP_BAD_REQUEST);
+            } else if (e instanceof ResponseParsingException) {
+                axisCtx.setProperty(HTTP_SC, ResponseConstants.HTTP_INTERNAL_SERVER_ERROR);
+            } else if (e instanceof SalesforceConnectionException){
+                int code = ((SalesforceConnectionException)e).getResponseCode();
+                axisCtx.setProperty(HTTP_SC, code);
+            } else {
+                axisCtx.setProperty(HTTP_SC, ResponseConstants.HTTP_INTERNAL_SERVER_ERROR);
+            }
+        } catch (AxisFault ex) {
+            log.error("Error while generating error output", ex);
+            axisCtx.setProperty(HTTP_SC, 500);
+        }
+    }
 }

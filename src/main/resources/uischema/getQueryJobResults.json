@@ -65,7 +65,7 @@
                   "type": "attribute",
                   "value": {
                     "name": "outputType",
-                    "displayName": "Input type",
+                    "displayName": "Output type",
                     "inputType": "comboOrExpression",
                     "comboValues": [
                       "FILE",
@@ -83,7 +83,7 @@
                     "displayName": "File Path",
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
-                    "required": "true",
+                    "required": "false",
                     "helpTip": "The path to the file to write the results to."
                   }
                 }

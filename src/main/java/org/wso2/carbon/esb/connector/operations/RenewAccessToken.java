@@ -38,6 +38,7 @@ public class RenewAccessToken extends AbstractConnector {
             messageContext.setProperty(SalesforceConstants.ACCESS_TOKEN, accessToken);
         } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
+            SalesforceUtils.generateErrorOutput(messageContext, e);
             handleException(e.getMessage(), e, messageContext);
         }
     }

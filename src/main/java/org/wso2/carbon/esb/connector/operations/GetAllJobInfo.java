@@ -26,6 +26,7 @@ import org.wso2.carbon.esb.connector.pojo.GetAllJobResponse;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.requests.SalesforceRequest;
 import org.wso2.carbon.esb.connector.store.SalesforceConfigStore;
+import org.wso2.carbon.esb.connector.utils.ResponseConstants;
 import org.wso2.carbon.esb.connector.utils.SalesforceConstants;
 import org.wso2.carbon.esb.connector.utils.SalesforceUtils;
 
@@ -37,10 +38,14 @@ public class GetAllJobInfo extends AbstractConnector {
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
-            GetAllJobResponse getAllJobResponse = salesforceRequest.getAllJobInfo();
-            SalesforceUtils.generateOutput(messageContext, getAllJobResponse.getXmlString());
+            Boolean isPkChunkingEnabled = (Boolean) getParameter(messageContext, SalesforceConstants.IS_PK_CHUNKING_ENABLED);
+            String jobType = (String) getParameter(messageContext, SalesforceConstants.JOB_TYPE);
+            String queryLocator = (String) getParameter(messageContext, SalesforceConstants.QUERY_LOCATOR);
+            String getAllJobResponse = salesforceRequest.getAllJobInfo(isPkChunkingEnabled, jobType, queryLocator);
+            SalesforceUtils.generateJsonOutput(messageContext, getAllJobResponse, ResponseConstants.HTTP_OK);
         } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
+            SalesforceUtils.generateErrorOutput(messageContext, e);
             handleException(e.getMessage(), e, messageContext);
         }
     }

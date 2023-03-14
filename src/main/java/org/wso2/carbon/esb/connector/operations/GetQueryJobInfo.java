@@ -27,6 +27,7 @@ import org.wso2.carbon.esb.connector.pojo.QueryJobInfo;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.requests.SalesforceRequest;
 import org.wso2.carbon.esb.connector.store.SalesforceConfigStore;
+import org.wso2.carbon.esb.connector.utils.ResponseConstants;
 import org.wso2.carbon.esb.connector.utils.SalesforceConstants;
 import org.wso2.carbon.esb.connector.utils.SalesforceUtils;
 
@@ -39,11 +40,12 @@ public class GetQueryJobInfo  extends AbstractConnector {
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             String queryJobId = (String) getParameter(messageContext, SalesforceConstants.QUERY_JOB_ID);
             log.debug("Getting query job info with id: " + queryJobId);
-            QueryJobInfo queryJobInfo = salesforceRequest.getQueryJobInfo(queryJobId);
-            SalesforceUtils.generateOutput(messageContext, queryJobInfo.getXmlString());
+            String queryJobInfo = salesforceRequest.getQueryJobInfo(queryJobId);
+            SalesforceUtils.generateJsonOutput(messageContext, queryJobInfo, ResponseConstants.HTTP_OK);
         } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
-            handleException(e.getMessage(), e, messageContext);
+            SalesforceUtils.generateErrorOutput(messageContext, e);
+            log.error("Error encountered: " + e.getMessage(), e);
         }
     }
 }

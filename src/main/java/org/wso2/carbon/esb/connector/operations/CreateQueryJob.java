@@ -27,6 +27,7 @@ import org.wso2.carbon.esb.connector.pojo.QueryJobInfo;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.requests.SalesforceRequest;
 import org.wso2.carbon.esb.connector.store.SalesforceConfigStore;
+import org.wso2.carbon.esb.connector.utils.ResponseConstants;
 import org.wso2.carbon.esb.connector.utils.SalesforceConstants;
 import org.wso2.carbon.esb.connector.utils.SalesforceUtils;
 
@@ -39,10 +40,11 @@ public class CreateQueryJob extends AbstractConnector {
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             CreateQueryJobPayload createQueryJobPayload = getCreateQueryJobPayload(messageContext);
-            QueryJobInfo jobInfo = salesforceRequest.createQueryJob(createQueryJobPayload);
-            SalesforceUtils.generateOutput(messageContext, jobInfo.getXmlString());
+            String jobInfo = salesforceRequest.createQueryJob(createQueryJobPayload);
+            SalesforceUtils.generateJsonOutput(messageContext, jobInfo, ResponseConstants.HTTP_CREATED);
         } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
+            SalesforceUtils.generateErrorOutput(messageContext, e);
             handleException(e.getMessage(), e, messageContext);
         }
     }

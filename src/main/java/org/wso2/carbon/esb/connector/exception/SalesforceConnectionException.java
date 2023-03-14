@@ -18,27 +18,19 @@
 package org.wso2.carbon.esb.connector.exception;
 
 public class SalesforceConnectionException extends Exception {
-    private int reponseCode;
+    private int responseCode;
 
     public SalesforceConnectionException(String message, Throwable cause, int responseCode) {
         super(message, cause);
-        this.reponseCode = responseCode;
+        this.responseCode = responseCode;
     }
 
     public SalesforceConnectionException(String message, int responseCode) {
         super(message);
-        this.reponseCode = responseCode;
+        this.responseCode = responseCode;
     }
 
-    public SalesforceConnectionException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public SalesforceConnectionException(String message) {
-        super(message);
-    }
-
-    public int getReponseCode() {
-        return reponseCode;
+    public int getResponseCode() {
+        return responseCode;
     }
 }

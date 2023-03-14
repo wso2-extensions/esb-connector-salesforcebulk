@@ -90,4 +90,13 @@ public class GetAllJobResponse {
         xmlString.append("</result>");
         return xmlString.toString();
      }
+
+    public String toJson() throws ResponseParsingException {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new ResponseParsingException("Error while parsing the response to JSON", e);
+        }
+    }
 }

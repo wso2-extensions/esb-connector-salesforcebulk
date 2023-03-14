@@ -19,8 +19,10 @@ package org.wso2.carbon.esb.connector.requests;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
 import org.wso2.carbon.esb.connector.exception.SalesforceConnectionException;
 import org.wso2.carbon.esb.connector.utils.HttpMethod;
+import org.wso2.carbon.esb.connector.utils.ResponseConstants;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -105,8 +107,9 @@ public class RestRequest {
         this.getBodyFromFile = getBodyFromFile;
     }
 
-    public RestResponse send() throws SalesforceConnectionException {
+    public RestResponse send() throws SalesforceConnectionException, InvalidConfigurationException {
         try {
+            log.info("Url: " + this.url + " Method: " + this.method.toString());
             URL endpoint = new URL(this.url);
             HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection();
             connection.setRequestMethod(this.method.toString());
@@ -160,7 +163,7 @@ public class RestRequest {
                 }
             } else if (this.getMethod() == HttpMethod.POST || this.getMethod() == HttpMethod.PUT) {
                 if (this.getBodyFromFile && this.inputFilePath == null) {
-                    throw new SalesforceConnectionException("Input file path is required when getBodyFromFile is true");
+                    throw new InvalidConfigurationException("Input file path is required when getBodyFromFile is true");
                 }
                 connection.setDoOutput(true);
                 if (getBodyFromFile) {
@@ -169,7 +172,7 @@ public class RestRequest {
                     try {
                         inputStream = Files.newInputStream(file.toPath());
                     } catch (IOException e) {
-                        throw new SalesforceConnectionException("Error while reading file: " + this.inputFilePath, e);
+                        throw new InvalidConfigurationException("Error while reading file: " + this.inputFilePath, e);
                     }
                     try (BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
                          DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream())) {
@@ -220,10 +223,11 @@ public class RestRequest {
                     return new RestResponse(responseCode, errorMessage, errorDetails);
                 }
             } else {
-                throw new SalesforceConnectionException("Unsupported HTTP method");
+                throw new InvalidConfigurationException("Unsupported HTTP method");
             }
         } catch (IOException e) {
-            throw new SalesforceConnectionException("Error while sending request", e);
+            throw new SalesforceConnectionException("EI/MI Server encountered an exception while sending request", e,
+                    ResponseConstants.HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 

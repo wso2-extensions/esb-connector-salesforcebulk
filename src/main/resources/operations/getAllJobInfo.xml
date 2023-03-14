@@ -1,5 +1,11 @@
 <template xmlns="http://ws.apache.org/ns/synapse" name="getAllJobInfo">
+    <parameter name="isPkChunkingEnabled" description="Is PK Chunking Enabled"/>
+    <parameter name="jobType" description="Job Type"/>
+    <parameter name="queryLocator" description="Query Locator"/>
     <sequence>
+        <property name="isPkChunkingEnabled" expression="$func:isPkChunkingEnabled" />
+        <property name="jobType" expression="$func:jobType" />
+        <property name="queryLocator" expression="$func:queryLocator" />
         <class name="org.wso2.carbon.esb.connector.operations.GetAllJobInfo" />
     </sequence>
 </template>

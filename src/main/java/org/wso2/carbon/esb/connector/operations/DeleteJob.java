@@ -27,6 +27,7 @@ import org.wso2.carbon.esb.connector.pojo.JobInfo;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.requests.SalesforceRequest;
 import org.wso2.carbon.esb.connector.store.SalesforceConfigStore;
+import org.wso2.carbon.esb.connector.utils.ResponseConstants;
 import org.wso2.carbon.esb.connector.utils.SalesforceConstants;
 import org.wso2.carbon.esb.connector.utils.SalesforceUtils;
 
@@ -40,9 +41,11 @@ public class DeleteJob extends AbstractConnector {
             String jobId = (String) getParameter(messageContext, SalesforceConstants.JOB_ID);
             log.debug("Deleting job with id: " + jobId);
             salesforceRequest.deleteJob(jobId);
-            SalesforceUtils.generateOutput(messageContext, SalesforceUtils.getSuccessXml());
+            SalesforceUtils.generateJsonOutput(messageContext, SalesforceUtils.getSuccessJson(),
+                    ResponseConstants.HTTP_OK);
         } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
+            SalesforceUtils.generateErrorOutput(messageContext, e);
             handleException(e.getMessage(), e, messageContext);
         }
     }

@@ -27,6 +27,7 @@ import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.requests.SalesforceRequest;
 import org.wso2.carbon.esb.connector.store.SalesforceConfigStore;
 import org.wso2.carbon.esb.connector.utils.InputOutputType;
+import org.wso2.carbon.esb.connector.utils.ResponseConstants;
 import org.wso2.carbon.esb.connector.utils.SalesforceConstants;
 import org.wso2.carbon.esb.connector.utils.SalesforceUtils;
 
@@ -46,14 +47,19 @@ public class GetSuccessfulResults extends AbstractConnector {
                 }
                 log.debug("Getting successful results for job with id: " + jobId + ". File path: " + filePath);
                 salesforceRequest.getJobSuccessfulResultsAndStoreInFile(jobId, filePath);
-                SalesforceUtils.generateOutput(messageContext, SalesforceUtils.getSuccessXml());
+                SalesforceUtils.generateJsonOutput(messageContext, SalesforceUtils.getSuccessJson(),
+                        ResponseConstants.HTTP_OK);
             } else if (InputOutputType.BODY.toString().equals(outputType)){
                 log.debug("Getting successful results for job with id: " + jobId);
                 String response = salesforceRequest.getJobSuccessfulResults(jobId);
-                SalesforceUtils.generateOutput(messageContext, SalesforceUtils.csvToXml(response));
+                SalesforceUtils.generateJsonOutput(messageContext, SalesforceUtils.csvToJson(response),
+                        ResponseConstants.HTTP_OK);
+            } else {
+                throw new InvalidConfigurationException("Invalid output type: " + outputType);
             }
         } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
+            SalesforceUtils.generateErrorOutput(messageContext, e);
             handleException(e.getMessage(), e, messageContext);
         }
     }
