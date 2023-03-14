@@ -81,7 +81,7 @@ public class SalesforceRequest {
         return QueryJobInfo.fromJson(restResponse.getResponse());
     }
 
-    public void uploadJobData(String jobId, String filePath)
+    public void uploadJobDataFromFile(String jobId, String filePath)
             throws SalesforceConnectionException, InvalidConfigurationException {
         FileUtils.verifyFile(filePath);
         HashMap<String, String> headers = new HashMap<>();
@@ -95,6 +95,20 @@ public class SalesforceRequest {
                         , headers);
         restRequest.setGetBodyFromFile(true);
         restRequest.setInputFilePath(filePath);
+        sendRequest(restRequest);
+    }
+
+    public void uploadJobData(String jobId, String inputDataString)
+            throws SalesforceConnectionException, InvalidConfigurationException {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
+                + salesforceConfig.getAccessToken());
+        headers.put(RequestConstants.HTTP_HEADER_CONTENT_TYPE, RequestConstants.TEXT_CSV);
+        headers.put(RequestConstants.HTTP_HEADER_ACCEPT, RequestConstants.APPLICATION_JSON);
+        headers.put(RequestConstants.X_PRETTY_PRINT, "1");
+        RestRequest restRequest =
+                new RestRequest(HttpMethod.PUT, SalesforceUtils.getUploadJobDataUrl(salesforceConfig, jobId), inputDataString
+                        , headers);
         sendRequest(restRequest);
     }
 
@@ -185,7 +199,21 @@ public class SalesforceRequest {
         return QueryJobInfo.fromJson(restResponse.getResponse());
     }
 
-    public void getQueryJobResults(String queryJobId, String filePath, Integer maxRecords, String locator)
+    public String getQueryJobResults(String queryJobId, Integer maxRecords, String locator)
+            throws SalesforceConnectionException {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
+                + salesforceConfig.getAccessToken());
+        headers.put(RequestConstants.HTTP_HEADER_CONTENT_TYPE, RequestConstants.APPLICATION_JSON);
+        headers.put(RequestConstants.HTTP_HEADER_ACCEPT, RequestConstants.APPLICATION_JSON);
+        headers.put(RequestConstants.X_PRETTY_PRINT, "1");
+        RestRequest restRequest =
+                new RestRequest(HttpMethod.GET, SalesforceUtils.getGetQueryJobResultUrl(salesforceConfig, queryJobId,
+                        maxRecords, locator), null, headers);
+        return sendRequest(restRequest).getResponse();
+    }
+
+    public void getQueryJobResultsAndStoreInFile(String queryJobId, String filePath, Integer maxRecords, String locator)
             throws SalesforceConnectionException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
@@ -202,7 +230,7 @@ public class SalesforceRequest {
         sendRequest(restRequest);
     }
 
-    public void getJobFailedResults(String jobId, String filePath) throws SalesforceConnectionException {
+    public void getJobFailedResultsAndStoreInFile(String jobId, String filePath) throws SalesforceConnectionException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
                 + salesforceConfig.getAccessToken());
@@ -218,7 +246,20 @@ public class SalesforceRequest {
         sendRequest(restRequest);
     }
 
-    public void getJobSuccessfulResults(String jobId, String filePath) throws SalesforceConnectionException {
+    public String getJobFailedResults(String jobId) throws SalesforceConnectionException {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
+                + salesforceConfig.getAccessToken());
+        headers.put(RequestConstants.HTTP_HEADER_CONTENT_TYPE, RequestConstants.APPLICATION_JSON);
+        headers.put(RequestConstants.HTTP_HEADER_ACCEPT, RequestConstants.APPLICATION_JSON);
+        headers.put(RequestConstants.X_PRETTY_PRINT, "1");
+        RestRequest restRequest =
+                new RestRequest(HttpMethod.GET, SalesforceUtils.getGetJobFailedResultsUrl(salesforceConfig, jobId),
+                        null, headers);
+        return sendRequest(restRequest).getResponse();
+    }
+
+    public void getJobSuccessfulResultsAndStoreInFile(String jobId, String filePath) throws SalesforceConnectionException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
                 + salesforceConfig.getAccessToken());
@@ -233,7 +274,20 @@ public class SalesforceRequest {
         sendRequest(restRequest);
     }
 
-    public void getJobUnprocessedResults(String jobId, String filePath) throws SalesforceConnectionException {
+    public String getJobSuccessfulResults(String jobId) throws SalesforceConnectionException {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
+                + salesforceConfig.getAccessToken());
+        headers.put(RequestConstants.HTTP_HEADER_CONTENT_TYPE, RequestConstants.APPLICATION_JSON);
+        headers.put(RequestConstants.HTTP_HEADER_ACCEPT, RequestConstants.APPLICATION_JSON);
+        headers.put(RequestConstants.X_PRETTY_PRINT, "1");
+        RestRequest restRequest =
+                new RestRequest(HttpMethod.GET, SalesforceUtils.getGetJobSuccessfulResultsUrl(salesforceConfig, jobId),
+                        null, headers);
+        return sendRequest(restRequest).getResponse();
+    }
+
+    public void getJobUnprocessedResultsAndStoreInFile(String jobId, String filePath) throws SalesforceConnectionException {
         HashMap<String, String> headers = new HashMap<>();
         headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
                 + salesforceConfig.getAccessToken());
@@ -247,6 +301,20 @@ public class SalesforceRequest {
         restRequest.setOutputFilePath(filePath);
         restRequest.setReceiveToFile(true);
         sendRequest(restRequest);
+    }
+
+    public String getJobUnprocessedResults(String jobId) throws SalesforceConnectionException {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put(RequestConstants.HTTP_HEADER_AUTHORIZATION, RequestConstants.BEARER
+                + salesforceConfig.getAccessToken());
+        headers.put(RequestConstants.HTTP_HEADER_CONTENT_TYPE, RequestConstants.APPLICATION_JSON);
+        headers.put(RequestConstants.HTTP_HEADER_ACCEPT, RequestConstants.APPLICATION_JSON);
+        headers.put(RequestConstants.X_PRETTY_PRINT, "1");
+        RestRequest restRequest =
+                new RestRequest(HttpMethod.GET, SalesforceUtils.getGetJobUnprocessedResultsUrl(salesforceConfig, jobId),
+                        null, headers);
+
+        return sendRequest(restRequest).getResponse();
     }
 
     public String renewAccessToken() throws SalesforceConnectionException {

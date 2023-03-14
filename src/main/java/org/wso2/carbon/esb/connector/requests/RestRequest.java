@@ -135,6 +135,7 @@ public class RestRequest {
                             StringBuilder responseBody = new StringBuilder();
                             while ((inputLine = inputReader.readLine()) != null) {
                                 responseBody.append(inputLine);
+                                responseBody.append(System.lineSeparator());
                             }
                             inputReader.close();
                             String response = responseBody.toString();
@@ -152,6 +153,8 @@ public class RestRequest {
                             sb.append(line);
                         }
                         errorDetails = sb.toString();
+                        errorDetails += "\nInvoked url: " + this.url;
+                        errorDetails += "\nInvoked method: " + this.method.toString();
                     }
                     return new RestResponse(responseCode, errorMessage, errorDetails);
                 }
@@ -211,6 +214,8 @@ public class RestRequest {
                             sb.append(line);
                         }
                         errorDetails = sb.toString();
+                        errorDetails += "\nInvoked url: " + this.url;
+                        errorDetails += "\nInvoked method: " + this.method.toString();
                     }
                     return new RestResponse(responseCode, errorMessage, errorDetails);
                 }

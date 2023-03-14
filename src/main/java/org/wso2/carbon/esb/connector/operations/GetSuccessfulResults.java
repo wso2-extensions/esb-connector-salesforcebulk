@@ -26,6 +26,7 @@ import org.wso2.carbon.esb.connector.pojo.GetAllJobResponse;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.requests.SalesforceRequest;
 import org.wso2.carbon.esb.connector.store.SalesforceConfigStore;
+import org.wso2.carbon.esb.connector.utils.InputOutputType;
 import org.wso2.carbon.esb.connector.utils.SalesforceConstants;
 import org.wso2.carbon.esb.connector.utils.SalesforceUtils;
 
@@ -38,9 +39,19 @@ public class GetSuccessfulResults extends AbstractConnector {
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             String jobId = (String) getParameter(messageContext, SalesforceConstants.JOB_ID);
             String filePath = (String) getParameter(messageContext, SalesforceConstants.FILE_PATH);
-            log.debug("Getting successful results for job with id: " + jobId + ". File path: " + filePath);
-            salesforceRequest.getJobSuccessfulResults(jobId, filePath);
-            SalesforceUtils.generateOutput(messageContext, SalesforceUtils.getSuccessXml());
+            String outputType = (String) getParameter(messageContext, SalesforceConstants.OUTPUT_TYPE);
+            if (InputOutputType.FILE.toString().equals(outputType)) {
+                if (filePath == null || filePath.isEmpty()) {
+                    throw new InvalidConfigurationException("File path is not specified");
+                }
+                log.debug("Getting successful results for job with id: " + jobId + ". File path: " + filePath);
+                salesforceRequest.getJobSuccessfulResultsAndStoreInFile(jobId, filePath);
+                SalesforceUtils.generateOutput(messageContext, SalesforceUtils.getSuccessXml());
+            } else if (InputOutputType.BODY.toString().equals(outputType)){
+                log.debug("Getting successful results for job with id: " + jobId);
+                String response = salesforceRequest.getJobSuccessfulResults(jobId);
+                SalesforceUtils.generateOutput(messageContext, SalesforceUtils.csvToXml(response));
+            }
         } catch (InvalidConfigurationException | SalesforceConnectionException e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             handleException(e.getMessage(), e, messageContext);

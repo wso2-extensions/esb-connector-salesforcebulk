@@ -24,6 +24,7 @@ import org.wso2.carbon.esb.connector.exception.SalesforceConnectionException;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.requests.SalesforceRequest;
 import org.wso2.carbon.esb.connector.store.SalesforceConfigStore;
+import org.wso2.carbon.esb.connector.utils.InputOutputType;
 import org.wso2.carbon.esb.connector.utils.SalesforceConstants;
 import org.wso2.carbon.esb.connector.utils.SalesforceUtils;
 
@@ -36,8 +37,23 @@ public class UploadJobData extends AbstractConnector {
             SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
             String jobId = (String) getParameter(messageContext, SalesforceConstants.JOB_ID);
             String filePath = (String) getParameter(messageContext, SalesforceConstants.FILE_PATH);
-            log.debug("Uploading job data for job with id: " + jobId + ". File path: " + filePath);
-            salesforceRequest.uploadJobData(jobId, filePath);
+            String inputData = (String) getParameter(messageContext, SalesforceConstants.INPUT_DATA);
+            String inputType = (String) getParameter(messageContext, SalesforceConstants.INPUT_TYPE);
+            if (InputOutputType.FILE.toString().equals(inputType)) {
+                if (filePath == null || filePath.isEmpty()) {
+                    throw new InvalidConfigurationException("File path is not specified");
+                }
+                log.debug("Uploading job data for job with id: " + jobId + ". File path: " + filePath);
+                salesforceRequest.uploadJobDataFromFile(jobId, filePath);
+            } else if (InputOutputType.INLINE.toString().equals(inputType)) {
+                if (inputData == null || inputData.isEmpty()) {
+                    throw new InvalidConfigurationException("Input data is not specified");
+                }
+                log.debug("Uploading job data for job with id: " + jobId + ". Input data: " + inputData);
+                salesforceRequest.uploadJobData(jobId, inputData);
+            } else {
+                throw new InvalidConfigurationException("Invalid input type: " + inputType);
+            }
             SalesforceUtils.generateOutput(messageContext, SalesforceUtils.getSuccessXml());
         } catch (InvalidConfigurationException | SalesforceConnectionException e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());

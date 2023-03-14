@@ -52,4 +52,7 @@ public class SalesforceConstants {
     public static final String CLOSE_JOB_URL = "closeJobUrl";
     public static final String ABORT_JOB_URL = "abortJobUrl";
     public static final String ABORT_QUERY_JOB_URL = "abortQueryJobUrl";
+    public static final String INPUT_DATA = "inputData";
+    public static final String INPUT_TYPE = "inputType";
+    public static final String OUTPUT_TYPE = "outputType";
 }

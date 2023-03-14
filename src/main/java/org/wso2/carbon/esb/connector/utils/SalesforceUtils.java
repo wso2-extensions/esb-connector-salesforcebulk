@@ -243,12 +243,60 @@ public class SalesforceUtils {
                                 + "></" + elementName + ">");
             }
         } catch (XMLStreamException | OMException e) {
-            log.error("FileConnector:unzip: Error while generating OMElement from element name" + elementName, e);
+            log.error("Error while generating OMElement from element name" + elementName, e);
         }
         return resultElement;
+    }
+
+    public static String csvToXml(String csvString) {
+        String[] lines = csvString.split("\n");
+        String[] headers = lines[0].split(",");
+        for (int i = 0; i < headers.length; i++) {
+            if (headers[i].contains("\"")) {
+                headers[i] = headers[i].replace("\"", "");
+            }
+        }
+        StringBuilder xml = new StringBuilder("<root>\n");
+        for (int i = 1; i < lines.length; i++) {
+            String[] fields = lines[i].split(",");
+            xml.append("  <record>\n");
+            for (int j = 0; j < headers.length; j++) {
+                xml.append("    <").append(headers[j]).append(">").append(fields[j]).append("</").append(headers[j]).append(">\n");
+            }
+            xml.append("  </record>\n");
+        }
+        xml.append("</root>");
+        return xml.toString();
+    }
+
+    public static String csvToJson(String csvString) {
+        String[] lines = csvString.split("\n");
+        String[] headers = lines[0].split(",");
+        StringBuilder json = new StringBuilder("[\n");
+        for (int i = 1; i < lines.length; i++) {
+            String[] fields = lines[i].split(",");
+            json.append("  {\n");
+            for (int j = 0; j < headers.length; j++) {
+                json.append("    \"").append(headers[j]).append("\": \"").append(fields[j]).append("\"");
+                if (j < headers.length - 1) {
+                    json.append(",\n");
+                } else {
+                    json.append("\n");
+                }
+            }
+            json.append("  }");
+            if (i < lines.length - 1) {
+                json.append(",\n");
+            } else {
+                json.append("\n");
+            }
+        }
+        json.append("]");
+        return json.toString();
     }
 
     public static String getSuccessXml() {
         return "<result>Success</result>";
     }
+
 }

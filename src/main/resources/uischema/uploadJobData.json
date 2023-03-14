@@ -42,6 +42,32 @@
                 {
                   "type": "attribute",
                   "value": {
+                    "name": "inputType",
+                    "displayName": "Input type",
+                    "inputType": "comboOrExpression",
+                    "comboValues": [
+                      "FILE",
+                      "BODY"
+                    ],
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The ID of the job to upload data to"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "inputData",
+                    "displayName": "Input Data",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The ID of the job to upload data to"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
                     "name": "filePath",
                     "displayName": "File Path",
                     "inputType": "stringOrExpression",

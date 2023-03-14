@@ -42,17 +42,6 @@
                 {
                   "type": "attribute",
                   "value": {
-                    "name": "filePath",
-                    "displayName": "File Path",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "The path to the file to write the results to."
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
                     "name": "locator",
                     "displayName": "Locator",
                     "inputType": "stringOrExpression",
@@ -70,6 +59,32 @@
                     "defaultValue": "",
                     "required": "false",
                     "helpTip": "The maximum number of records to return in the response."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "outputType",
+                    "displayName": "Input type",
+                    "inputType": "comboOrExpression",
+                    "comboValues": [
+                      "FILE",
+                      "BODY"
+                    ],
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The ID of the job to upload data to"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "filePath",
+                    "displayName": "File Path",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The path to the file to write the results to."
                   }
                 }
               ]
