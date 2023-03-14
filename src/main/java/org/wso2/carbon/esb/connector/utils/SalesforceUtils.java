@@ -385,7 +385,7 @@ public class SalesforceUtils {
                 axisCtx.setProperty(HTTP_SC, ResponseConstants.HTTP_BAD_REQUEST);
             } else if (e instanceof ResponseParsingException) {
                 axisCtx.setProperty(HTTP_SC, ResponseConstants.HTTP_INTERNAL_SERVER_ERROR);
-            } else if (e instanceof SalesforceConnectionException){
+            } else if (e instanceof SalesforceConnectionException) {
                 int code = ((SalesforceConnectionException)e).getResponseCode();
                 axisCtx.setProperty(HTTP_SC, code);
             } else {

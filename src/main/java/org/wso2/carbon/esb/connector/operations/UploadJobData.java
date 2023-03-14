@@ -20,6 +20,7 @@ package org.wso2.carbon.esb.connector.operations;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
+import org.wso2.carbon.esb.connector.exception.SalesforceConnectionException;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.requests.SalesforceRequest;
 import org.wso2.carbon.esb.connector.store.SalesforceConfigStore;
@@ -65,7 +66,11 @@ public class UploadJobData extends AbstractConnector {
         } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             SalesforceUtils.generateErrorOutput(messageContext, e);
-            handleException(e.getMessage(), e, messageContext);
+            if (!(e instanceof SalesforceConnectionException)) {
+                handleException(e.getMessage(), e, messageContext);
+            } else {
+                log.error(e.getMessage(), e);
+            }
         }
     }
 }
