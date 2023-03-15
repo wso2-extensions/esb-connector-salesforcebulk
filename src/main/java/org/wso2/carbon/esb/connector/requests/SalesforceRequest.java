@@ -331,6 +331,7 @@ public class SalesforceRequest {
             String accessToken = jsonObject.getString(ACCESS_TOKEN);
             salesforceConfig.setAccessToken(accessToken);
             messageContext.setProperty(SalesforceConstants.ACCESS_TOKEN, accessToken);
+            messageContext.setProperty(SalesforceConstants.RENEWED_ACCESS_TOKEN, accessToken);
             log.info("Access token renewed successfully.");
             return accessToken;
         } catch (JSONException e) {

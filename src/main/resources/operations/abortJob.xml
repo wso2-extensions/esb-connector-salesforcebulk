@@ -5,6 +5,12 @@
         <class name="org.wso2.carbon.esb.connector.operations.AbortJob" />
         <property name="uri.var.url" expression="get-property('abortJobUrl')" />
         <property name="uri.var.accessToken" expression="get-property('accessToken')" />
+        <filter source="boolean(get-property('renewedAccessToken'))" regex="true">
+            <then>
+                <property name="uri.var.accessToken" expression="get-property('renewedAccessToken')" />
+            </then>
+            <else/>
+        </filter>
         <header name="Authorization"
                 expression="fn:concat('Bearer ', $ctx:uri.var.accessToken )"
                 scope="transport"/>

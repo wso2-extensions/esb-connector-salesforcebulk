@@ -19,6 +19,7 @@ package org.wso2.carbon.esb.connector.utils;
 
 public class SalesforceConstants {
     public static final String ACCESS_TOKEN = "accessToken";
+    public static final String RENEWED_ACCESS_TOKEN = "renewedAccessToken";
     public static final String REFRESH_TOKEN = "refreshToken";
     public static final String CLIENT_ID = "clientId";
     public static final String CLIENT_SECRET = "clientSecret";
