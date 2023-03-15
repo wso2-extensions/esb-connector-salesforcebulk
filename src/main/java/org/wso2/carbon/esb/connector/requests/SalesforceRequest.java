@@ -19,6 +19,7 @@ package org.wso2.carbon.esb.connector.requests;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.synapse.MessageContext;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
@@ -31,6 +32,7 @@ import org.wso2.carbon.esb.connector.utils.FileUtils;
 import org.wso2.carbon.esb.connector.utils.HttpMethod;
 import org.wso2.carbon.esb.connector.utils.RequestConstants;
 import org.wso2.carbon.esb.connector.utils.ResponseConstants;
+import org.wso2.carbon.esb.connector.utils.SalesforceConstants;
 import org.wso2.carbon.esb.connector.utils.SalesforceUtils;
 
 import java.util.HashMap;
@@ -38,10 +40,12 @@ import java.util.HashMap;
 public class SalesforceRequest {
     private final Log log = LogFactory.getLog(this.getClass());
     private final SalesforceConfig salesforceConfig;
+    private final MessageContext messageContext;
     private static final String ACCESS_TOKEN = "access_token";
 
-    public SalesforceRequest(SalesforceConfig salesforceConfig) {
+    public SalesforceRequest(SalesforceConfig salesforceConfig, MessageContext messageContext) {
         this.salesforceConfig = salesforceConfig;
+        this.messageContext = messageContext;
     }
 
     public String createJob(CreateJobPayload createJobPayload)
@@ -326,6 +330,7 @@ public class SalesforceRequest {
             JSONObject jsonObject = new JSONObject(responseStr);
             String accessToken = jsonObject.getString(ACCESS_TOKEN);
             salesforceConfig.setAccessToken(accessToken);
+            messageContext.setProperty(SalesforceConstants.ACCESS_TOKEN, accessToken);
             log.info("Access token renewed successfully.");
             return accessToken;
         } catch (JSONException e) {

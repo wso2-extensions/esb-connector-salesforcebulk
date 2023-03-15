@@ -33,7 +33,7 @@ public class RenewAccessToken extends AbstractConnector {
             log.info("Renewing access token");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
-            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
+            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig, messageContext);
             String accessToken = salesforceRequest.renewAccessToken();
             messageContext.setProperty(SalesforceConstants.ACCESS_TOKEN, accessToken);
         } catch (Exception e) {

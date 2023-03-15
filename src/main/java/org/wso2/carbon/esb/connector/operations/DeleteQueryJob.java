@@ -33,7 +33,7 @@ public class DeleteQueryJob extends AbstractConnector {
         try {
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
-            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
+            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig, messageContext);
             String queryJobId = (String) getParameter(messageContext, SalesforceConstants.QUERY_JOB_ID);
             log.debug("Deleting query job with id: " + queryJobId);
             salesforceRequest.deleteQueryJob(queryJobId);

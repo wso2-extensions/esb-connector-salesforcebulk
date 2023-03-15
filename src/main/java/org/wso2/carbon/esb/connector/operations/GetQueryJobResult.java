@@ -35,7 +35,7 @@ public class GetQueryJobResult extends AbstractConnector {
         try {
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
-            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
+            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig, messageContext);
             String queryJobId = (String) getParameter(messageContext, SalesforceConstants.QUERY_JOB_ID);
             String filePath = (String) getParameter(messageContext, SalesforceConstants.FILE_PATH);
             log.debug("Getting query job results with id: " + queryJobId + ". File path: " + filePath);

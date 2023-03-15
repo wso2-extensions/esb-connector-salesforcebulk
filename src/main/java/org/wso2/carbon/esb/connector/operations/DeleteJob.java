@@ -33,7 +33,7 @@ public class DeleteJob extends AbstractConnector {
         try {
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
-            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
+            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig, messageContext);
             String jobId = (String) getParameter(messageContext, SalesforceConstants.JOB_ID);
             log.debug("Deleting job with id: " + jobId);
             salesforceRequest.deleteJob(jobId);

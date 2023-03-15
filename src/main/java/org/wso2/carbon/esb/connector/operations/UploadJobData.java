@@ -35,7 +35,7 @@ public class UploadJobData extends AbstractConnector {
         try {
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
-            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
+            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig, messageContext);
             String jobId = (String) getParameter(messageContext, SalesforceConstants.JOB_ID);
             String filePath = (String) getParameter(messageContext, SalesforceConstants.FILE_PATH);
             Object inputData = getParameter(messageContext, SalesforceConstants.INPUT_DATA);

@@ -36,7 +36,7 @@ public class CreateQueryJob extends AbstractConnector {
             log.debug("Creating salesforce query job");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
-            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
+            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig, messageContext);
             CreateQueryJobPayload createQueryJobPayload = getCreateQueryJobPayload(messageContext);
             String jobInfo = salesforceRequest.createQueryJob(createQueryJobPayload);
             SalesforceUtils.generateJsonOutput(messageContext, jobInfo, ResponseConstants.HTTP_CREATED);

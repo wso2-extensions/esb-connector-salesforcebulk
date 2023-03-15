@@ -49,8 +49,6 @@ public class InitSalesforce extends AbstractConnector {
                 SalesforceConstants.CLIENT_SECRET);
         String refreshToken = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
                 SalesforceConstants.REFRESH_TOKEN);
-        String tokenUrl = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                SalesforceConstants.TOKEN_URL);
         String accessToken = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
                 SalesforceConstants.ACCESS_TOKEN);
         String salesforceConfigName = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
@@ -62,7 +60,6 @@ public class InitSalesforce extends AbstractConnector {
         salesforceConfig.setClientId(clientID);
         salesforceConfig.setClientSecret(clientSecret);
         salesforceConfig.setRefreshToken(refreshToken);
-        salesforceConfig.setTokenUrl(tokenUrl);
         salesforceConfig.setAccessToken(accessToken);
         salesforceConfig.setSalesforceConfigName(salesforceConfigName);
         salesforceConfig.setInstanceUrl(instanceUrl);

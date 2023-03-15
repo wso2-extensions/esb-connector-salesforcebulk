@@ -31,7 +31,7 @@ public class SalesforceConfigStore {
      */
     public static void addSalesforceConfig(SalesforceConfig salesforceConfig) {
         String key = salesforceConfig.getSalesforceConfigName();
-        if (!salesforceConfigMap.contains(key)) {
+        if (!salesforceConfigMap.containsKey(key)) {
             salesforceConfigMap.put(key, salesforceConfig);
         }
     }

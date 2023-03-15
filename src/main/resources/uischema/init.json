@@ -80,17 +80,6 @@
                     "required": "false",
                     "helpTip": "The access token generated"
                   }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "tokenUrl",
-                    "displayName": "Token URL",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "false",
-                    "helpTip": "The token endpoint URL to generate access token"
-                  }
                 }
               ]
             }

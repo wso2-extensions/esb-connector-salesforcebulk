@@ -25,7 +25,6 @@ public class SalesforceConfig {
     private String clientId = null;
     private String clientSecret = null;
     private String refreshToken = null;
-    private String tokenUrl = null;
     private String tokenId = null;
     private String accessToken = null;
     private String sfOAuthConfigName = null;
@@ -63,14 +62,6 @@ public class SalesforceConfig {
 
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
-    }
-
-    public String getTokenUrl() {
-        return tokenUrl;
-    }
-
-    public void setTokenUrl(String tokenUrl) {
-        this.tokenUrl = tokenUrl;
     }
 
     public String getTokenId() {

@@ -36,7 +36,7 @@ public class CreateJob extends AbstractConnector {
             log.debug("Creating salesforce job");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
-            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
+            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig, messageContext);
             CreateJobPayload createJobPayload = getCreateJobPayload(messageContext);
             String jobInfo = salesforceRequest.createJob(createJobPayload);
             SalesforceUtils.generateJsonOutput(messageContext, jobInfo, ResponseConstants.HTTP_CREATED);

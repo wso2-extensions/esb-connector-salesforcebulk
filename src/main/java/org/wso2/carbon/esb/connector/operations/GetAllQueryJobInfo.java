@@ -34,7 +34,7 @@ public class GetAllQueryJobInfo extends AbstractConnector {
             log.debug("Getting all query job info");
             String sfOAuthConfigName = SalesforceUtils.getConnectionName(messageContext);
             SalesforceConfig salesforceConfig = SalesforceConfigStore.getSalesforceConfig(sfOAuthConfigName);
-            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig);
+            SalesforceRequest salesforceRequest = new SalesforceRequest(salesforceConfig, messageContext);
             Boolean isPkChunkingEnabled = (Boolean) getParameter(messageContext, SalesforceConstants.IS_PK_CHUNKING_ENABLED);
             String jobType = (String) getParameter(messageContext, SalesforceConstants.JOB_TYPE);
             String queryLocator = (String) getParameter(messageContext, SalesforceConstants.QUERY_LOCATOR);
