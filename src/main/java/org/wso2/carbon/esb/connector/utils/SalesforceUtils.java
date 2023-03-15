@@ -45,6 +45,8 @@ public class SalesforceUtils {
     private static final String REFRESH_TOKEN = "refresh_token";
     private static final String NO_ENTITY_BODY = "NO_ENTITY_BODY";
     private static final String HTTP_SC = "HTTP_SC";
+    private static final String COMMA_IDENTIFIER = "__-COMMA-__";
+    private static final char COMMA = ',';
 
     /**
      * Retrieves connection name from message context if configured as configKey attribute
@@ -342,9 +344,24 @@ public class SalesforceUtils {
     public static String csvToJson(String csvString) {
         String[] lines = csvString.split("\n");
         String[] headers = lines[0].split(",");
+        for (int i = 0; i < headers.length; i++) {
+            if (headers[i].contains("\"")) {
+                headers[i] = headers[i].replace("\"", "");
+            }
+        }
         StringBuilder json = new StringBuilder("[\n");
         for (int i = 1; i < lines.length; i++) {
-            String[] fields = lines[i].split(",");
+            String line = lines[i];
+            line = replaceCommaWithCommaIdentifierWithinQuotes(line);
+            String[] fields = line.split(",");
+            for (int k = 0; k < fields.length; k++) {
+                if (fields[k].contains("\"")) {
+                    fields[k] = fields[k].replaceAll("\"", "");
+                }
+                if (fields[k].contains(COMMA_IDENTIFIER)) {
+                    fields[k] = fields[k].replaceAll(COMMA_IDENTIFIER, ",");
+                }
+            }
             json.append("  {\n");
             for (int j = 0; j < headers.length; j++) {
                 json.append("    \"").append(headers[j]).append("\": \"").append(fields[j]).append("\"");
@@ -395,5 +412,21 @@ public class SalesforceUtils {
             log.error("Error while generating error output", ex);
             axisCtx.setProperty(HTTP_SC, 500);
         }
+    }
+
+    private static String replaceCommaWithCommaIdentifierWithinQuotes(String value) {
+        StringBuilder result = new StringBuilder();
+        boolean insideQuotes = false;
+        for (char c : value.toCharArray()) {
+            if (c == '\"') {
+                insideQuotes = !insideQuotes;
+            }
+            if (c == COMMA && insideQuotes) {
+                result.append(COMMA_IDENTIFIER);
+            } else {
+                result.append(c);
+            }
+        }
+        return result.toString();
     }
 }
