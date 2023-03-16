@@ -8,9 +8,9 @@
       "type": "attribute",
       "value": {
         "name": "connectionName",
-        "displayName": "OAuth configuration name",
+        "displayName": "Salesforce Configuration Name",
         "inputType": "string",
-        "defaultValue": "SF_OAUTH_CONFIG_1",
+        "defaultValue": "SF_CONFIG_1",
         "required": "true",
         "helpTip": "Name of the OAuth configuration",
         "validation": "nameWithoutSpecialCharactors"

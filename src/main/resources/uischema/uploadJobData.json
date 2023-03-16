@@ -13,7 +13,7 @@
             "type": "attribute",
             "value": {
               "name": "configRef",
-              "displayName": "OAuthConfiguration",
+              "displayName": "Salesforce Configuration",
               "inputType": "connection",
               "allowedConnectionTypes": [
                 "init"

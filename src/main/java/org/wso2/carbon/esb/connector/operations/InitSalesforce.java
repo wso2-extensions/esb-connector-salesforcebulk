@@ -34,7 +34,11 @@ public class InitSalesforce extends AbstractConnector {
     public void connect(MessageContext messageContext) {
         try {
             SalesforceConfig oAuthConfig = getSalesforceConfig(messageContext);
-            SalesforceConfigStore.addSalesforceConfig(oAuthConfig);
+            boolean configModified = SalesforceConfigStore.addSalesforceConfig(oAuthConfig);
+            if (!configModified) {
+                messageContext.setProperty(SalesforceConstants.ACCESS_TOKEN,
+                        SalesforceConfigStore.getSalesforceConfig(oAuthConfig.getSalesforceConfigName()).getAccessToken());
+            }
         } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             SalesforceUtils.generateErrorOutput(messageContext, e);

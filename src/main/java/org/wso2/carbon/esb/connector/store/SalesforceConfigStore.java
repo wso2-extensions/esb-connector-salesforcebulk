@@ -28,12 +28,15 @@ public class SalesforceConfigStore {
     /**
      * Add Saqlesforce config to the store.
      * @param salesforceConfig Salesforce config to be added.
+     * @return True if the config is added successfully, false otherwise.
      */
-    public static void addSalesforceConfig(SalesforceConfig salesforceConfig) {
+    public static boolean addSalesforceConfig(SalesforceConfig salesforceConfig) {
         String key = salesforceConfig.getSalesforceConfigName();
         if (!salesforceConfigMap.containsKey(key)) {
             salesforceConfigMap.put(key, salesforceConfig);
+            return true;
         }
+        return false;
     }
 
     /**
