@@ -45,12 +45,6 @@ public class RestResponse {
 
         return response;
     }
-
-    public void setStatusCode(int statusCode) {
-
-        this.statusCode = statusCode;
-    }
-
     public void setResponse(String response) {
 
         this.response = response;
@@ -71,18 +65,8 @@ public class RestResponse {
         return errorMessage;
     }
 
-    public void setErrorMessage(String errorMessage) {
-
-        this.errorMessage = errorMessage;
-    }
-
     public String getErrorDetails() {
 
         return errorDetails;
-    }
-
-    public void setErrorDetails(String errorDetails) {
-
-        this.errorDetails = errorDetails;
     }
 }

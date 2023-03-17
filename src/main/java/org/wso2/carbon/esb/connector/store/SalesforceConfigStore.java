@@ -40,23 +40,6 @@ public class SalesforceConfigStore {
     }
 
     /**
-     * Remove Salesforce config from the store.
-     * @param salesforceConfigName Name of the Salesforce config to be removed.
-     */
-    public static void removeSalesforceConfig(String salesforceConfigName) {
-        salesforceConfigMap.remove(salesforceConfigName);
-    }
-
-    /**
-     * Update active access token in the store.
-     * @param salesforceConfigName Name of the Salesforce config.
-     * @param activeAccessToken Active access token.
-     */
-    public static void updateAccessToken(String salesforceConfigName, String activeAccessToken) {
-        salesforceConfigMap.get(salesforceConfigName).setAccessToken(activeAccessToken);
-    }
-
-    /**
      * Get Salesforce config from the store.
      * @param salesforceConfigName Name of the Salesforce config.
      */

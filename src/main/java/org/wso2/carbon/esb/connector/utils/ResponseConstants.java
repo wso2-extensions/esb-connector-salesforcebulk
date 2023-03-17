@@ -18,17 +18,11 @@
 package org.wso2.carbon.esb.connector.utils;
 
 public class ResponseConstants {
-
     public static final String PROPERTY_ERROR_CODE = "ERROR_CODE";
     public static final String PROPERTY_ERROR_MESSAGE = "ERROR_MESSAGE";
     // Constants for http response codes
     public static final int HTTP_OK = 200;
     public static final int HTTP_CREATED = 201;
-    public static final int HTTP_ACCEPTED = 202;
-    public static final int HTTP_NO_CONTENT = 204;
     public static final int HTTP_BAD_REQUEST = 400;
-    public static final int HTTP_UNAUTHORIZED = 401;
     public static final int HTTP_INTERNAL_SERVER_ERROR = 500;
-
-    public static final int HTTP_NOUT_FOUND = 404;
 }

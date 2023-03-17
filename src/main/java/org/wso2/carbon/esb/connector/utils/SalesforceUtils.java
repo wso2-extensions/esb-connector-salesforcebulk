@@ -17,10 +17,6 @@
  */
 package org.wso2.carbon.esb.connector.utils;
 
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMException;
-import org.apache.axiom.om.util.AXIOMUtil;
-import org.apache.axiom.soap.SOAPBody;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.Constants;
 import org.apache.commons.lang.StringUtils;
@@ -33,8 +29,6 @@ import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
 import org.wso2.carbon.esb.connector.exception.ResponseParsingException;
 import org.wso2.carbon.esb.connector.exception.SalesforceConnectionException;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
-
-import javax.xml.stream.XMLStreamException;
 
 public class SalesforceUtils {
 
@@ -225,14 +219,6 @@ public class SalesforceUtils {
         }
     }
 
-    public static BulkJobState getBulkJobStateTypeEnum(String enumString) throws InvalidConfigurationException {
-        try {
-            return BulkJobState.valueOf(enumString);
-        } catch (IllegalArgumentException e) {
-            throw new InvalidConfigurationException("Invalid job state provided: " + enumString);
-        }
-    }
-
     public static ColumnDelimiter getColumnDelimiterEnum(String enumString) throws InvalidConfigurationException {
         try {
             return ColumnDelimiter.valueOf(enumString);
@@ -249,37 +235,6 @@ public class SalesforceUtils {
         }
     }
 
-    public static JobType getJobTypeEnum(String enumString) throws InvalidConfigurationException {
-        try {
-            return JobType.valueOf(enumString);
-        } catch (IllegalArgumentException e) {
-            throw new InvalidConfigurationException("Invalid content type provided: " + enumString);
-        }
-    }
-
-    /**
-     * Generates the output payload
-     *
-     * @param messageContext The message context that is processed
-     * @param xmlString   Result of the status
-     */
-    public static void generateOutput(MessageContext messageContext, String xmlString)
-            throws InvalidConfigurationException {
-
-        try {
-            OMElement omElement = AXIOMUtil.stringToOM(xmlString);
-            //Detaching first element (soapBody.getFirstElement().detach()) will be done by following method anyway.
-            JsonUtil.removeJsonPayload(((Axis2MessageContext) messageContext).getAxis2MessageContext());
-
-            ((Axis2MessageContext) messageContext).getAxis2MessageContext().
-                    removeProperty("NO_ENTITY_BODY");
-            SOAPBody soapBody = messageContext.getEnvelope().getBody();
-            soapBody.addChild(omElement);
-        } catch (XMLStreamException e) {
-            throw new InvalidConfigurationException(e.getMessage(), e);
-        }
-    }
-
     public static void generateJsonOutput(MessageContext messageContext, String jsonString, int responseCode)
             throws ResponseParsingException {
         try {
@@ -292,53 +247,6 @@ public class SalesforceUtils {
         } catch (AxisFault e) {
             throw new ResponseParsingException(e.getMessage(), e);
         }
-    }
-
-
-    /**
-     * Create an OMElement.
-     *
-     * @param elementName Name of the element
-     * @param value       Value to be added
-     * @return OMElement or null if error
-     */
-    public static OMElement createOMElement(String elementName, String value) {
-        OMElement resultElement = null;
-        try {
-            if (StringUtils.isNotEmpty(value)) {
-                resultElement = AXIOMUtil.
-                        stringToOM("<" + elementName + ">" + value
-                                + "</" + elementName + ">");
-            } else {
-                resultElement = AXIOMUtil.
-                        stringToOM("<" + elementName
-                                + "></" + elementName + ">");
-            }
-        } catch (XMLStreamException | OMException e) {
-            log.error("Error while generating OMElement from element name" + elementName, e);
-        }
-        return resultElement;
-    }
-
-    public static String csvToXml(String csvString) {
-        String[] lines = csvString.split("\n");
-        String[] headers = lines[0].split(",");
-        for (int i = 0; i < headers.length; i++) {
-            if (headers[i].contains("\"")) {
-                headers[i] = headers[i].replace("\"", "");
-            }
-        }
-        StringBuilder xml = new StringBuilder("<root>\n");
-        for (int i = 1; i < lines.length; i++) {
-            String[] fields = lines[i].split(",");
-            xml.append("  <record>\n");
-            for (int j = 0; j < headers.length; j++) {
-                xml.append("    <").append(headers[j]).append(">").append(fields[j]).append("</").append(headers[j]).append(">\n");
-            }
-            xml.append("  </record>\n");
-        }
-        xml.append("</root>");
-        return xml.toString();
     }
 
     public static String csvToJson(String csvString) {
@@ -380,10 +288,6 @@ public class SalesforceUtils {
         }
         json.append("]");
         return json.toString();
-    }
-
-    public static String getSuccessXml() {
-        return "<result>Success</result>";
     }
 
     public static String getSuccessJson() {

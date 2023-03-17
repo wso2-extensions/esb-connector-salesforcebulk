@@ -60,9 +60,6 @@ public class RestRequest {
     public HttpMethod getMethod() {
         return method;
     }
-    public void setMethod(HttpMethod method) {
-        this.method = method;
-    }
     public String getUrl() {
         return url;
     }
@@ -71,35 +68,13 @@ public class RestRequest {
         this.url = url;
     }
 
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
     public HashMap<String, String> getHeaders() {
         return headers;
-    }
-
-    public void setHeaders(HashMap<String, String> headers) {
-        this.headers = headers;
-    }
-
-    public String getInputFilePath() {
-
-        return inputFilePath;
     }
 
     public void setInputFilePath(String inputFilePath) {
 
         this.inputFilePath = inputFilePath;
-    }
-
-    public boolean getGetBodyFromFile() {
-
-        return getBodyFromFile;
     }
 
     public void setGetBodyFromFile(boolean getBodyFromFile) {
@@ -236,10 +211,6 @@ public class RestRequest {
 
     public void setReceiveToFile(boolean receiveToFile) {
         this.receiveToFile = receiveToFile;
-    }
-
-    public String getOutputFilePath() {
-        return outputFilePath;
     }
 
     public void setOutputFilePath(String outputFilePath) {
