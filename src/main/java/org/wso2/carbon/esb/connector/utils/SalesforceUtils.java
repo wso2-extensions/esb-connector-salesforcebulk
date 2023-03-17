@@ -238,7 +238,8 @@ public class SalesforceUtils {
     public static void generateJsonOutput(MessageContext messageContext, String jsonString, int responseCode)
             throws ResponseParsingException {
         try {
-            org.apache.axis2.context.MessageContext axisCtx = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
+            org.apache.axis2.context.MessageContext axisCtx =
+                    ((Axis2MessageContext) messageContext).getAxis2MessageContext();
             axisCtx.setProperty(Constants.Configuration.MESSAGE_TYPE, RequestConstants.APPLICATION_JSON);
             axisCtx.setProperty(Constants.Configuration.CONTENT_TYPE, RequestConstants.APPLICATION_JSON);
             axisCtx.removeProperty(NO_ENTITY_BODY);
@@ -295,7 +296,8 @@ public class SalesforceUtils {
     }
 
     public static void generateErrorOutput(MessageContext messageContext, Exception e) {
-        org.apache.axis2.context.MessageContext axisCtx = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
+        org.apache.axis2.context.MessageContext axisCtx =
+                ((Axis2MessageContext) messageContext).getAxis2MessageContext();
         axisCtx.setProperty(Constants.Configuration.MESSAGE_TYPE, RequestConstants.APPLICATION_JSON);
         axisCtx.setProperty(Constants.Configuration.CONTENT_TYPE, RequestConstants.APPLICATION_JSON);
         axisCtx.removeProperty(NO_ENTITY_BODY);
