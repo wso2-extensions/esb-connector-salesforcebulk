@@ -84,6 +84,7 @@
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",
+                    "enableCondition": [{"outputType": "FILE"}],
                     "helpTip": "The path to the file to write the results to."
                   }
                 }

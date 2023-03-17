@@ -62,6 +62,7 @@
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",
+                    "enableCondition": [{"inputType": "INLINE"}],
                     "helpTip": "The ID of the job to upload data to"
                   }
                 },
@@ -73,6 +74,7 @@
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",
+                    "enableCondition": [{"inputType": "FILE"}],
                     "helpTip": "The ID of the job to upload data to"
                   }
                 }
