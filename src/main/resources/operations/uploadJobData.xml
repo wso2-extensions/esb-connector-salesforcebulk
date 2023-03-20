@@ -1,0 +1,13 @@
+<template xmlns="http://ws.apache.org/ns/synapse" name="uploadJobData">
+    <parameter name="jobId" description="Job ID"/>
+    <parameter name="inputType" description="Input Type"/>
+    <parameter name="inputData" description="Input Data"/>
+    <parameter name="filePath" description="File Path"/>
+    <sequence>
+        <property name="jobId" expression="$func:jobId" />
+        <property name="inputType" expression="$func:inputType" />
+        <property name="inputData" expression="$func:inputData" />
+        <property name="filePath" expression="$func:filePath" />
+        <class name="org.wso2.carbon.esb.connector.operations.UploadJobData" />
+    </sequence>
+</template>

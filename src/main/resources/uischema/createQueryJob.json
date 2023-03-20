@@ -1,0 +1,98 @@
+{
+  "connectorName": "salesforce_bulkapi_v2",
+  "operationName": "createQueryJob",
+  "title": "Create Query Job",
+  "help": "Creates a new Query job in Salesforce Bulk API",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "configRef",
+              "displayName": "Salesforce Configuration",
+              "inputType": "connection",
+              "allowedConnectionTypes": [
+                "init"
+              ],
+              "defaultValue": "",
+              "required": "true",
+              "helpTip": "Connection to be used"
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "operation",
+                    "displayName": "Operation",
+                    "inputType": "comboOrExpression",
+                    "comboValues": [
+                      "QUERY",
+                      "QUERY_ALL"
+                    ],
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The path of the file to be uploaded"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "query",
+                    "displayName": "Query",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The path of the file to be uploaded"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "columnDelimiter",
+                    "displayName": "Column Delimiter",
+                    "inputType": "comboOrExpression",
+                    "comboValues": [
+                      "COMMA",
+                      "SEMICOLON",
+                      "TAB",
+                      "PIPE",
+                      "CARET",
+                      "BACKQUOTE"
+                    ],
+                    "defaultValue": "COMMA",
+                    "required": "true",
+                    "helpTip": "The path of the file to be uploaded"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "lineEnding",
+                    "displayName": "Line Ending",
+                    "inputType": "comboOrExpression",
+                    "comboValues": [
+                      "CRLF",
+                      "LF"
+                    ],
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The path of the file to be uploaded"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

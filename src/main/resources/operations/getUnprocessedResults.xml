@@ -1,0 +1,11 @@
+<template xmlns="http://ws.apache.org/ns/synapse" name="getUnprocessedResults">
+    <parameter name="jobId" description="Job ID"/>
+    <parameter name="outputType" description="Output Type"/>
+    <parameter name="filePath" description="File path"/>
+    <sequence>
+        <property name="jobId" expression="$func:jobId" />
+        <property name="outputType" expression="$func:outputType" />
+        <property name="filePath" expression="$func:filePath" />
+        <class name="org.wso2.carbon.esb.connector.operations.GetUnprocessedResults" />
+    </sequence>
+</template>

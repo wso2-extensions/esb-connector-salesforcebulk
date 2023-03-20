@@ -1,0 +1,76 @@
+{
+  "connectorName": "salesforce_bulkapi_v2",
+  "operationName": "getSuccessfulResults",
+  "title": "Get Successful Results",
+  "help": "This operation is used to get the successful results of a job.",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "configRef",
+              "displayName": "Salesforce Configuration",
+              "inputType": "connection",
+              "allowedConnectionTypes": [
+                "init"
+              ],
+              "defaultValue": "",
+              "required": "true",
+              "helpTip": "Connection to be used"
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "jobId",
+                    "displayName": "Job ID",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The ID of the job that you want to get the successful results for."
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "outputType",
+                    "displayName": "Output type",
+                    "inputType": "comboOrExpression",
+                    "comboValues": [
+                      "FILE",
+                      "BODY"
+                    ],
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "The ID of the job to upload data to"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "filePath",
+                    "displayName": "File Path",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "enableCondition": [{"outputType": "FILE"}],
+                    "helpTip": "The path to the file to write the results to."
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

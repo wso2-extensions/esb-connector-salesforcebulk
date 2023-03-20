@@ -1,0 +1,76 @@
+{
+  "connectorName": "salesforce_bulkapi_v2",
+  "operationName": "getAllJobInfo",
+  "title": "Get All Job Info",
+  "help": "Retrieves information about all Salesforce Bulk API jobs",
+  "elements": [
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "configRef",
+              "displayName": "Salesforce Configuration",
+              "inputType": "connection",
+              "allowedConnectionTypes": [
+                "init"
+              ],
+              "defaultValue": "",
+              "required": "true",
+              "helpTip": "Connection to be used"
+            }
+          },
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "isPkChunkingEnabled",
+                    "displayName": "IsPkChunkingEnabled",
+                    "inputType": "booleanOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Is PK Chunking Enabled"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "jobType",
+                    "displayName": "JobType",
+                    "inputType": "comboOrExpression",
+                    "comboValues": [
+                      "Classic",
+                      "V2Query",
+                      "UPSERT"
+                    ],
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Job Type"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "queryLocator",
+                    "displayName": "queryLocator",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "helpTip": "Query Locator"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
