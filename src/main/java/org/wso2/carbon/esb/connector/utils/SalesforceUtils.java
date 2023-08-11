@@ -17,11 +17,13 @@
  */
 package org.wso2.carbon.esb.connector.utils;
 
+import au.com.bytecode.opencsv.CSVReader;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.Constants;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.commons.json.JsonUtil;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
@@ -29,6 +31,10 @@ import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
 import org.wso2.carbon.esb.connector.exception.ResponseParsingException;
 import org.wso2.carbon.esb.connector.exception.SalesforceConnectionException;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.List;
 
 public class SalesforceUtils {
 
@@ -250,25 +256,23 @@ public class SalesforceUtils {
         }
     }
 
-    public static String csvToJson(String csvString) {
-        String[] lines = csvString.split("\n");
-        String[] headers = lines[0].split(",");
+    public static String csvToJson(String csvString) throws IOException {
+        String escapedString  = StringEscapeUtils.unescapeXml(csvString);
+        CSVReader csvReader =
+                new CSVReader(new StringReader(escapedString), CSVReader.DEFAULT_SEPARATOR, CSVReader.DEFAULT_QUOTE_CHARACTER);
+        List<String[]> lines = csvReader.readAll();
+        String[] headers = lines.get(0);
         for (int i = 0; i < headers.length; i++) {
             if (headers[i].contains("\"")) {
                 headers[i] = headers[i].replace("\"", "");
             }
         }
         StringBuilder json = new StringBuilder("[\n");
-        for (int i = 1; i < lines.length; i++) {
-            String line = lines[i];
-            line = replaceCommaWithCommaIdentifierWithinQuotes(line);
-            String[] fields = line.split(",");
+        for (int i = 1; i < lines.size(); i++) {
+            String[] fields = lines.get(i);
             for (int k = 0; k < fields.length; k++) {
                 if (fields[k].contains("\"")) {
                     fields[k] = fields[k].replaceAll("\"", "");
-                }
-                if (fields[k].contains(COMMA_IDENTIFIER)) {
-                    fields[k] = fields[k].replaceAll(COMMA_IDENTIFIER, ",");
                 }
             }
             json.append("  {\n");
@@ -281,7 +285,7 @@ public class SalesforceUtils {
                 }
             }
             json.append("  }");
-            if (i < lines.length - 1) {
+            if (i < lines.size() - 1) {
                 json.append(",\n");
             } else {
                 json.append("\n");
@@ -320,19 +324,4 @@ public class SalesforceUtils {
         }
     }
 
-    private static String replaceCommaWithCommaIdentifierWithinQuotes(String value) {
-        StringBuilder result = new StringBuilder();
-        boolean insideQuotes = false;
-        for (char c : value.toCharArray()) {
-            if (c == '\"') {
-                insideQuotes = !insideQuotes;
-            }
-            if (c == COMMA && insideQuotes) {
-                result.append(COMMA_IDENTIFIER);
-            } else {
-                result.append(c);
-            }
-        }
-        return result.toString();
-    }
 }

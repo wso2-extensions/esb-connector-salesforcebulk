@@ -44,6 +44,7 @@
         <rampart.apache.version>1.6.1-wso2v18</rampart.apache.version>
         <rampart.wso2.version>1.6.1.wso2v18</rampart.wso2.version>
         <skip-tests>true</skip-tests>
+        <opencsv.orbit.version>1.8.wso2v1</opencsv.orbit.version>
     </properties>
 
     <dependencies>
@@ -204,7 +205,11 @@
             <version>${integration.base.version}</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>au.com.bytecode.opencsv.wso2</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>${opencsv.orbit.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
