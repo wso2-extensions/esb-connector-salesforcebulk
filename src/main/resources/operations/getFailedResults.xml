@@ -18,12 +18,8 @@
 
 <template xmlns="http://ws.apache.org/ns/synapse" name="getFailedResults">
     <parameter name="jobId" description="Job ID"/>
-<!--    <parameter name="outputType" description="Output Type"/>-->
-<!--    <parameter name="filePath" description="File path"/>-->
     <sequence>
         <property name="jobId" expression="$func:jobId" />
-<!--        <property name="outputType" expression="$func:outputType" />-->
-<!--        <property name="filePath" expression="$func:filePath" />-->
         <class name="org.wso2.carbon.esb.connector.operations.GetFailedResults" />
         <property name="uri.var.url" expression="get-property('getFailedResultsUrl')"/>
         <property name="uri.var.accessToken" expression="get-property('accessToken')"/>

@@ -20,14 +20,10 @@
     <parameter name="queryJobId" description="Query Job ID"/>
     <parameter name="locator" description="Query Locator"/>
     <parameter name="maxRecords" description="Query Job ID"/>
-<!--    <parameter name="outputType" description="Output Type"/>-->
-<!--    <parameter name="filePath" description="File path"/>-->
     <sequence>
         <property name="queryJobId" expression="$func:queryJobId" />
         <property name="locator" expression="$func:locator" />
         <property name="maxRecords" expression="$func:maxRecords" />
-<!--        <property name="outputType" expression="$func:outputType" />-->
-<!--        <property name="filePath" expression="$func:filePath" />-->
         <class name="org.wso2.carbon.esb.connector.operations.GetQueryJobResult" />
         <property name="uri.var.url" expression="get-property('getQueryJobResultsUrl')"/>
         <property name="uri.var.accessToken" expression="get-property('accessToken')"/>
