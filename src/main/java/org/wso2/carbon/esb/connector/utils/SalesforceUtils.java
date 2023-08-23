@@ -103,7 +103,7 @@ public class SalesforceUtils {
             }
             paramString += SalesforceConstants.QUERY_LOCATOR + "=" + queryLocator;
         }
-        if (StringUtils.isNotEmpty(jobType)) {
+        if (StringUtils.isNotEmpty(jobType) & !StringUtils.equalsIgnoreCase(jobType,"All")) {
             if (StringUtils.isNotEmpty(paramString)) {
                 paramString += "&";
             }
@@ -127,7 +127,7 @@ public class SalesforceUtils {
             }
             paramString += SalesforceConstants.QUERY_LOCATOR + "=" + queryLocator;
         }
-        if (StringUtils.isNotEmpty(jobType)) {
+        if (StringUtils.isNotEmpty(jobType) & !StringUtils.equalsIgnoreCase(jobType,"All")) {
             if (StringUtils.isNotEmpty(paramString)) {
                 paramString += "&";
             }
@@ -183,10 +183,8 @@ public class SalesforceUtils {
     }
 
     public static String getSFTokenUrl(SalesforceConfig salesforceConfig) {
-        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_TOKEN_RELATIVE_PATH + "?" + GRANT_TYPE + "="
-                + REFRESH_TOKEN + "&" + CLIENT_ID + "=" + salesforceConfig.getClientId() + "&"
-                + CLIENT_SECRET + "=" + salesforceConfig.getClientSecret() + "&" + REFRESH_TOKEN + "="
-                + salesforceConfig.getRefreshToken();
+
+        return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_TOKEN_RELATIVE_PATH;
     }
 
     /**

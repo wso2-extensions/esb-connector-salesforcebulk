@@ -39,6 +39,8 @@ public class InitSalesforce extends AbstractConnector {
                 messageContext.setProperty(SalesforceConstants.ACCESS_TOKEN,
                         SalesforceConfigStore.getSalesforceConfig(oAuthConfig.getSalesforceConfigName()).getAccessToken());
             }
+            String tokenUrl = SalesforceUtils.getSFTokenUrl(oAuthConfig);
+            messageContext.setProperty(SalesforceConstants.TOKEN_URL, tokenUrl);
         } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             SalesforceUtils.generateErrorOutput(messageContext, e);

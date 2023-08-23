@@ -60,33 +60,6 @@
                     "required": "false",
                     "helpTip": "The maximum number of records to return in the response."
                   }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "outputType",
-                    "displayName": "Output type",
-                    "inputType": "comboOrExpression",
-                    "comboValues": [
-                      "FILE",
-                      "BODY"
-                    ],
-                    "defaultValue": "",
-                    "required": "true",
-                    "helpTip": "The ID of the job to upload data to"
-                  }
-                },
-                {
-                  "type": "attribute",
-                  "value": {
-                    "name": "filePath",
-                    "displayName": "File Path",
-                    "inputType": "stringOrExpression",
-                    "defaultValue": "",
-                    "required": "false",
-                    "enableCondition": [{"outputType": "FILE"}],
-                    "helpTip": "The path to the file to write the results to."
-                  }
                 }
               ]
             }
