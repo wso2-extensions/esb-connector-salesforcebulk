@@ -20,10 +20,12 @@
     <parameter name="queryJobId" description="Query Job ID"/>
     <parameter name="locator" description="Query Locator"/>
     <parameter name="maxRecords" description="Query Job ID"/>
+    <parameter name="outputType" description="Output Type"/>
     <sequence>
         <property name="queryJobId" expression="$func:queryJobId" />
         <property name="locator" expression="$func:locator" />
         <property name="maxRecords" expression="$func:maxRecords" />
+        <property name="outputType" expression="$func:outputType" />
         <class name="org.wso2.carbon.esb.connector.operations.GetQueryJobResult" />
         <property name="uri.var.url" expression="get-property('getQueryJobResultsUrl')"/>
         <property name="uri.var.accessToken" expression="get-property('accessToken')"/>
@@ -119,6 +121,17 @@
                     </endpoint>
                 </call>
             </else>
+        </filter>
+        <filter regex="200" source="$axis2:HTTP_SC">
+            <then>
+                <filter regex="JSON" source="$ctx:outputType">
+                    <then>
+                        <class name="org.wso2.carbon.esb.connector.operations.CSVtoJSON"/>
+                    </then>
+                    <else/>
+                </filter>
+            </then>
+            <else/>
         </filter>
     </sequence>
 </template>

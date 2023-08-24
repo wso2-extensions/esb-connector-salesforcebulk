@@ -17,6 +17,10 @@
  */
 package org.wso2.carbon.esb.connector.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.Constants;
 import org.apache.commons.lang.StringUtils;
@@ -29,6 +33,12 @@ import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
 import org.wso2.carbon.esb.connector.exception.ResponseParsingException;
 import org.wso2.carbon.esb.connector.exception.SalesforceConnectionException;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SalesforceUtils {
 
@@ -249,6 +259,89 @@ public class SalesforceUtils {
     }
 
     public static String csvToJson(String csvString) {
+
+        String lineSeparator = findLineSeparator(csvString);
+        String[] headerRow = csvString.split(lineSeparator)[0].split(",");
+        for (int i = 0; i < headerRow.length; i++) {
+            headerRow[i] = removeQuotesFromStartAndEnd(headerRow[i]);
+        }
+        Stream<String[]> csvArrayStream = Arrays.stream(csvString.split(lineSeparator))
+                .map(line -> parseCsvLine(line));
+        csvArrayStream = csvArrayStream.skip(1);
+        List<JsonObject> jsonObjectList = csvArrayStream
+                .map(row -> {
+                    JsonObject jsonObject = new JsonObject();
+
+                    for (int i = 0; i < row.length; i++) {
+                        JsonPrimitive value = getCellValue(row, i);
+                        String key = headerRow[i];
+                        jsonObject.add(key, value);
+                    }
+
+                    return jsonObject;
+                })
+                .collect(Collectors.toList());
+        Gson gson = new GsonBuilder()
+                .disableHtmlEscaping()
+                .create();
+        String jsonString = gson.toJson(jsonObjectList);
+        return jsonString;
+    }
+
+    public static String findLineSeparator(String csvString) {
+
+        if (csvString.contains("\r\n")) {
+            return "\r\n"; // Windows
+        } else if (csvString.contains("\n")) {
+            return "\n"; // Unix-like systems
+        } else if (csvString.contains("\r")) {
+            return "\r"; // Older Mac systems
+        } else {
+            return "\n"; // Default
+        }
+    }
+
+    public static String[] parseCsvLine(String line) {
+
+        List<String> fields = new ArrayList<>();
+        boolean inQuotes = false;
+        StringBuilder currentField = new StringBuilder();
+        for (char c : line.toCharArray()) {
+            if (c == '"') {
+                inQuotes = !inQuotes;
+            } else if (c == ',' && !inQuotes) {
+                fields.add(currentField.toString());
+                currentField = new StringBuilder();
+            } else {
+                currentField.append(c);
+            }
+        }
+
+        fields.add(currentField.toString());
+        return fields.toArray(new String[0]);
+    }
+
+    public static JsonPrimitive getCellValue(String[] row, int index) {
+
+        JsonPrimitive cellValue = null;
+        String cellValueString = removeQuotesFromStartAndEnd(row[index]);
+        if (StringUtils.isNotBlank(cellValueString)) {
+            cellValue = new JsonPrimitive(cellValueString);
+        } else {
+            cellValue = new JsonPrimitive("");
+        }
+        return cellValue;
+    }
+
+    private static String removeQuotesFromStartAndEnd(String field) {
+
+        if (field.startsWith("\"") && field.endsWith("\"")) {
+            return field.substring(1, field.length() - 1);
+        }
+        return field;
+    }
+
+    public static String csvToJson_old(String csvString) {
         String[] lines = csvString.split("\n");
         String[] headers = lines[0].split(",");
         for (int i = 0; i < headers.length; i++) {

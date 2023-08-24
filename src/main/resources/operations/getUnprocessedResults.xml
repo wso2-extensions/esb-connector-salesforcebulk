@@ -18,8 +18,10 @@
 
 <template xmlns="http://ws.apache.org/ns/synapse" name="getUnprocessedResults">
     <parameter name="jobId" description="Job ID"/>
+    <parameter name="outputType" description="Output Type"/>
     <sequence>
         <property name="jobId" expression="$func:jobId" />
+        <property name="outputType" expression="$func:outputType" />
         <class name="org.wso2.carbon.esb.connector.operations.GetUnprocessedResults" />
         <property name="uri.var.url" expression="get-property('getUnprocessedResultsUrl')"/>
         <property name="uri.var.accessToken" expression="get-property('accessToken')"/>
@@ -115,6 +117,17 @@
                     </endpoint>
                 </call>
             </else>
+        </filter>
+        <filter regex="200" source="$axis2:HTTP_SC">
+            <then>
+                <filter regex="JSON" source="$ctx:outputType">
+                    <then>
+                        <class name="org.wso2.carbon.esb.connector.operations.CSVtoJSON"/>
+                    </then>
+                    <else/>
+                </filter>
+            </then>
+            <else/>
         </filter>
     </sequence>
 </template>

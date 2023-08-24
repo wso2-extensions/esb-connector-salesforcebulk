@@ -60,6 +60,21 @@
                     "required": "false",
                     "helpTip": "The maximum number of records to return in the response."
                   }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "outputType",
+                    "displayName": "Output type",
+                    "inputType": "comboOrExpression",
+                    "comboValues": [
+                      "JSON",
+                      "CSV"
+                    ],
+                    "defaultValue": "JSON",
+                    "required": "true",
+                    "helpTip": "Output Content Type"
+                  }
                 }
               ]
             }
