@@ -19,7 +19,6 @@
 package org.wso2.carbon.esb.connector.operations;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axis2.AxisFault;
 import org.apache.axis2.builder.Builder;
 import org.apache.axis2.builder.BuilderUtil;
 import org.apache.axis2.transport.TransportUtils;
@@ -37,21 +36,20 @@ public class CSVtoJSON extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) {
 
-        String output = messageContext.getEnvelope().getBody().getFirstElement().getText();
-        String jsonOutput = SalesforceUtils.csvToJson(output);
-        org.apache.axis2.context.MessageContext axis2MsgCtx = ((org.apache.synapse.core.axis2.
-                Axis2MessageContext) messageContext).getAxis2MessageContext();
-        Builder builder = null;
         try {
+            String output = messageContext.getEnvelope().getBody().getFirstElement().getText();
+            String jsonOutput = SalesforceUtils.csvToJson(output);
+            org.apache.axis2.context.MessageContext axis2MsgCtx = ((org.apache.synapse.core.axis2.
+                    Axis2MessageContext) messageContext).getAxis2MessageContext();
+            Builder builder = null;
             builder = BuilderUtil.getBuilderFromSelector(APPLICATION_JSON, axis2MsgCtx);
 
             InputStream jsonStream = new ByteArrayInputStream(jsonOutput.getBytes());
             OMElement documentElement = builder.processDocument(jsonStream, APPLICATION_JSON, axis2MsgCtx);
             documentElement.toString();
             messageContext.setEnvelope(TransportUtils.createSOAPEnvelope(documentElement));
-        } catch (AxisFault e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            log.error("Error occurred while building json payload", e);
         }
-        messageContext.setProperty("json_out", jsonOutput);
     }
 }

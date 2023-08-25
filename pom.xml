@@ -204,6 +204,11 @@
             <version>${integration.base.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>au.com.bytecode.opencsv.wso2</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>1.8.wso2v1</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

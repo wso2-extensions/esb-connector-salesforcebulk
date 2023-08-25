@@ -17,12 +17,14 @@
  */
 package org.wso2.carbon.esb.connector.utils;
 
+import au.com.bytecode.opencsv.CSVReader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.Constants;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,8 +36,8 @@ import org.wso2.carbon.esb.connector.exception.ResponseParsingException;
 import org.wso2.carbon.esb.connector.exception.SalesforceConnectionException;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -258,15 +260,18 @@ public class SalesforceUtils {
         }
     }
 
-    public static String csvToJson(String csvString) {
+    public static String csvToJson(String csvString) throws IOException {
 
-        String lineSeparator = findLineSeparator(csvString);
-        String[] headerRow = csvString.split(lineSeparator)[0].split(",");
+        String escapedString = StringEscapeUtils.unescapeXml(csvString);
+        CSVReader csvReader =
+                new CSVReader(new StringReader(escapedString), CSVReader.DEFAULT_SEPARATOR, CSVReader.DEFAULT_QUOTE_CHARACTER);
+        List<String[]> lines = csvReader.readAll();
+        String[] headerRow = lines.get(0);
+
         for (int i = 0; i < headerRow.length; i++) {
-            headerRow[i] = removeQuotesFromStartAndEnd(headerRow[i]);
+            headerRow[i] = removeQuotes(headerRow[i]);
         }
-        Stream<String[]> csvArrayStream = Arrays.stream(csvString.split(lineSeparator))
-                .map(line -> parseCsvLine(line));
+        Stream<String[]> csvArrayStream = lines.stream();
         csvArrayStream = csvArrayStream.skip(1);
         List<JsonObject> jsonObjectList = csvArrayStream
                 .map(row -> {
@@ -283,48 +288,17 @@ public class SalesforceUtils {
                 .collect(Collectors.toList());
         Gson gson = new GsonBuilder()
                 .disableHtmlEscaping()
+                .setPrettyPrinting()
                 .create();
         String jsonString = gson.toJson(jsonObjectList);
+        jsonString = jsonString.replace("\\\\", "\\");
         return jsonString;
-    }
-
-    public static String findLineSeparator(String csvString) {
-
-        if (csvString.contains("\r\n")) {
-            return "\r\n"; // Windows
-        } else if (csvString.contains("\n")) {
-            return "\n"; // Unix-like systems
-        } else if (csvString.contains("\r")) {
-            return "\r"; // Older Mac systems
-        } else {
-            return "\n"; // Default
-        }
-    }
-
-    public static String[] parseCsvLine(String line) {
-
-        List<String> fields = new ArrayList<>();
-        boolean inQuotes = false;
-        StringBuilder currentField = new StringBuilder();
-        for (char c : line.toCharArray()) {
-            if (c == '"') {
-                inQuotes = !inQuotes;
-            } else if (c == ',' && !inQuotes) {
-                fields.add(currentField.toString());
-                currentField = new StringBuilder();
-            } else {
-                currentField.append(c);
-            }
-        }
-
-        fields.add(currentField.toString());
-        return fields.toArray(new String[0]);
     }
 
     public static JsonPrimitive getCellValue(String[] row, int index) {
 
         JsonPrimitive cellValue = null;
-        String cellValueString = removeQuotesFromStartAndEnd(row[index]);
+        String cellValueString = removeQuotes(row[index]);
         if (StringUtils.isNotBlank(cellValueString)) {
             cellValue = new JsonPrimitive(cellValueString);
         } else {
@@ -333,11 +307,9 @@ public class SalesforceUtils {
         return cellValue;
     }
 
-    private static String removeQuotesFromStartAndEnd(String field) {
+    private static String removeQuotes(String field) {
 
-        if (field.startsWith("\"") && field.endsWith("\"")) {
-            return field.substring(1, field.length() - 1);
-        }
+        field = field.replace("\"", "");
         return field;
     }
 
