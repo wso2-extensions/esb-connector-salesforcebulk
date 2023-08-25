@@ -52,7 +52,7 @@
                     </endpoint>
                 </call>
                 <property name="httpCode" expression="$axis2:HTTP_SC"/>
-                <filter regex="4[0-9][0-9]" source="$ctx:httpCode">
+                <filter regex="40(?:1|3|7|9)|44(?:0|1)|45(?:1|9)|499" source="$ctx:httpCode">
                     <then>
                         <property name="uri.var.clientId" expression="get-property('clientId')"/>
                         <property name="uri.var.clientSecret" expression="get-property('clientSecret')"/>
