@@ -19,112 +19,12 @@
 <template xmlns="http://ws.apache.org/ns/synapse" name="getJobInfo">
     <parameter name="jobId" description="Job ID"/>
     <sequence>
-        <property name="jobId" expression="$func:jobId" />
-        <class name="org.wso2.carbon.esb.connector.operations.GetJobInfo" />
-        <property name="uri.var.url" expression="get-property('jobInfoUrl')"/>
-        <property name="uri.var.accessToken" expression="get-property('accessToken')"/>
-        <property name="uri.var.clientId" expression="get-property('clientId')"/>
-        <property name="uri.var.clientSecret" expression="get-property('clientSecret')"/>
-        <property name="uri.var.refreshToken" expression="get-property('refreshToken')"/>
-        <property name="uri.var.tokenUrl" expression="get-property('tokenUrl')"/>
-        <filter source="boolean($ctx:uri.var.accessToken)" regex="true">
-            <then>
-                <log>
-                    <property name="message" value="Trying with access token"/>
-                </log>
-                <header name="Authorization"
-                        expression="fn:concat('Bearer ', $ctx:uri.var.accessToken )"
-                        scope="transport"/>
-                <call>
-                    <target type="body"/>
-                    <endpoint>
-                        <http method="get" uri-template="{uri.var.url}">
-                            <timeout>
-                                <duration>60000</duration>
-                                <responseAction>fault</responseAction>
-                            </timeout>
-                            <suspendOnFailure>
-                                <initialDuration>2000</initialDuration>
-                                <progressionFactor>1.0</progressionFactor>
-                                <maximumDuration>3000</maximumDuration>
-                            </suspendOnFailure>
-                        </http>
-                    </endpoint>
-                </call>
-                <property name="httpCode" expression="$axis2:HTTP_SC"/>
-                <filter regex="40(?:1|3|7|9)|44(?:0|1)|45(?:1|9)|499" source="$ctx:httpCode">
-                    <then>
-                        <property name="uri.var.clientId" expression="get-property('clientId')"/>
-                        <property name="uri.var.clientSecret" expression="get-property('clientSecret')"/>
-                        <property name="uri.var.refreshToken" expression="get-property('refreshToken')"/>
-                        <property name="uri.var.tokenUrl" expression="get-property('tokenUrl')"/>
-                        <call>
-                            <target type="body"/>
-                            <endpoint>
-                                <http method="get" uri-template="{uri.var.url}">
-                                    <timeout>
-                                        <duration>60000</duration>
-                                        <responseAction>fault</responseAction>
-                                    </timeout>
-                                    <suspendOnFailure>
-                                        <initialDuration>2000</initialDuration>
-                                        <progressionFactor>1.0</progressionFactor>
-                                        <maximumDuration>3000</maximumDuration>
-                                    </suspendOnFailure>
-                                    <authentication>
-                                        <oauth>
-                                            <authorizationCode>
-                                                <refreshToken>{$ctx:uri.var.refreshToken}</refreshToken>
-                                                <clientId>{$ctx:uri.var.clientId}</clientId>
-                                                <clientSecret>{$ctx:uri.var.clientSecret}</clientSecret>
-                                                <tokenUrl>{$ctx:uri.var.tokenUrl}</tokenUrl>
-                                                <authMode>Header</authMode>
-                                            </authorizationCode>
-                                        </oauth>
-                                    </authentication>
-                                </http>
-                            </endpoint>
-                        </call>
-                    </then>
-                    <else/>
-                </filter>
-            </then>
-            <else>
-                <log>
-                    <property name="message" value="No access token. getting new access token"/>
-                </log>
-                <property name="uri.var.clientId" expression="get-property('clientId')"/>
-                <property name="uri.var.clientSecret" expression="get-property('clientSecret')"/>
-                <property name="uri.var.refreshToken" expression="get-property('refreshToken')"/>
-                <property name="uri.var.tokenUrl" expression="get-property('tokenUrl')"/>
-                <call>
-                    <target type="body"/>
-                    <endpoint>
-                        <http method="get" uri-template="{uri.var.url}">
-                            <timeout>
-                                <duration>60000</duration>
-                                <responseAction>fault</responseAction>
-                            </timeout>
-                            <suspendOnFailure>
-                                <initialDuration>2000</initialDuration>
-                                <progressionFactor>1.0</progressionFactor>
-                                <maximumDuration>3000</maximumDuration>
-                            </suspendOnFailure>
-                            <authentication>
-                                <oauth>
-                                    <authorizationCode>
-                                        <refreshToken>{$ctx:uri.var.refreshToken}</refreshToken>
-                                        <clientId>{$ctx:uri.var.clientId}</clientId>
-                                        <clientSecret>{$ctx:uri.var.clientSecret}</clientSecret>
-                                        <tokenUrl>{$ctx:uri.var.tokenUrl}</tokenUrl>
-                                        <authMode>Header</authMode>
-                                    </authorizationCode>
-                                </oauth>
-                            </authentication>
-                        </http>
-                    </endpoint>
-                </call>
-            </else>
-        </filter>
+        <property name="jobId" expression="$func:jobId"/>
+        <class name="org.wso2.carbon.esb.connector.operations.GetJobInfo"/>
+        <property name="uri.var.url" expression="get-property('sf_bulk_jobInfoUrl')"/>
+        <salesforce_bulkapi_v2.callBulkApi>
+            <method>get</method>
+            <url>{uri.var.url}</url>
+        </salesforce_bulkapi_v2.callBulkApi>
     </sequence>
 </template>

@@ -29,110 +29,18 @@
         <property name="lineEnding" expression="$func:lineEnding"/>
         <property name="assignmentRuleId" expression="$func:assignmentRuleId"/>
         <property name="externalIdFieldName" expression="$func:externalIdFieldName"/>
-        <class name="org.wso2.carbon.esb.connector.operations.CreateJob" />
-        <property name="uri.var.url" expression="get-property('createJobUrl')"/>
-        <property name="uri.var.accessToken" expression="get-property('accessToken')"/>
-        <filter source="boolean($ctx:uri.var.accessToken)" regex="true">
-            <then>
-                <header name="Authorization"
-                        expression="fn:concat('Bearer ', $ctx:uri.var.accessToken )"
-                        scope="transport"/>
-                <property name="messageType" value="application/json" scope="axis2" type="STRING"/>
-                <property name="ContentType" value="application/json" scope="axis2" type="STRING"/>
-                <call>
-                    <source contentType="application/json" type="property">payload</source>
-                    <target type="body"/>
-                    <endpoint>
-                        <http method="post" uri-template="{uri.var.url}">
-                            <timeout>
-                                <duration>60000</duration>
-                                <responseAction>fault</responseAction>
-                            </timeout>
-                            <suspendOnFailure>
-                                <initialDuration>2000</initialDuration>
-                                <progressionFactor>1.0</progressionFactor>
-                                <maximumDuration>3000</maximumDuration>
-                            </suspendOnFailure>
-                        </http>
-                    </endpoint>
-                </call>
-                <property expression="$axis2:HTTP_SC" name="httpCode" scope="default" type="STRING"/>
-                <filter regex="40(?:1|3|7|9)|44(?:0|1)|45(?:1|9)|499" source="$ctx:httpCode">
-                    <then>
-                        <property name="uri.var.clientId" expression="get-property('clientId')"/>
-                        <property name="uri.var.clientSecret" expression="get-property('clientSecret')"/>
-                        <property name="uri.var.refreshToken" expression="get-property('refreshToken')"/>
-                        <property name="uri.var.tokenUrl" expression="get-property('tokenUrl')"/>
-                        <property name="messageType" value="application/json" scope="axis2" type="STRING"/>
-                        <property name="ContentType" value="application/json" scope="axis2" type="STRING"/>
-                        <call>
-                            <source contentType="application/json" type="property">payload</source>
-                            <target type="body"/>
-                            <endpoint>
-                                <http method="post" uri-template="{uri.var.url}">
-                                    <timeout>
-                                        <duration>60000</duration>
-                                        <responseAction>fault</responseAction>
-                                    </timeout>
-                                    <suspendOnFailure>
-                                        <initialDuration>2000</initialDuration>
-                                        <progressionFactor>1.0</progressionFactor>
-                                        <maximumDuration>3000</maximumDuration>
-                                    </suspendOnFailure>
-                                    <authentication>
-                                        <oauth>
-                                            <authorizationCode>
-                                                <refreshToken>{$ctx:uri.var.refreshToken}</refreshToken>
-                                                <clientId>{$ctx:uri.var.clientId}</clientId>
-                                                <clientSecret>{$ctx:uri.var.clientSecret}</clientSecret>
-                                                <tokenUrl>{$ctx:uri.var.tokenUrl}</tokenUrl>
-                                                <authMode>Header</authMode>
-                                            </authorizationCode>
-                                        </oauth>
-                                    </authentication>
-                                </http>
-                            </endpoint>
-                        </call>
-                    </then>
-                    <else/>
-                </filter>
-            </then>
-            <else>
-                <property name="uri.var.clientId" expression="get-property('clientId')"/>
-                <property name="uri.var.clientSecret" expression="get-property('clientSecret')"/>
-                <property name="uri.var.refreshToken" expression="get-property('refreshToken')"/>
-                <property name="uri.var.tokenUrl" expression="get-property('tokenUrl')"/>
-                <property name="messageType" value="application/json" scope="axis2" type="STRING"/>
-                <property name="ContentType" value="application/json" scope="axis2" type="STRING"/>
-                <call>
-                    <source contentType="application/json" type="property">payload</source>
-                    <target type="body"/>
-                    <endpoint>
-                        <http method="post" uri-template="{uri.var.url}">
-                            <timeout>
-                                <duration>60000</duration>
-                                <responseAction>fault</responseAction>
-                            </timeout>
-                            <suspendOnFailure>
-                                <initialDuration>2000</initialDuration>
-                                <progressionFactor>1.0</progressionFactor>
-                                <maximumDuration>3000</maximumDuration>
-                            </suspendOnFailure>
-                            <authentication>
-                                <oauth>
-                                    <authorizationCode>
-                                        <refreshToken>{$ctx:uri.var.refreshToken}</refreshToken>
-                                        <clientId>{$ctx:uri.var.clientId}</clientId>
-                                        <clientSecret>{$ctx:uri.var.clientSecret}</clientSecret>
-                                        <tokenUrl>{$ctx:uri.var.tokenUrl}</tokenUrl>
-                                        <authMode>Header</authMode>
-                                    </authorizationCode>
-                                </oauth>
-                            </authentication>
-                        </http>
-                    </endpoint>
-                </call>
-            </else>
-        </filter>
+        <class name="org.wso2.carbon.esb.connector.operations.CreateJob"/>
+        <property name="uri.var.url" expression="get-property('sf_bulk_createJobUrl')"/>
+        <payloadFactory media-type="json">
+            <format>$1</format>
+            <args>
+                <arg evaluator="xml" expression="$ctx:sf_bulk_payload"/>
+            </args>
+        </payloadFactory>
+        <salesforce_bulkapi_v2.callBulkApi>
+            <method>post</method>
+            <url>{uri.var.url}</url>
+            <contentType>application/json</contentType>
+        </salesforce_bulkapi_v2.callBulkApi>
     </sequence>
 </template>

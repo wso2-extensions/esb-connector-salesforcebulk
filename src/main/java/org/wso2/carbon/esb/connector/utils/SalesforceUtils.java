@@ -291,7 +291,6 @@ public class SalesforceUtils {
                 .setPrettyPrinting()
                 .create();
         String jsonString = gson.toJson(jsonObjectList);
-        jsonString = jsonString.replace("\\\\", "\\");
         return jsonString;
     }
 

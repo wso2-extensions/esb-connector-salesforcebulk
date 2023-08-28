@@ -49,19 +49,13 @@ public class InitSalesforce extends AbstractConnector {
     }
 
     private SalesforceConfig getSalesforceConfig(MessageContext messageContext) {
-        String clientID = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                SalesforceConstants.CLIENT_ID);
-        String clientSecret = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                SalesforceConstants.CLIENT_SECRET);
-        String refreshToken = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                SalesforceConstants.REFRESH_TOKEN);
-        String accessToken = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                SalesforceConstants.ACCESS_TOKEN);
-        String salesforceConfigName = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                SalesforceConstants.SF_OAUTH_CONFIG_NAME);
-        String instanceUrl = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                SalesforceConstants.INSTANCE_URL);
 
+        String clientID = (String) messageContext.getProperty(SalesforceConstants.CLIENT_ID);
+        String clientSecret = (String) messageContext.getProperty(SalesforceConstants.CLIENT_SECRET);
+        String refreshToken = (String) messageContext.getProperty(SalesforceConstants.REFRESH_TOKEN);
+        String accessToken = (String) messageContext.getProperty(SalesforceConstants.ACCESS_TOKEN);
+        String salesforceConfigName = (String) messageContext.getProperty(SalesforceConstants.SF_OAUTH_CONFIG_NAME);
+        String instanceUrl = (String) messageContext.getProperty(SalesforceConstants.INSTANCE_URL);
         SalesforceConfig salesforceConfig = new SalesforceConfig();
         salesforceConfig.setClientId(clientID);
         salesforceConfig.setClientSecret(clientSecret);

@@ -38,7 +38,10 @@ public class CSVtoJSON extends AbstractConnector {
 
         try {
             String output = messageContext.getEnvelope().getBody().getFirstElement().getText();
-            String jsonOutput = SalesforceUtils.csvToJson(output);
+            String jsonOutput = "{}";
+            if (!output.isEmpty()) {
+                jsonOutput = SalesforceUtils.csvToJson(output);
+            }
             org.apache.axis2.context.MessageContext axis2MsgCtx = ((org.apache.synapse.core.axis2.
                     Axis2MessageContext) messageContext).getAxis2MessageContext();
             Builder builder = null;
