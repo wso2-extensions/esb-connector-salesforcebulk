@@ -19,7 +19,6 @@ package org.wso2.carbon.esb.connector.operations;
 
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.core.AbstractConnector;
-import org.wso2.carbon.connector.core.util.ConnectorUtils;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.store.SalesforceConfigStore;
 import org.wso2.carbon.esb.connector.utils.SalesforceConstants;
@@ -39,6 +38,8 @@ public class InitSalesforce extends AbstractConnector {
                 messageContext.setProperty(SalesforceConstants.ACCESS_TOKEN,
                         SalesforceConfigStore.getSalesforceConfig(oAuthConfig.getSalesforceConfigName()).getAccessToken());
             }
+            String tokenUrl = SalesforceUtils.getSFTokenUrl(oAuthConfig);
+            messageContext.setProperty(SalesforceConstants.TOKEN_URL, tokenUrl);
         } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             SalesforceUtils.generateErrorOutput(messageContext, e);
@@ -47,19 +48,13 @@ public class InitSalesforce extends AbstractConnector {
     }
 
     private SalesforceConfig getSalesforceConfig(MessageContext messageContext) {
-        String clientID = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                SalesforceConstants.CLIENT_ID);
-        String clientSecret = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                SalesforceConstants.CLIENT_SECRET);
-        String refreshToken = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                SalesforceConstants.REFRESH_TOKEN);
-        String accessToken = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                SalesforceConstants.ACCESS_TOKEN);
-        String salesforceConfigName = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                SalesforceConstants.SF_OAUTH_CONFIG_NAME);
-        String instanceUrl = (String) ConnectorUtils.lookupTemplateParamater(messageContext,
-                SalesforceConstants.INSTANCE_URL);
 
+        String clientID = (String) messageContext.getProperty(SalesforceConstants.CLIENT_ID);
+        String clientSecret = (String) messageContext.getProperty(SalesforceConstants.CLIENT_SECRET);
+        String refreshToken = (String) messageContext.getProperty(SalesforceConstants.REFRESH_TOKEN);
+        String accessToken = (String) messageContext.getProperty(SalesforceConstants.ACCESS_TOKEN);
+        String salesforceConfigName = (String) messageContext.getProperty(SalesforceConstants.SF_OAUTH_CONFIG_NAME);
+        String instanceUrl = (String) messageContext.getProperty(SalesforceConstants.INSTANCE_URL);
         SalesforceConfig salesforceConfig = new SalesforceConfig();
         salesforceConfig.setClientId(clientID);
         salesforceConfig.setClientSecret(clientSecret);

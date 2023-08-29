@@ -68,12 +68,27 @@
                     "displayName": "Output type",
                     "inputType": "comboOrExpression",
                     "comboValues": [
+                      "JSON",
+                      "CSV"
+                    ],
+                    "defaultValue": "JSON",
+                    "required": "true",
+                    "helpTip": "Output Content Type"
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "includeResultTo",
+                    "displayName": "Add Result To",
+                    "inputType": "comboOrExpression",
+                    "comboValues": [
                       "FILE",
                       "BODY"
                     ],
-                    "defaultValue": "",
+                    "defaultValue": "BODY",
                     "required": "true",
-                    "helpTip": "The ID of the job to upload data to"
+                    "helpTip": ""
                   }
                 },
                 {
@@ -84,7 +99,11 @@
                     "inputType": "stringOrExpression",
                     "defaultValue": "",
                     "required": "false",
-                    "enableCondition": [{"outputType": "FILE"}],
+                    "enableCondition": [
+                      {
+                        "includeResultTo": "FILE"
+                      }
+                    ],
                     "helpTip": "The path to the file to write the results to."
                   }
                 }
