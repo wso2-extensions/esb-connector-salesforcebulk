@@ -19,7 +19,6 @@
 <template xmlns="http://ws.apache.org/ns/synapse" name="abortJob">
     <parameter name="jobId" description="Job ID"/>
     <sequence>
-        <property name="jobId" expression="$func:jobId"/>
         <class name="org.wso2.carbon.esb.connector.operations.AbortJob"/>
         <property name="uri.var.url" expression="get-property('sf_bulk_abortJobUrl')"/>
         <payloadFactory media-type="json">

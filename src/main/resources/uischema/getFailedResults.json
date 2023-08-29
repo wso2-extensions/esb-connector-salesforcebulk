@@ -53,6 +53,37 @@
                     "required": "true",
                     "helpTip": "Output Content Type"
                   }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "includeResultTo",
+                    "displayName": "Add Result To",
+                    "inputType": "comboOrExpression",
+                    "comboValues": [
+                      "FILE",
+                      "BODY"
+                    ],
+                    "defaultValue": "BODY",
+                    "required": "true",
+                    "helpTip": ""
+                  }
+                },
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "filePath",
+                    "displayName": "File Path",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "false",
+                    "enableCondition": [
+                      {
+                        "includeResultTo": "FILE"
+                      }
+                    ],
+                    "helpTip": "The path to the file to write the results to."
+                  }
                 }
               ]
             }

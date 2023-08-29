@@ -19,7 +19,6 @@
 <template xmlns="http://ws.apache.org/ns/synapse" name="deleteJob">
     <parameter name="jobId" description="Job ID"/>
     <sequence>
-        <property name="jobId" expression="$func:jobId"/>
         <class name="org.wso2.carbon.esb.connector.operations.DeleteJob"/>
         <property name="uri.var.url" expression="get-property('sf_bulk_deleteJobUrl')"/>
         <salesforce_bulkapi_v2.callBulkApi>
@@ -27,5 +26,14 @@
             <url>{uri.var.url}</url>
             <contentType>application/json</contentType>
         </salesforce_bulkapi_v2.callBulkApi>
+        <filter regex="204" source="$axis2:HTTP_SC">
+            <property name="HTTP_SC" value="200" scope="axis2"/>
+            <payloadFactory media-type="json">
+                <format>
+                    <![CDATA[{ "result":"Success"}]]>
+                </format>
+                <args/>
+            </payloadFactory>
+        </filter>
     </sequence>
 </template>

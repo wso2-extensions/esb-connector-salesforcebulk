@@ -19,7 +19,6 @@ package org.wso2.carbon.esb.connector.operations;
 
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.core.AbstractConnector;
-import org.wso2.carbon.esb.connector.exception.SalesforceConnectionException;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 import org.wso2.carbon.esb.connector.store.SalesforceConfigStore;
 import org.wso2.carbon.esb.connector.utils.SalesforceConstants;
@@ -37,11 +36,7 @@ public class GetSuccessfulResults extends AbstractConnector {
         } catch (Exception e) {
             SalesforceUtils.setErrorsInMessage(messageContext, 1, e.getMessage());
             SalesforceUtils.generateErrorOutput(messageContext, e);
-            if (!(e instanceof SalesforceConnectionException)) {
-                handleException(e.getMessage(), e, messageContext);
-            } else {
-                log.error(e.getMessage(), e);
-            }
+            log.error(e.getMessage(), e);
         }
     }
 }

@@ -19,9 +19,10 @@
 <template xmlns="http://ws.apache.org/ns/synapse" name="getFailedResults">
     <parameter name="jobId" description="Job ID"/>
     <parameter name="outputType" description="Output Type"/>
+    <parameter name="includeResultTo" description="Add Results To"/>
+    <parameter name="filePath" description="Output File Path"/>
+
     <sequence>
-        <property name="jobId" expression="$func:jobId"/>
-        <property name="outputType" expression="$func:outputType"/>
         <class name="org.wso2.carbon.esb.connector.operations.GetFailedResults"/>
         <property name="uri.var.url" expression="get-property('sf_bulk_getFailedResultsUrl')"/>
         <salesforce_bulkapi_v2.callBulkApi>
@@ -30,12 +31,7 @@
         </salesforce_bulkapi_v2.callBulkApi>
         <filter regex="200" source="$axis2:HTTP_SC">
             <then>
-                <filter regex="JSON" source="$ctx:outputType">
-                    <then>
-                        <class name="org.wso2.carbon.esb.connector.operations.CSVtoJSON"/>
-                    </then>
-                    <else/>
-                </filter>
+                <class name="org.wso2.carbon.esb.connector.operations.ProcessResults"/>
             </then>
             <else/>
         </filter>

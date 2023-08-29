@@ -23,12 +23,6 @@
     <parameter name="assignmentRuleId" description="assignmentRuleId"/>
     <parameter name="externalIdFieldName" description="externalIdFieldName"/>
     <sequence>
-        <property name="operation" expression="$func:operation"/>
-        <property name="object" expression="$func:object"/>
-        <property name="columnDelimiter" expression="$func:columnDelimiter"/>
-        <property name="lineEnding" expression="$func:lineEnding"/>
-        <property name="assignmentRuleId" expression="$func:assignmentRuleId"/>
-        <property name="externalIdFieldName" expression="$func:externalIdFieldName"/>
         <class name="org.wso2.carbon.esb.connector.operations.CreateJob"/>
         <property name="uri.var.url" expression="get-property('sf_bulk_createJobUrl')"/>
         <payloadFactory media-type="json">

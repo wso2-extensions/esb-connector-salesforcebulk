@@ -21,9 +21,6 @@
     <parameter name="jobType" description="Job Type"/>
     <parameter name="queryLocator" description="Query Locator"/>
     <sequence>
-        <property name="isPkChunkingEnabled" expression="$func:isPkChunkingEnabled"/>
-        <property name="jobType" expression="$func:jobType"/>
-        <property name="queryLocator" expression="$func:queryLocator"/>
         <class name="org.wso2.carbon.esb.connector.operations.GetAllJobInfo"/>
         <property name="uri.var.url" expression="get-property('sf_bulk_allJobInfoUrl')"/>
         <salesforce_bulkapi_v2.callBulkApi>

@@ -68,4 +68,9 @@ public class SalesforceConstants {
     public static final String IS_PK_CHUNKING_ENABLED = "isPkChunkingEnabled";
     public static final String JOB_TYPE = "jobType";
     public static final String QUERY_LOCATOR = "queryLocator";
+    public static final String FILE_PATH = "filePath";
+    public static final String INCLUDE_RESULT_TO = "includeResultTo";
+    public static final String OUTPUT_TYPE = "outputType";
+    public static final String APPLICATION_JSON = "application/json";
+    public static final String TEXT_CSV = "text/csv";
 }

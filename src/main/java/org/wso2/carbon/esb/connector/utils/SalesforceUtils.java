@@ -33,7 +33,6 @@ import org.apache.synapse.commons.json.JsonUtil;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.wso2.carbon.esb.connector.exception.InvalidConfigurationException;
 import org.wso2.carbon.esb.connector.exception.ResponseParsingException;
-import org.wso2.carbon.esb.connector.exception.SalesforceConnectionException;
 import org.wso2.carbon.esb.connector.pojo.SalesforceConfig;
 
 import java.io.IOException;
@@ -45,14 +44,8 @@ import java.util.stream.Stream;
 public class SalesforceUtils {
 
     private static final Log log = LogFactory.getLog(SalesforceUtils.class);
-    private static final String GRANT_TYPE = "grant_type";
-    private static final String CLIENT_ID = "client_id";
-    private static final String CLIENT_SECRET = "client_secret";
-    private static final String REFRESH_TOKEN = "refresh_token";
     private static final String NO_ENTITY_BODY = "NO_ENTITY_BODY";
     private static final String HTTP_SC = "HTTP_SC";
-    private static final String COMMA_IDENTIFIER = "__-COMMA-__";
-    private static final char COMMA = ',';
 
     /**
      * Retrieves connection name from message context if configured as configKey attribute
@@ -245,21 +238,6 @@ public class SalesforceUtils {
         }
     }
 
-    public static void generateJsonOutput(MessageContext messageContext, String jsonString, int responseCode)
-            throws ResponseParsingException {
-        try {
-            org.apache.axis2.context.MessageContext axisCtx =
-                    ((Axis2MessageContext) messageContext).getAxis2MessageContext();
-            axisCtx.setProperty(Constants.Configuration.MESSAGE_TYPE, RequestConstants.APPLICATION_JSON);
-            axisCtx.setProperty(Constants.Configuration.CONTENT_TYPE, RequestConstants.APPLICATION_JSON);
-            axisCtx.removeProperty(NO_ENTITY_BODY);
-            JsonUtil.getNewJsonPayload(axisCtx, jsonString, true, true);
-            axisCtx.setProperty(HTTP_SC, responseCode);
-        } catch (AxisFault e) {
-            throw new ResponseParsingException(e.getMessage(), e);
-        }
-    }
-
     public static String csvToJson(String csvString) throws IOException {
 
         String escapedString = StringEscapeUtils.unescapeXml(csvString);
@@ -312,56 +290,11 @@ public class SalesforceUtils {
         return field;
     }
 
-    public static String csvToJson_old(String csvString) {
-        String[] lines = csvString.split("\n");
-        String[] headers = lines[0].split(",");
-        for (int i = 0; i < headers.length; i++) {
-            if (headers[i].contains("\"")) {
-                headers[i] = headers[i].replace("\"", "");
-            }
-        }
-        StringBuilder json = new StringBuilder("[\n");
-        for (int i = 1; i < lines.length; i++) {
-            String line = lines[i];
-            line = replaceCommaWithCommaIdentifierWithinQuotes(line);
-            String[] fields = line.split(",");
-            for (int k = 0; k < fields.length; k++) {
-                if (fields[k].contains("\"")) {
-                    fields[k] = fields[k].replaceAll("\"", "");
-                }
-                if (fields[k].contains(COMMA_IDENTIFIER)) {
-                    fields[k] = fields[k].replaceAll(COMMA_IDENTIFIER, ",");
-                }
-            }
-            json.append("  {\n");
-            for (int j = 0; j < headers.length; j++) {
-                json.append("    \"").append(headers[j]).append("\": \"").append(fields[j]).append("\"");
-                if (j < headers.length - 1) {
-                    json.append(",\n");
-                } else {
-                    json.append("\n");
-                }
-            }
-            json.append("  }");
-            if (i < lines.length - 1) {
-                json.append(",\n");
-            } else {
-                json.append("\n");
-            }
-        }
-        json.append("]");
-        return json.toString();
-    }
-
-    public static String getSuccessJson() {
-        return "{\"result\":\"Success\"}";
-    }
-
     public static void generateErrorOutput(MessageContext messageContext, Exception e) {
         org.apache.axis2.context.MessageContext axisCtx =
                 ((Axis2MessageContext) messageContext).getAxis2MessageContext();
-        axisCtx.setProperty(Constants.Configuration.MESSAGE_TYPE, RequestConstants.APPLICATION_JSON);
-        axisCtx.setProperty(Constants.Configuration.CONTENT_TYPE, RequestConstants.APPLICATION_JSON);
+        axisCtx.setProperty(Constants.Configuration.MESSAGE_TYPE, SalesforceConstants.APPLICATION_JSON);
+        axisCtx.setProperty(Constants.Configuration.CONTENT_TYPE, SalesforceConstants.APPLICATION_JSON);
         axisCtx.removeProperty(NO_ENTITY_BODY);
         String jsonString = "{\"error\":\"" + e.getMessage() + "\"}";
         try {
@@ -370,9 +303,6 @@ public class SalesforceUtils {
                 axisCtx.setProperty(HTTP_SC, ResponseConstants.HTTP_BAD_REQUEST);
             } else if (e instanceof ResponseParsingException) {
                 axisCtx.setProperty(HTTP_SC, ResponseConstants.HTTP_INTERNAL_SERVER_ERROR);
-            } else if (e instanceof SalesforceConnectionException) {
-                int code = ((SalesforceConnectionException)e).getResponseCode();
-                axisCtx.setProperty(HTTP_SC, code);
             } else {
                 axisCtx.setProperty(HTTP_SC, ResponseConstants.HTTP_INTERNAL_SERVER_ERROR);
             }
@@ -380,21 +310,5 @@ public class SalesforceUtils {
             log.error("Error while generating error output", ex);
             axisCtx.setProperty(HTTP_SC, 500);
         }
-    }
-
-    private static String replaceCommaWithCommaIdentifierWithinQuotes(String value) {
-        StringBuilder result = new StringBuilder();
-        boolean insideQuotes = false;
-        for (char c : value.toCharArray()) {
-            if (c == '\"') {
-                insideQuotes = !insideQuotes;
-            }
-            if (c == COMMA && insideQuotes) {
-                result.append(COMMA_IDENTIFIER);
-            } else {
-                result.append(c);
-            }
-        }
-        return result.toString();
     }
 }
