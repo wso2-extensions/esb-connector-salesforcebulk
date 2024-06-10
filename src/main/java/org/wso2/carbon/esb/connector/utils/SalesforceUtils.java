@@ -154,19 +154,26 @@ public class SalesforceUtils {
 
     public static String getGetQueryJobResultUrl(SalesforceConfig salesforceConfig, String queryJobId,
                                                  Integer maxRecords, String locator) {
-        String paramString = "";
-        if (maxRecords != null) {
-            paramString += SalesforceConstants.LOCATOR + "=" + locator;
-        }
+        StringBuilder paramString = new StringBuilder();
+        // Append locator if it is not null and not empty
         if (StringUtils.isNotEmpty(locator)) {
-            if (StringUtils.isNotEmpty(paramString)) {
-                paramString += "&";
+            paramString.append(SalesforceConstants.LOCATOR).append("=").append(locator);
+        }
+
+        // Append maxRecords if it is not null
+        if (maxRecords != null) {
+            if (paramString.length() > 0) {
+                paramString.append("&");
             }
-            paramString += SalesforceConstants.MAX_RECORDS + "=" + maxRecords;
+            paramString.append(SalesforceConstants.MAX_RECORDS).append("=").append(maxRecords);
         }
-        if (StringUtils.isNotEmpty(paramString)) {
-            paramString = "?" + paramString;
+
+        // Prepend ? if there are any parameters
+        if (paramString.length() > 0) {
+            paramString.insert(0, "?");
         }
+
+        // Construct the final URL
         return salesforceConfig.getInstanceUrl() + SalesforceConstants.SF_API_JOBS_QUERY_RELATIVE_PATH + queryJobId
                 + SalesforceConstants.SF_API_JOBS_QUERY_RESULTS_RELATIVE_PATH
                 + paramString;
