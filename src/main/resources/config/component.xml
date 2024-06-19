@@ -24,7 +24,7 @@
 			<hidden>true</hidden>
 		</component>
 		<component name="callBulkApi">
-			<file>callBulkApi.xml</file>
+			<file>CallBulkApi.xml</file>
 			<description>Call Salesforce Bulk API endpoints</description>
 			<hidden>true</hidden>
 		</component>
