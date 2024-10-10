@@ -2,7 +2,7 @@
     "name": "SalesforceBulk",
     "owner": "WSO2",
     "category": "Customer Relationship Management",
-    "documentationUrl": "https://github.com/wso2-extensions/esb-connector-salesforcebulk/blob/release-1.1.0/README.md",
+    "documentationUrl": "https://mi.docs.wso2.com/en/latest/reference/connectors/salesforce-connectors/salesforcebulk-v2-reference/",
     "description": "The SalesforceBulk connector allows you to access the SalesforceBulk REST API through WSO2 ESB. SalesforceBulk is a RESTful API that is optimal for loading or deleting large sets of data. You can use it to query, insert, update, upsert, or delete a large number of records asynchronously by submitting batches that Salesforce processes in the background.",
     "status": "Active",
     "labels": [
