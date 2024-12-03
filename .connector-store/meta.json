@@ -8,7 +8,7 @@
     "mavenArtifactId": "org.wso2.carbon.connector.salesforcebulk",
     "description": "The SalesforceBulk connector allows you to access the SalesforceBulk REST API through WSO2 ESB. SalesforceBulk is a RESTful API that is optimal for loading or deleting large sets of data. You can use it to query, insert, update, upsert, or delete a large number of records asynchronously by submitting batches that Salesforce processes in the background.",
     "status": "Active",
-    "connectorRank": 9,
+    "rank": 9,
     "type": "Connector",
     "labels": [
         "salesforce"
