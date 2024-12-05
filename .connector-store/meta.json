@@ -4,8 +4,8 @@
     "product": "MI",
     "category": "Customer Relationship Management",
     "documentationUrl": "https://mi.docs.wso2.com/en/latest/reference/connectors/salesforce-connectors/salesforcebulk-v2-reference/",
-    "mavenGroupId": "org.wso2.carbon.connector",
-    "mavenArtifactId": "org.wso2.carbon.connector.salesforcebulk",
+    "mavenGroupId": "org.wso2.integration.connector",
+    "mavenArtifactId": "mi-connector-salesforcebulk",
     "description": "The SalesforceBulk connector allows you to access the SalesforceBulk REST API through WSO2 ESB. SalesforceBulk is a RESTful API that is optimal for loading or deleting large sets of data. You can use it to query, insert, update, upsert, or delete a large number of records asynchronously by submitting batches that Salesforce processes in the background.",
     "status": "Active",
     "rank": 9,
@@ -127,11 +127,99 @@
             ],
             "connections": [
                 {
-                    "name": "init",
+                    "name": "salesforcebulk",
                     "description": "Connection for bulk data operations in Salesforce."
                 }
             ],
             "isHidden": false
-        }
+        },
+        {
+            "tagName": "v1.0.7",
+            "products": [
+                "MI 1.2.0",
+                "MI 4.3.0",
+                "MI 4.2.0",
+                "MI 4.1.0",
+                "MI 4.0.0"
+            ],
+            "operations": [
+                {
+                    "name":"init",
+                    "description":"Config operation.",
+                    "isHidden":false
+                },
+                {
+                    "name":"callWithRetry",
+                    "description":"Templating the retry call",
+                    "isHidden":false
+                },
+                {
+                    "name":"callOptions",
+                    "description":"Templating the http call types GET, POST, etc.",
+                    "isHidden":false
+                },
+                {
+                    "name":"createJob",
+                    "description":"Create a new job.",
+                    "isHidden":false
+                },
+                {
+                    "name":"updateJob",
+                    "description":"Update an existing job.",
+                    "isHidden":false
+                },
+                {
+                    "name":"getJob",
+                    "description":"Get all details for an existing job.",
+                    "isHidden":false
+                },
+                {
+                    "name":"addBatch",
+                    "description":"Add a new batch to a job.",
+                    "isHidden":false
+                },
+                {
+                    "name":"getBatchStatus",
+                    "description":"Check the status of an individual batch.",
+                    "isHidden":false
+                },
+                {
+                    "name":"getBatchResults",
+                    "description":"Get results of an existing.",
+                    "isHidden":false
+                },
+                {
+                    "name":"getBatchRequest",
+                    "description":"Get an existing batch request.",
+                    "isHidden":false
+                },
+                {
+                    "name":"listBatches",
+                    "description":"Get information about all batches in a job.",
+                    "isHidden":false
+                },
+                {
+                    "name":"getBulkQueryResults",
+                    "description":"Get the results of the query.",
+                    "isHidden":false
+                },
+                {
+                    "name":"createJobToUploadBatchFile",
+                    "description":"Create a job for batches containing Attachment records.",
+                    "isHidden":false
+                },
+                {
+                    "name":"uploadBatchFile",
+                    "description":"Create a batch of Attachment records.",
+                    "isHidden":false
+                }
+            ],
+            "connections": [
+                {
+                    "name": "salesforcebulk",
+                    "description": "Connection for bulk data operations in Salesforce."
+                }
+            ],
+            "isHidden": false
     ]
 }
