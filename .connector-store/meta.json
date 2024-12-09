@@ -1,10 +1,15 @@
 {
     "name": "SalesforceBulk",
     "owner": "WSO2",
+    "product": "MI",
     "category": "Customer Relationship Management",
     "documentationUrl": "https://mi.docs.wso2.com/en/latest/reference/connectors/salesforce-connectors/salesforcebulk-v2-reference/",
+    "mavenGroupId": "org.wso2.integration.connector",
+    "mavenArtifactId": "mi-connector-salesforcebulk",
     "description": "The SalesforceBulk connector allows you to access the SalesforceBulk REST API through WSO2 ESB. SalesforceBulk is a RESTful API that is optimal for loading or deleting large sets of data. You can use it to query, insert, update, upsert, or delete a large number of records asynchronously by submitting batches that Salesforce processes in the background.",
     "status": "Active",
+    "rank": 9,
+    "type": "Connector",
     "labels": [
         "salesforce"
     ],
@@ -17,6 +22,203 @@
                 "MI 4.2.0",
                 "MI 4.1.0",
                 "MI 4.0.0"
+            ],
+            "operations": [
+                {
+                    "name":"init",
+                    "description":"Init operation",
+                    "isHidden":true
+                },
+                {
+                    "name":"callBulkApi",
+                    "description":"Call Salesforce Bulk API endpoints",
+                    "isHidden":true
+                },
+                {
+                    "name":"callUsingOauth",
+                    "description":"Call endpoint using OAUTH credentials",
+                    "isHidden":true
+                },
+                {
+                    "name":"callUsingAccessToken",
+                    "description":"Call endpoint using OAUTH access token",
+                    "isHidden":true
+                },
+                {
+                    "name":"createJob",
+                    "description":"A operation to create a job in Salesforce using bulk api 2.0",
+                    "isHidden":false
+                },
+                {
+                    "name":"uploadJobData",
+                    "description":"An operation to upload data to a job in Salesforce using bulk api 2.0",
+                    "isHidden":false
+                },
+                {
+                    "name":"closeJob",
+                    "description":"An operation to close a job in Salesforce using bulk api 2.0",
+                    "isHidden":false
+                },
+                {
+                    "name":"abortJob",
+                    "description":"An operation to abort a job in Salesforce using bulk api 2.0",
+                    "isHidden":false
+                },
+                {
+                    "name":"getAllJobInfo",
+                    "description":"An operation to get all job info in Salesforce using bulk api 2.0",
+                    "isHidden":false
+                },
+                {
+                    "name":"getJobInfo",
+                    "description":"An operation to get job info in Salesforce using bulk api 2.0",
+                    "isHidden":false
+                },
+                {
+                    "name":"deleteJob",
+                    "description":"An operation to delete a job in Salesforce using bulk api 2.0",
+                    "isHidden":false
+                },
+                {
+                    "name":"getSuccessfulResults",
+                    "description":"An operation to get successful results of a job in Salesforce using bulk api 2.0",
+                    "isHidden":false
+                },
+                {
+                    "name":"getUnprocessedResults",
+                    "description":"An operation to get unprocessed results of a job in Salesforce using bulk api 2.0",
+                    "isHidden":false
+                },
+                {
+                    "name":"getFailedResults",
+                    "description":"An operation to get failed results of a job in Salesforce using bulk api 2.0",
+                    "isHidden":false
+                },
+                {
+                    "name":"abortQueryJob",
+                    "description":"An operation to abort a running query job in Salesforce using bulk api 2.0",
+                    "isHidden":false
+                },
+                {
+                    "name":"createQueryJob",
+                    "description":"An operation to create a new query job in Salesforce using bulk api 2.0",
+                    "isHidden":false
+                },
+                {
+                    "name":"deleteQueryJob",
+                    "description":"An operation to delete a query job in Salesforce using bulk api 2.0",
+                    "isHidden":false
+                },
+                {
+                    "name":"getQueryJobInfo",
+                    "description":"An operation to get information about a query job in Salesforce using bulk api 2.0",
+                    "isHidden":false
+                },
+                {
+                    "name":"getQueryJobResults",
+                    "description":"An operation to get the results of a query job in Salesforce using bulk api 2.0",
+                    "isHidden":false
+                },
+                {
+                    "name":"getAllQueryJobInfo",
+                    "description":"An operation to get the information of all the query jobs in Salesforce using bulk api 2.0",
+                    "isHidden":false
+                }
+            ],
+            "connections": [
+                {
+                    "name": "salesforcebulk",
+                    "description": "Connection for bulk data operations in Salesforce."
+                }
+            ],
+            "isHidden": false
+        },
+        {
+            "tagName": "org.wso2.carbon.connector.salesforcebulk-1.0.7",
+            "products": [
+                "MI 1.2.0",
+                "MI 4.3.0",
+                "MI 4.2.0",
+                "MI 4.1.0",
+                "MI 4.0.0"
+            ],
+            "operations": [
+                {
+                    "name":"init",
+                    "description":"Config operation.",
+                    "isHidden":false
+                },
+                {
+                    "name":"callWithRetry",
+                    "description":"Templating the retry call",
+                    "isHidden":false
+                },
+                {
+                    "name":"callOptions",
+                    "description":"Templating the http call types GET, POST, etc.",
+                    "isHidden":false
+                },
+                {
+                    "name":"createJob",
+                    "description":"Create a new job.",
+                    "isHidden":false
+                },
+                {
+                    "name":"updateJob",
+                    "description":"Update an existing job.",
+                    "isHidden":false
+                },
+                {
+                    "name":"getJob",
+                    "description":"Get all details for an existing job.",
+                    "isHidden":false
+                },
+                {
+                    "name":"addBatch",
+                    "description":"Add a new batch to a job.",
+                    "isHidden":false
+                },
+                {
+                    "name":"getBatchStatus",
+                    "description":"Check the status of an individual batch.",
+                    "isHidden":false
+                },
+                {
+                    "name":"getBatchResults",
+                    "description":"Get results of an existing.",
+                    "isHidden":false
+                },
+                {
+                    "name":"getBatchRequest",
+                    "description":"Get an existing batch request.",
+                    "isHidden":false
+                },
+                {
+                    "name":"listBatches",
+                    "description":"Get information about all batches in a job.",
+                    "isHidden":false
+                },
+                {
+                    "name":"getBulkQueryResults",
+                    "description":"Get the results of the query.",
+                    "isHidden":false
+                },
+                {
+                    "name":"createJobToUploadBatchFile",
+                    "description":"Create a job for batches containing Attachment records.",
+                    "isHidden":false
+                },
+                {
+                    "name":"uploadBatchFile",
+                    "description":"Create a batch of Attachment records.",
+                    "isHidden":false
+                }
+            ],
+            "connections": [
+                {
+                    "name": "salesforcebulk",
+                    "description": "Connection for bulk data operations in Salesforce."
+                }
             ],
             "isHidden": false
         }
