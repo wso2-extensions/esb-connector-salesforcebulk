@@ -22,5 +22,6 @@
         <dependency component="operations" />
         <description>WSO2 salesforce-bulkapi-v2 connector library</description>
     </component>
+    <displayName>Salesforce Bulk</displayName>
     <icon>icon/icon-small.gif</icon>
 </connector>
