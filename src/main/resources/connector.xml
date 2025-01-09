@@ -24,5 +24,6 @@
         <dependency component="salesforceBulk-binaryAttachments"/>
         <description>WSO2 ESB Connector Library for SalesforceBulk API.</description>
     </component>
+    <displayName>Salesforce Bulk</displayName>
     <icon>icon/icon-small.gif</icon>
 </connector>
