@@ -27,7 +27,7 @@
                 <jobInfo xmlns="http://www.force.com/2009/06/asyncapi/dataload"/>
             </format>
         </payloadFactory>
-        <script language="js">
+        <script language="rhinoJs">
             <![CDATA[
           payload = mc.getPayloadXML();
            var state=mc.getProperty('uri.var.state');
