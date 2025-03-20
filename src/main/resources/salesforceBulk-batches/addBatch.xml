@@ -29,7 +29,7 @@
         <property name="isQuery" expression="$func:isQuery"/>
         <filter xpath="$ctx:contentType='text/csv' or $ctx:isQuery='true'">
             <then>
-                <script language="js">
+                <script language="rhinoJs">
                     <![CDATA[
                     var objects = new XML(mc.getProperty('objects'));
                     mc.setProperty("objects", objects.values );
@@ -47,7 +47,7 @@
                 <property name="ContentType" expression="$ctx:contentType" scope="axis2"/>
             </then>
             <else>
-                <script language="js">
+                <script language="rhinoJs">
                     <![CDATA[
                     var objects = new XML(mc.getProperty('objects'));
                     var payload = new XML('<sObjects xmlns="http://www.force.com/2009/06/asyncapi/dataload">'+objects.values.* +'</sObjects>');

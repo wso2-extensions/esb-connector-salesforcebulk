@@ -41,7 +41,7 @@
                 <arg expression="get-property('uri.var.externalIdFieldName')"/>
             </args>
         </payloadFactory>
-        <script language="js">
+        <script language="rhinoJs">
             <![CDATA[
            payload = mc.getPayloadXML();
            var contentType=mc.getProperty('uri.var.contentType');

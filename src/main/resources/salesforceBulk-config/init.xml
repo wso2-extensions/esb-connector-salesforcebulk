@@ -48,7 +48,7 @@
         <property name="uri.var.tokenEndpointUrl"
                   expression="fn:concat(get-property('uri.var.tokenEndpointHostname'),'/services/oauth2/token')"/>
         <property name="timeout" expression="$func:timeout"/>
-        <script language="js">
+        <script language="rhinoJs">
             <![CDATA[
                 var timeout = mc.getProperty("uri.var.timeout");
                 if (timeout == null || timeout == "") {
