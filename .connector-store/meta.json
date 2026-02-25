@@ -6,7 +6,7 @@
     "documentationUrl": "https://mi.docs.wso2.com/en/latest/reference/connectors/salesforce-connectors/salesforcebulk-v2-reference/",
     "mavenGroupId": "org.wso2.integration.connector",
     "mavenArtifactId": "mi-connector-salesforcebulk",
-    "description": "The SalesforceBulk connector allows you to access the SalesforceBulk REST API through WSO2 ESB. SalesforceBulk is a RESTful API that is optimal for loading or deleting large sets of data. You can use it to query, insert, update, upsert, or delete a large number of records asynchronously by submitting batches that Salesforce processes in the background.",
+    "description": "The SalesforceBulk connector allows you to access the SalesforceBulk REST API through WSO2 ESB. SalesforceBulk is a RESTful API that is optimal for loading or deleting large sets of data. You can use it to query, insert, update, upsert, or delete a large number of records asynchronously by submitting batches that Salesforce processes in the background.\n\nFrom MI 4.4.0 onwards, Salesforce REST, SOAP, and Bulk API related operations are included in a single Salesforce connector and maintained in the https://github.com/wso2-extensions/esb-connector-salesforcerest repository.",
     "status": "Active",
     "rank": 9,
     "type": "Connector",
@@ -22,8 +22,7 @@
                 "MI 4.3.0",
                 "MI 4.2.0",
                 "MI 4.1.0",
-                "MI 4.0.0",
-                "MI 4.5.0"
+                "MI 4.0.0"
             ],
             "operations": [
                 {
