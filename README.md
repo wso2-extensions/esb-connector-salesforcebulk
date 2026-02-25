@@ -1,5 +1,7 @@
 # Salesforce Bulk EI Connector
 
+> **Note:** From MI 4.4.0 onwards, Salesforce REST, SOAP, and Bulk API related operations are included in a single Salesforce connector and maintained in the [esb-connector-salesforcerest](https://github.com/wso2-extensions/esb-connector-salesforcerest) repository.
+
 The Salesforce Bulk [Connector](https://docs.wso2.com/display/EI650/Working+with+Connectors) allows you to access the [Salesforce Bulk REST API](https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_intro.htm) through WSO2 Enterprise Integrator (WSO2 EI). SalesforceBulk is a RESTful API that allows you to quickly load large sets of your organisation’s data into Salesforce or delete large sets of your organisation’s data from Salesforce. You can use SalesforceBulk to query, insert, update, upsert or delete a large number of records asynchronously, by submitting the records in batches. Salesforce can process these batches in the background.
 
 ## Compatibility
